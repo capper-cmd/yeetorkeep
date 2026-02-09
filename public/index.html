@@ -84,25 +84,41 @@
         <div class="container">
             <h2>Shop by Category</h2>
             <div class="category-grid">
-                <div class="category-card" data-category="beauty">
+                <a href="/category/beauty" class="category-card" data-category="beauty">
                     <span class="category-icon">💄</span>
                     <span class="category-name">Luxury Beauty</span>
                     <span class="category-badge">10% Back</span>
-                </div>
-                <div class="category-card" data-category="electronics">
+                </a>
+                <a href="/category/electronics" class="category-card" data-category="electronics">
                     <span class="category-icon">🎧</span>
                     <span class="category-name">Electronics</span>
                     <span class="category-badge">Up to 8%</span>
-                </div>
-                <div class="category-card" data-category="health">
+                </a>
+                <a href="/category/health" class="category-card" data-category="health">
                     <span class="category-icon">💊</span>
                     <span class="category-name">Health & Personal</span>
                     <span class="category-badge">4.5%</span>
-                </div>
-                <div class="category-card" data-category="home">
+                </a>
+                <a href="/category/home" class="category-card" data-category="home">
                     <span class="category-icon">🏠</span>
                     <span class="category-name">Home & Kitchen</span>
                     <span class="category-badge">3%</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recently Analyzed Section -->
+    <section id="recent" class="recent">
+        <div class="container">
+            <div class="section-header">
+                <h2>🕑 Recently Analyzed</h2>
+                <p>The latest products analyzed by our community</p>
+            </div>
+            <div id="recent-grid" class="products-grid">
+                <div class="loading-state">
+                    <div class="loader"></div>
+                    <p>Loading recent items...</p>
                 </div>
             </div>
         </div>

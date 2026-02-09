@@ -8,7 +8,19 @@ const productsGrid = document.getElementById('products-grid');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    loadProducts();
+    loadRecentProducts();
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    if (pathParts[0] === 'category' && pathParts[1]) {
+        const cat = pathParts[1];
+        const categoryCards = document.querySelectorAll('.category-card');
+        categoryCards.forEach(c => c.classList.remove('active'));
+        const activeCard = document.querySelector(`.category-card[data-category="${cat}"]`);
+        if (activeCard) activeCard.classList.add('active');
+        filterByCategory(cat);
+        document.getElementById('trending').scrollIntoView();
+    } else {
+        loadProducts();
+    }
     initCategoryFilters();
 });
 
@@ -43,21 +55,18 @@ function renderProducts(products) {
 
 // Create a single product card
 function createProductCard(product) {
-    const verdictClass = product.verdict || 'suspect';
+    const verdictClass = product.research?.verdict || 'suspect';
     const verdictEmoji = verdictClass === 'legit' ? '✅' : verdictClass === 'caution' ? '⚠️' : '❌';
     const verdictText = verdictClass.toUpperCase();
 
-    const alternativesHTML = (product.alternatives || []).slice(0, 3).map(alt => {
-        // Create affiliate link (for now using direct Amazon link, will add tag later)
+    const alternativesHTML = (product.research.alternatives || []).slice(0, 3).map(alt => {
         const affiliateUrl = createAffiliateLink(alt.url);
-        
         return `
             <div class="alternative-item">
                 <div class="alternative-info">
                     <span class="alternative-name">${escapeHtml(alt.name || 'Product')}</span>
                     <span class="alternative-price">
                         ${escapeHtml(alt.price || 'See price')}
-                        ${alt.perUnit ? `<span class="per-unit">(${escapeHtml(alt.perUnit)})</span>` : ''}
                     </span>
                 </div>
                 <a href="${affiliateUrl}" class="buy-button" target="_blank" rel="noopener sponsored">
@@ -75,9 +84,9 @@ function createProductCard(product) {
                 </span>
                 <p class="original-product">
                     <strong>Original:</strong> ${escapeHtml(product.title || 'Unknown Product')}
-                    ${product.originalPrice ? `• ${escapeHtml(product.originalPrice)}` : ''}
+                    ${product.research.originalPrice ? `• ${escapeHtml(product.research.originalPrice)}` : ''}
                 </p>
-                <p class="product-summary">${escapeHtml(product.summary || 'No summary available.')}</p>
+                <p class="product-summary">${escapeHtml(product.research.summary || 'No summary available.')}</p>
             </div>
             <div class="alternatives-section">
                 <div class="alternatives-title">
@@ -88,7 +97,6 @@ function createProductCard(product) {
         </article>
     `;
 }
-
 // Create affiliate link (placeholder for Amazon Associates tag)
 function createAffiliateLink(url) {
     if (!url) return '#';
@@ -111,6 +119,54 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// Load recently analyzed products
+async function loadRecentProducts() {
+    try {
+        const response = await fetch(`${API_ENDPOINT}?limit=10`);
+        if (!response.ok) throw new Error('Failed to load recent products');
+        const data = await response.json();
+        renderRecentProducts(data.products || []);
+    } catch (error) {
+        console.error('Error loading recent products:', error);
+    }
+}
+
+// Render recent items
+function renderRecentProducts(products) {
+    const recentGrid = document.getElementById('recent-grid');
+    if (!recentGrid) return;
+    if (products.length === 0) {
+        recentGrid.innerHTML = '<p>No recent items yet.</p>';
+        return;
+    }
+    recentGrid.innerHTML = products.map(product => {
+        const verdictClass = product.verdict || 'suspect';
+        const verdictEmoji = verdictClass === 'legit' ? '✅' : verdictClass === 'caution' ? '⚠️' : '❌';
+        const savings = computeSavings(product);
+        return `
+            <div class="recent-item">
+                <span class="product-verdict ${verdictClass}">${verdictEmoji}</span>
+                <span class="recent-title">${escapeHtml(product.title)}</span>
+                <span class="recent-savings">${savings}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+// Compute savings string
+function computeSavings(product) {
+    const orig = parseFloat((product.research.originalPrice || '').replace(/[^0-9.]/g, ''));
+    const altPrice = product.research.alternatives && product.research.alternatives[0]
+        ? parseFloat((product.research.alternatives[0].price || '').replace(/[^0-9.]/g, ''))
+        : 0;
+    if (orig && altPrice) {
+        const diff = orig - altPrice;
+        const percent = Math.round((diff / orig) * 100);
+        return `Save $${diff.toFixed(2)} (${percent}%)`;
+    }
+    return '';
+}
+
 // Initialize category filters
 function initCategoryFilters() {
     const categoryCards = document.querySelectorAll('.category-card');
@@ -127,9 +183,15 @@ function initCategoryFilters() {
 }
 
 // Filter products by category
-function filterByCategory(category) {
-    // TODO: Implement category filtering when products have categories
-    console.log('Filtering by category:', category);
+async function filterByCategory(category) {
+    try {
+        const response = await fetch(`${API_ENDPOINT}?category=${category}`);
+        if (!response.ok) throw new Error('Failed to filter products');
+        const data = await response.json();
+        renderProducts(data.products || []);
+    } catch (error) {
+        console.error('Error filtering products:', error);
+    }
 }
 
 // Sample data for when API is not available
