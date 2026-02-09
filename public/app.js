@@ -1,7 +1,7 @@
 // YeetOrKeep Deals - Product Display Logic
 
 // Configuration
-const API_ENDPOINT = '/api/products';
+const API_ENDPOINT = '/data/products.json';
 
 // DOM Elements
 const productsGrid = document.getElementById('products-grid');
@@ -24,14 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     initCategoryFilters();
 });
 
-// Load products from API
+// Load products from API or static JSON
 async function loadProducts() {
     try {
         const response = await fetch(API_ENDPOINT);
         if (!response.ok) throw new Error('Failed to load products');
         
         const data = await response.json();
-        renderProducts(data.products || []);
+        // Handle both array (static JSON) and object with products property (API)
+        const products = Array.isArray(data) ? data : (data.products || []);
+        renderProducts(products);
     } catch (error) {
         console.error('Error loading products:', error);
         // Fall back to sample data if API not available
@@ -122,10 +124,12 @@ function escapeHtml(text) {
 // Load recently analyzed products
 async function loadRecentProducts() {
     try {
-        const response = await fetch(`${API_ENDPOINT}?limit=10`);
+        const response = await fetch(API_ENDPOINT);
         if (!response.ok) throw new Error('Failed to load recent products');
         const data = await response.json();
-        renderRecentProducts(data.products || []);
+        const products = Array.isArray(data) ? data : (data.products || []);
+        // Get last 10 items
+        renderRecentProducts(products.slice(0, 10));
     } catch (error) {
         console.error('Error loading recent products:', error);
     }
@@ -182,13 +186,16 @@ function initCategoryFilters() {
     });
 }
 
-// Filter products by category
+// Filter products by category (client-side filtering)
 async function filterByCategory(category) {
     try {
-        const response = await fetch(`${API_ENDPOINT}?category=${category}`);
+        const response = await fetch(API_ENDPOINT);
         if (!response.ok) throw new Error('Failed to filter products');
         const data = await response.json();
-        renderProducts(data.products || []);
+        const products = Array.isArray(data) ? data : (data.products || []);
+        // Filter by category client-side
+        const filtered = products.filter(p => p.category === category || category === 'all');
+        renderProducts(filtered);
     } catch (error) {
         console.error('Error filtering products:', error);
     }
