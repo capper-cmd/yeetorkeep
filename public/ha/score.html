@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+  html.ha-locked body > *:not(#ha-gate) { display: none !important; }
+  #ha-gate { position:fixed; inset:0; background:#0f1f3c; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'DM Sans',system-ui,-apple-system,sans-serif; z-index:99999; }
+  #ha-gate .mark { color:#c9a94b; font-family:'Playfair Display',serif; font-size:42px; font-weight:700; letter-spacing:0.02em; margin:0 0 6px; }
+  #ha-gate .sub { color:#cdd6e3; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 26px; }
+  #ha-gate form { display:flex; gap:8px; }
+  #ha-gate input { padding:11px 16px; border-radius:6px; border:1px solid rgba(201,169,75,0.55); background:transparent; color:#fff; font-size:15px; outline:none; min-width:230px; font-family:inherit; }
+  #ha-gate input:focus { border-color:#c9a94b; box-shadow:0 0 0 3px rgba(201,169,75,0.18); }
+  #ha-gate button { padding:11px 22px; border-radius:6px; border:none; background:#c9a94b; color:#0f1f3c; font-weight:600; cursor:pointer; font-family:inherit; font-size:15px; }
+  #ha-gate button:hover { background:#d8b962; }
+  #ha-gate .err { margin-top:12px; color:#ff9d9d; font-size:13px; min-height:18px; }
+</style>
+<script>
+(function(){
+  if (sessionStorage.getItem('haAuth') === 'ok') return;
+  document.documentElement.classList.add('ha-locked');
+  function mount(){
+    var g = document.createElement('div');
+    g.id = 'ha-gate';
+    g.innerHTML = '<div class="mark">Helm &amp; Able</div><div class="sub">Restricted preview</div><form><input id="ha-pw" type="password" placeholder="Password" autofocus autocomplete="off"><button type="submit">Enter</button></form><div class="err" id="ha-err"></div>';
+    document.body.appendChild(g);
+    g.querySelector('form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var pw = document.getElementById('ha-pw').value;
+      if (pw === 'Dinken') {
+        sessionStorage.setItem('haAuth','ok');
+        g.remove();
+        document.documentElement.classList.remove('ha-locked');
+      } else {
+        document.getElementById('ha-err').textContent = 'Incorrect password';
+        document.getElementById('ha-pw').value = '';
+      }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  else mount();
+})();
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helm &amp; Able — Operations Score</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.quiz-shell { position: relative; overflow: hidden; background: var(--navy); min-height: calc(100vh - 76px); display: flex; flex-direction: column; }
+.quiz-strip { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--gold); z-index: 4; }
+.quiz-wheel { position: absolute; right: -200px; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; }
+
+/* progress */
+.progress-wrap { position: relative; z-index: 3; border-bottom: 1px solid var(--line); }
+.progress-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.progress-meta { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bodydim2); }
+.progress-meta b { color: var(--gold2); font-weight: 500; }
+.progress-track { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: rgba(255,255,255,0.08); }
+.progress-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--gold); transition: width .45s cubic-bezier(.2,.7,.2,1); }
+
+.quiz-body { position: relative; z-index: 3; flex: 1; display: flex; align-items: center; padding: 64px 0; }
+.screen { display: none; width: 100%; }
+.screen.active { display: block; animation: fadeUp .5s cubic-bezier(.2,.7,.2,1); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* start */
+.start-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+.start-eyebrow .ln { width: 38px; height: 1px; background: var(--gold); opacity: 0.6; }
+.start-eyebrow .t { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+.start h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(40px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.012em; color: var(--white); max-width: 800px; text-wrap: balance; }
+.start h1 em { font-style: italic; color: var(--gold2); }
+.start p { font-size: 19px; line-height: 1.7; color: var(--bodydim); max-width: 560px; margin: 28px 0 40px; }
+.start-meta { display: flex; gap: 0; margin: 48px 0 0; border-top: 1px solid var(--line); max-width: 560px; }
+.start-meta .item { padding: 22px 34px 0 0; margin-right: 34px; border-right: 1px solid var(--line); }
+.start-meta .item:last-child { border-right: none; margin-right: 0; }
+.start-meta .num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--gold2); line-height: 1; }
+.start-meta .lbl { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bodydim2); margin-top: 8px; }
+
+/* question */
+.q-cat { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+.q-text { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(28px, 3.8vw, 44px); line-height: 1.14; color: var(--white); max-width: 760px; text-wrap: balance; margin-bottom: 40px; }
+.q-options { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+.opt {
+  display: flex; align-items: center; gap: 20px; text-align: left;
+  background: var(--navy2); border: 1px solid var(--line); color: var(--white);
+  padding: 22px 26px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 17px;
+  transition: border-color .15s ease, background .15s ease, transform .1s ease;
+}
+.opt:hover { border-color: var(--gold); background: #0c1830; transform: translateX(4px); }
+.opt.selected { border-color: var(--gold); background: rgba(201,169,75,0.08); }
+.opt .mk { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); border: 1px solid var(--line); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; }
+.opt:hover .mk, .opt.selected .mk { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.q-nav { display: flex; align-items: center; gap: 24px; margin-top: 36px; }
+.q-back { background: none; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bodydim2); transition: color .15s; }
+.q-back:hover { color: var(--gold2); }
+.q-back[disabled] { opacity: 0.3; cursor: default; }
+
+/* result */
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+.result-score .se { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+.result-num { display: flex; align-items: baseline; gap: 14px; }
+.result-num .big { font-family: 'Playfair Display', serif; font-size: clamp(90px, 14vw, 150px); font-weight: 700; color: var(--white); line-height: 0.9; }
+.result-num .den { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--bodydim2); }
+.result-tier { font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; color: var(--gold2); margin: 22px 0 18px; }
+.result-blurb { font-size: 17px; line-height: 1.7; color: var(--bodydim); max-width: 460px; }
+.result-card { background: var(--navy2); border: 1px solid var(--line); padding: 36px; position: relative; }
+.result-card .rc-strip { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--gold); }
+.result-card .rc-h { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bodydim2); margin-bottom: 26px; }
+.bar-row { margin-bottom: 22px; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-row .bl { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 9px; }
+.bar-row .bl .bv { color: var(--gold2); }
+.bar-track { height: 6px; background: rgba(255,255,255,0.08); position: relative; }
+.bar-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--gold); transition: width 1s cubic-bezier(.2,.7,.2,1); }
+.rec { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 36px; }
+.rec .rh { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.rec .rt { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+.rec p { font-size: 17px; line-height: 1.7; color: var(--bodydim); max-width: 620px; }
+.result-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 38px; }
+
+@media (max-width: 900px) {
+  .result-grid { grid-template-columns: 1fr; gap: 40px; }
+  .start-meta .item { padding-right: 20px; margin-right: 20px; }
+  .quiz-body { padding: 44px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="lockup" aria-label="Helm & Able home">
+      <svg width="38" height="38" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+        <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="48.24" cy="24" r="1.92" fill="#c9a94b"/>
+        <line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="41.14" r="1.92" fill="#c9a94b"/>
+        <line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="48.24" r="1.92" fill="#c9a94b"/>
+        <line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="41.14" r="1.92" fill="#c9a94b"/>
+        <line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="-0.24" cy="24" r="1.92" fill="#c9a94b"/>
+        <line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="6.86" r="1.92" fill="#c9a94b"/>
+        <line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="-0.24" r="1.92" fill="#c9a94b"/>
+        <line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="6.86" r="1.92" fill="#c9a94b"/>
+      </svg>
+      <div><div class="word">Helm &amp; Able</div><div class="tag">Operations Intelligence × AI</div></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#approach">Approach</a>
+      <a href="score.html" class="active">The Score</a>
+      <a href="index.html#who">Who it's for</a>
+      <a href="about.html">About</a>
+    </div>
+    <a href="contact.html" class="btn btn-ghost nav-cta">Contact</a>
+  </div>
+</nav>
+
+<!-- QUIZ -->
+<div class="quiz-shell">
+  <div class="quiz-strip"></div>
+  <div class="quiz-wheel">
+    <svg width="640" height="640" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+      <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="1.1"/><circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="1.1"/><circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+      <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="1.1"/><line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="1.1"/><line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="1.1"/><line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="1.1"/><line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="1.1"/><line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="1.1"/><line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="1.1"/><line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="1.1"/>
+    </svg>
+  </div>
+
+  <!-- progress (hidden on start/result) -->
+  <div class="progress-wrap" id="progressWrap" style="display:none;">
+    <div class="wrap progress-inner">
+      <div class="progress-meta">Operations Score</div>
+      <div class="progress-meta">Question <b id="qNow">1</b> / 8</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="quiz-body">
+    <div class="wrap">
+
+      <!-- START -->
+      <div class="screen active" id="screenStart">
+        <div class="start">
+          <div class="start-eyebrow"><span class="t">Free · No login · 2 minutes</span><span class="ln"></span></div>
+          <h1>What's your <em>Operations Score?</em></h1>
+          <p>Eight questions. A clear read on where your business is leaking time, money, and momentum — and where to start.</p>
+          <button class="btn btn-gold" id="startBtn" style="padding:17px 34px; font-size:16px;">Begin assessment <span class="arr">→</span></button>
+          <div class="start-meta">
+            <div class="item"><div class="num">8</div><div class="lbl">Questions</div></div>
+            <div class="item"><div class="num">4</div><div class="lbl">Systems</div></div>
+            <div class="item"><div class="num">2</div><div class="lbl">Minutes</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUESTION -->
+      <div class="screen" id="screenQuestion">
+        <div class="q-cat" id="qCat">Automation</div>
+        <div class="q-text" id="qText">Question</div>
+        <div class="q-options" id="qOptions"></div>
+        <div class="q-nav">
+          <button class="q-back" id="backBtn">← Back</button>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="screen" id="screenResult">
+        <div class="result-grid">
+          <div class="result-score">
+            <div class="se">Your Operations Score</div>
+            <div class="result-num"><span class="big" id="rScore">0</span><span class="den">/ 100</span></div>
+            <div class="result-tier" id="rTier">—</div>
+            <div class="result-blurb" id="rBlurb"></div>
+          </div>
+          <div class="result-card">
+            <div class="rc-strip"></div>
+            <div class="rc-h">By system</div>
+            <div id="rBars"></div>
+          </div>
+        </div>
+        <div class="rec">
+          <div class="rh">Where to start</div>
+          <div class="rt" id="rRecTitle"></div>
+          <p id="rRecText"></p>
+          <div class="result-actions">
+            <a href="contact.html" class="btn btn-gold">Talk through your results <span class="arr">→</span></a>
+            <button class="btn btn-ghost" id="retakeBtn">Retake assessment</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div style="max-width:300px;">
+        <a href="index.html" class="lockup">
+          <svg width="34" height="34" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+            <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="2.5"/><line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="2.5"/><line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="2.5"/><line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="2.5"/><line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/>
+          </svg>
+          <div><div class="word">Helm &amp; Able</div><div class="tag">Operations Intelligence × AI</div></div>
+        </a>
+        <p style="font-size:14px; line-height:1.65; color:var(--bodydim2); margin-top:14px;">Operations intelligence for the AI era. Know where to navigate next.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><div class="fh">Product</div><a href="score.html">Operations Score</a><a href="index.html#approach">How it works</a><a href="index.html#who">Who it's for</a></div>
+        <div class="footer-col"><div class="fh">Company</div><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+        <div class="footer-col"><div class="fh">Start</div><a href="score.html">Get your score</a><a href="contact.html">Book a call</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="c">© 2026 Helm &amp; Able. All rights reserved.</div>
+      <div class="c">helmandable.com</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const QUESTIONS = [
+  { cat: 'Automation', q: 'How much of your repetitive admin still runs by hand?',
+    opts: ['Almost all of it — we live in spreadsheets and inboxes.', "Some is automated, but most isn't.", 'Most of it runs itself; we just handle exceptions.', 'Nearly everything repetitive is automated.'] },
+  { cat: 'Automation', q: 'When a new lead or order comes in, what happens next?',
+    opts: ['Someone manually copies it between tools.', "It's partly connected, partly manual.", 'It flows automatically into the right systems.', 'It flows and triggers the next steps on its own.'] },
+  { cat: 'Data & Visibility', q: 'Can you see your core numbers right now, without asking anyone?',
+    opts: ["No — I'd have to pull it together.", "Sort of — it's scattered across tools.", 'Mostly — a dashboard covers the essentials.', 'Yes — live, in one place, and trusted.'] },
+  { cat: 'Data & Visibility', q: 'When something goes wrong, how fast do you know?',
+    opts: ['We usually hear it from a customer first.', 'Days later, once it shows up in a report.', "Same day, if someone's watching.", 'Immediately — the system flags it.'] },
+  { cat: 'Team Workflows', q: 'How does work move between people on your team?',
+    opts: ['Verbally, or whoever remembers.', 'Some process, lots of exceptions.', 'Documented workflows most people follow.', 'Clear, owned, and built into the tools.'] },
+  { cat: 'Team Workflows', q: 'If a key person took two weeks off, what would happen?',
+    opts: ['Things would quietly break.', "We'd feel it, but cope.", "Mostly fine — it's documented.", 'No impact — the system holds.'] },
+  { cat: 'Decision Speed', q: 'How do you make a meaningful operational decision?',
+    opts: ["Gut, mostly — the data's too slow.", 'Gut, backed by numbers I dig up.', 'Numbers are there when I go looking.', "The data's in front of me before I ask."] },
+  { cat: 'Decision Speed', q: 'How is AI used in your business today?',
+    opts: ['Not really — we keep meaning to start.', 'A few people experiment ad hoc.', 'A handful of real workflows use it.', "It's woven into how we operate."] },
+];
+const VALUES = [0, 1.34, 2.67, 4];
+const CATS = ['Automation', 'Data & Visibility', 'Team Workflows', 'Decision Speed'];
+const RECS = {
+  'Automation': { t: 'Close the manual handoffs.', p: "Map every place a human moves data by hand between tools. That's where your fastest ROI is hiding — the work AI and automation can absorb today, freeing hours every week without adding headcount." },
+  'Data & Visibility': { t: 'Get to one live source of truth.', p: "Pull your core numbers into a single, live view you trust. You can't fix — or even spot — a leak you can't see. Visibility is the multiplier that makes every other improvement measurable." },
+  'Team Workflows': { t: 'Document and own the critical few.', p: 'Nail down your three most critical workflows — owned, written, and built into the tools — before adding anything new. Resilient operations survive a key person taking two weeks off.' },
+  'Decision Speed': { t: 'Put your deciding metrics in front of you.', p: 'Get the two or three numbers you actually decide on into a daily view. When the data arrives before the question, decisions get faster and sharper — and speed compounds.' },
+};
+
+let current = 0;
+const answers = new Array(8).fill(null);
+
+const elStart = document.getElementById('screenStart');
+const elQ = document.getElementById('screenQuestion');
+const elR = document.getElementById('screenResult');
+const progressWrap = document.getElementById('progressWrap');
+const progressFill = document.getElementById('progressFill');
+
+const quizWheel = document.querySelector('.quiz-wheel svg');
+if (quizWheel) quizWheel.style.transition = 'transform .7s cubic-bezier(.2,.7,.2,1)';
+function spinWheel(deg){ if (quizWheel) quizWheel.style.transform = 'rotate(' + deg + 'deg)'; }
+
+function show(screen) {
+  [elStart, elQ, elR].forEach(s => s.classList.remove('active'));
+  screen.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderQuestion() {
+  const data = QUESTIONS[current];
+  document.getElementById('qCat').textContent = data.cat;
+  document.getElementById('qText').textContent = data.q;
+  document.getElementById('qNow').textContent = current + 1;
+  progressFill.style.width = ((current) / 8 * 100) + '%';
+  const wrap = document.getElementById('qOptions');
+  wrap.innerHTML = '';
+  const marks = ['A', 'B', 'C', 'D'];
+  data.opts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt' + (answers[current] === i ? ' selected' : '');
+    b.innerHTML = '<span class="mk">' + marks[i] + '</span><span>' + opt + '</span>';
+    b.addEventListener('click', () => {
+      answers[current] = i;
+      progressFill.style.width = ((current + 1) / 8 * 100) + '%';
+      setTimeout(() => {
+        if (current < 7) { current++; renderQuestion(); }
+        else { showResult(); }
+      }, 180);
+    });
+    wrap.appendChild(b);
+  });
+  document.getElementById('backBtn').disabled = current === 0;
+  spinWheel(current * 50); // turn the helm with each question
+}
+
+function showResult() {
+  progressFill.style.width = '100%';
+  // category scores
+  const catScore = {};
+  CATS.forEach(c => catScore[c] = 0);
+  const catCount = {};
+  CATS.forEach(c => catCount[c] = 0);
+  let total = 0;
+  QUESTIONS.forEach((qq, i) => {
+    const v = VALUES[answers[i]];
+    total += v;
+    catScore[qq.cat] += v;
+    catCount[qq.cat] += 1;
+  });
+  const score100 = Math.round(total / 32 * 100);
+  document.getElementById('rScore').textContent = score100;
+
+  let tier, blurb;
+  if (score100 < 40) { tier = 'Leaking — and fast wins are everywhere.'; blurb = "You're running yesterday's playbook in an AI-era market. The upside is that the gains here are big, obvious, and quick to capture once you know where to look."; }
+  else if (score100 < 60) { tier = 'Behind the curve — clear gaps to close.'; blurb = "Solid foundations, but real leaks are costing you time and money. A focused push on your weakest system would move this number fast."; }
+  else if (score100 < 80) { tier = 'Capable — but leaking in a system or two.'; blurb = "You're ahead of most. The gap now is specific, not general — tighten the one or two systems below and you're operating at AI-era speed."; }
+  else { tier = 'AI-era operation. Rare air.'; blurb = "You run a genuinely modern operation. The work now is staying there — protecting the edge as the tools keep moving."; }
+  document.getElementById('rTier').textContent = tier;
+  document.getElementById('rBlurb').textContent = blurb;
+
+  // bars
+  const barsWrap = document.getElementById('rBars');
+  barsWrap.innerHTML = '';
+  let lowest = null, lowestVal = Infinity;
+  CATS.forEach(c => {
+    const pct = Math.round(catScore[c] / (catCount[c] * 4) * 100);
+    if (pct < lowestVal) { lowestVal = pct; lowest = c; }
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = '<div class="bl"><span>' + c + '</span><span class="bv">' + pct + '</span></div><div class="bar-track"><div class="bar-fill" data-w="' + pct + '"></div></div>';
+    barsWrap.appendChild(row);
+  });
+  // recommendation = lowest category
+  document.getElementById('rRecTitle').textContent = RECS[lowest].t;
+  document.getElementById('rRecText').textContent = RECS[lowest].p;
+
+  spinWheel(450); // full turn as the score lands
+  progressWrap.style.display = 'none';
+  show(elR);
+  // animate bars
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      barsWrap.querySelectorAll('.bar-fill').forEach(f => { f.style.width = f.dataset.w + '%'; });
+    }, 220);
+  });
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  progressWrap.style.display = 'block';
+  current = 0;
+  renderQuestion();
+  show(elQ);
+});
+document.getElementById('backBtn').addEventListener('click', () => {
+  if (current > 0) { current--; renderQuestion(); }
+});
+document.getElementById('retakeBtn').addEventListener('click', () => {
+  answers.fill(null);
+  current = 0;
+  progressWrap.style.display = 'none';
+  show(elStart);
+  spinWheel(0);
+});
+</script>
+</body>
+</html>

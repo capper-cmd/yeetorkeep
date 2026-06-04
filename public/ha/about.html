@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+  html.ha-locked body > *:not(#ha-gate) { display: none !important; }
+  #ha-gate { position:fixed; inset:0; background:#0f1f3c; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'DM Sans',system-ui,-apple-system,sans-serif; z-index:99999; }
+  #ha-gate .mark { color:#c9a94b; font-family:'Playfair Display',serif; font-size:42px; font-weight:700; letter-spacing:0.02em; margin:0 0 6px; }
+  #ha-gate .sub { color:#cdd6e3; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 26px; }
+  #ha-gate form { display:flex; gap:8px; }
+  #ha-gate input { padding:11px 16px; border-radius:6px; border:1px solid rgba(201,169,75,0.55); background:transparent; color:#fff; font-size:15px; outline:none; min-width:230px; font-family:inherit; }
+  #ha-gate input:focus { border-color:#c9a94b; box-shadow:0 0 0 3px rgba(201,169,75,0.18); }
+  #ha-gate button { padding:11px 22px; border-radius:6px; border:none; background:#c9a94b; color:#0f1f3c; font-weight:600; cursor:pointer; font-family:inherit; font-size:15px; }
+  #ha-gate button:hover { background:#d8b962; }
+  #ha-gate .err { margin-top:12px; color:#ff9d9d; font-size:13px; min-height:18px; }
+</style>
+<script>
+(function(){
+  if (sessionStorage.getItem('haAuth') === 'ok') return;
+  document.documentElement.classList.add('ha-locked');
+  function mount(){
+    var g = document.createElement('div');
+    g.id = 'ha-gate';
+    g.innerHTML = '<div class="mark">Helm &amp; Able</div><div class="sub">Restricted preview</div><form><input id="ha-pw" type="password" placeholder="Password" autofocus autocomplete="off"><button type="submit">Enter</button></form><div class="err" id="ha-err"></div>';
+    document.body.appendChild(g);
+    g.querySelector('form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var pw = document.getElementById('ha-pw').value;
+      if (pw === 'Dinken') {
+        sessionStorage.setItem('haAuth','ok');
+        g.remove();
+        document.documentElement.classList.remove('ha-locked');
+      } else {
+        document.getElementById('ha-err').textContent = 'Incorrect password';
+        document.getElementById('ha-pw').value = '';
+      }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  else mount();
+})();
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helm &amp; Able — About</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.two.start { align-items: start; }
+.prose p { font-size: 18px; line-height: 1.8; color: var(--bodydim); margin-top: 22px; }
+.prose p:first-child { margin-top: 0; }
+.prose p em { color: var(--gold2); font-style: italic; }
+.wheel-frame { display: flex; align-items: center; justify-content: center; }
+
+/* belief list */
+.beliefs { margin-top: 60px; border-top: 1px solid var(--line); }
+.belief { display: grid; grid-template-columns: 110px 1fr; gap: 36px; padding: 36px 0; border-bottom: 1px solid var(--line); }
+.belief .bi { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: var(--gold); line-height: 0.9; }
+.belief h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 25px; color: var(--white); margin-bottom: 10px; }
+.belief p { font-size: 16px; line-height: 1.7; color: var(--bodydim); max-width: 620px; }
+
+/* founders */
+.founders { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 60px; }
+.founder { background: var(--navy2); border: 1px solid var(--line); padding: 36px; }
+.band-navy .founder { background: var(--navy); }
+.founder .avatar { width: 100%; aspect-ratio: 4 / 3; background: var(--navy); border: 1px solid var(--line); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 26px; }
+.band-navy .founder .avatar { background: var(--navy2); }
+.founder .avatar .ph { position: absolute; inset: 0; background-image: repeating-linear-gradient(135deg, transparent, transparent 9px, rgba(201,169,75,0.07) 9px, rgba(201,169,75,0.07) 10px); }
+.founder .avatar .phlabel { position: relative; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bodydim2); }
+.founder .fname { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 26px; color: var(--white); }
+.founder .frole { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin: 8px 0 16px; }
+.founder p { font-size: 15px; line-height: 1.7; color: var(--bodydim); }
+
+/* big quote */
+.quote-band { background: var(--ink); padding: 120px 0; position: relative; overflow: hidden; }
+.quote-wheel { position: absolute; right: -160px; top: 50%; transform: translateY(-50%); opacity: 0.05; pointer-events: none; }
+.quote-band .q { position: relative; font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(30px, 4.4vw, 52px); line-height: 1.18; color: var(--white); max-width: 900px; text-wrap: balance; }
+.quote-band .q em { font-style: italic; color: var(--gold2); }
+.quote-band .qa { position: relative; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-top: 32px; }
+
+/* cta */
+.cta { position: relative; overflow: hidden; background: var(--navy); padding: 110px 0; text-align: center; border-top: 1px solid var(--line); }
+.cta .texture { opacity: 1; }
+.cta-inner { position: relative; z-index: 2; }
+.cta h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(34px, 5vw, 58px); line-height: 1.06; color: var(--white); margin-bottom: 20px; text-wrap: balance; }
+.cta p { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 36px; }
+
+@media (max-width: 900px) {
+  .two { grid-template-columns: 1fr; gap: 44px; }
+  .wheel-frame { order: -1; }
+  .belief { grid-template-columns: 60px 1fr; gap: 20px; }
+  .founders { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="lockup" aria-label="Helm & Able home">
+      <svg width="38" height="38" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+        <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="48.24" cy="24" r="1.92" fill="#c9a94b"/>
+        <line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="41.14" r="1.92" fill="#c9a94b"/>
+        <line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="48.24" r="1.92" fill="#c9a94b"/>
+        <line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="41.14" r="1.92" fill="#c9a94b"/>
+        <line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="-0.24" cy="24" r="1.92" fill="#c9a94b"/>
+        <line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="6.86" r="1.92" fill="#c9a94b"/>
+        <line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="-0.24" r="1.92" fill="#c9a94b"/>
+        <line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="6.86" r="1.92" fill="#c9a94b"/>
+      </svg>
+      <div><div class="word">Helm &amp; Able</div><div class="tag">Operations Intelligence × AI</div></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#approach">Approach</a>
+      <a href="score.html">The Score</a>
+      <a href="index.html#who">Who it's for</a>
+      <a href="about.html" class="active">About</a>
+    </div>
+    <a href="score.html" class="btn btn-gold nav-cta">Get your score <span class="arr">→</span></a>
+  </div>
+</nav>
+
+<!-- HEAD -->
+<header class="page-head">
+  <div class="texture"></div>
+  <div class="hero-strip"></div>
+  <div class="wrap">
+    <div class="eyebrow">About Helm &amp; Able</div>
+    <h1>Operators, not <em>theorists.</em></h1>
+    <p class="page-sub">We build the operations intelligence we wished we'd had when we were running our own businesses — direct, specific, and built to act on.</p>
+  </div>
+</header>
+
+<!-- STORY -->
+<section class="band band-deep">
+  <div class="wrap two start">
+    <div>
+      <div class="sec-eyebrow"><span class="n">01</span><span class="ln"></span><span class="t">The name</span></div>
+      <h2 class="sec-title">The name is the promise.</h2>
+    </div>
+    <div class="prose">
+      <p><em>Helm</em> — direction, captaincy, a steady hand at the controls.</p>
+      <p><em>Able</em> — capacity, execution, the ability to actually do the thing.</p>
+      <p>Together: knowing where to steer, and being able to get there. The ship's wheel is our anchor mark — a reminder that operations is navigation. The point was never a prettier map. It's knowing where to turn next.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BELIEFS -->
+<section class="band band-navy">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="n">02</span><span class="ln"></span><span class="t">What we believe</span></div>
+    <h2 class="sec-title">Four things we hold to.</h2>
+    <div class="beliefs">
+      <div class="belief">
+        <div class="bi">01</div>
+        <div>
+          <h3>Clarity beats frameworks.</h3>
+          <p>Most businesses don't need another model on a whiteboard. They need to know the one thing to fix first. We trade theory for a direction you can act on this week.</p>
+        </div>
+      </div>
+      <div class="belief">
+        <div class="bi">02</div>
+        <div>
+          <h3>The tools changed. The workflows didn't.</h3>
+          <p>Most operations are still running 2009 processes in an AI-era market. The gap between what's possible and what's running is where the money leaks.</p>
+        </div>
+      </div>
+      <div class="belief">
+        <div class="bi">03</div>
+        <div>
+          <h3>Advice should come from operators.</h3>
+          <p>We've run the businesses, made payroll, and felt the drag of a broken system. We give the advice we'd want from a sharp peer — not a consultant billing by the slide.</p>
+        </div>
+      </div>
+      <div class="belief">
+        <div class="bi">04</div>
+        <div>
+          <h3>Start where it's worth the most.</h3>
+          <p>Not everything needs fixing at once. We rank the work by what it returns, so the first move is also the highest-leverage one.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-band">
+  <div class="quote-wheel">
+    <svg width="560" height="560" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+      <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="1.1"/><circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="1.1"/><circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+      <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="1.1"/><line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="1.1"/><line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="1.1"/><line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="1.1"/><line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="1.1"/><line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="1.1"/><line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="1.1"/><line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="1.1"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div class="q">"Stop running 2009 workflows in an AI world. The first step isn't a new tool — it's <em>knowing where you're leaking.</em>"</div>
+    <div class="qa">The Helm &amp; Able operating principle</div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section class="band band-deep">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="n">03</span><span class="ln"></span><span class="t">Who's behind it</span></div>
+    <h2 class="sec-title">Built by people who've run the ship.</h2>
+    <p class="sec-desc">Founders and operators who've sat in the seat — and got tired of advice that stopped at the diagram.</p>
+    <div class="founders">
+      <div class="founder">
+        <div class="avatar"><div class="ph"></div><div class="phlabel">Portrait — Ryan</div></div>
+        <div class="fname">Ryan Hanson</div>
+        <div class="frole">Co-founder · Operations</div>
+        <p>Spent years building and untangling the operational machinery behind growing businesses. Believes the best system is the one nobody has to think about.</p>
+      </div>
+      <div class="founder">
+        <div class="avatar"><div class="ph"></div><div class="phlabel">Portrait — Chad</div></div>
+        <div class="fname">Chad Capp</div>
+        <div class="frole">Co-founder · Intelligence</div>
+        <p>Works at the seam where AI meets real operations — turning the hype into workflows that actually hold up on a Tuesday afternoon.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="texture"></div>
+  <div class="wrap cta-inner">
+    <h2>Know where to navigate next.</h2>
+    <p>Eight questions · Two minutes · Free</p>
+    <a href="score.html" class="btn btn-gold" style="padding:17px 34px; font-size:16px;">Get your Operations Score <span class="arr">→</span></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div style="max-width:300px;">
+        <a href="index.html" class="lockup">
+          <svg width="34" height="34" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+            <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="2.5"/><line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="2.5"/><line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="2.5"/><line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="2.5"/><line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/>
+          </svg>
+          <div><div class="word">Helm &amp; Able</div><div class="tag">Operations Intelligence × AI</div></div>
+        </a>
+        <p style="font-size:14px; line-height:1.65; color:var(--bodydim2); margin-top:14px;">Operations intelligence for the AI era. Know where to navigate next.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><div class="fh">Product</div><a href="score.html">Operations Score</a><a href="index.html#approach">How it works</a><a href="index.html#who">Who it's for</a></div>
+        <div class="footer-col"><div class="fh">Company</div><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+        <div class="footer-col"><div class="fh">Start</div><a href="score.html">Get your score</a><a href="contact.html">Book a call</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="c">© 2026 Helm &amp; Able. All rights reserved.</div>
+      <div class="c">helmandable.com</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ───────────── SCROLL-DRIVEN WHEEL SPIN ───────────── -->
+<script>
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var wheels = document.querySelectorAll('.quote-wheel svg');
+  if (!wheels.length) return;
+  wheels.forEach(function(w){ w.style.willChange = 'transform'; });
+  var ticking = false;
+  function update(){
+    var deg = window.scrollY * 0.08; // positive = clockwise
+    for (var i = 0; i < wheels.length; i++) wheels[i].style.transform = 'rotate(' + deg + 'deg)';
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>

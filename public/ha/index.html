@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+  html.ha-locked body > *:not(#ha-gate) { display: none !important; }
+  #ha-gate { position:fixed; inset:0; background:#0f1f3c; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'DM Sans',system-ui,-apple-system,sans-serif; z-index:99999; }
+  #ha-gate .mark { color:#c9a94b; font-family:'Playfair Display',serif; font-size:42px; font-weight:700; letter-spacing:0.02em; margin:0 0 6px; }
+  #ha-gate .sub { color:#cdd6e3; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; margin:0 0 26px; }
+  #ha-gate form { display:flex; gap:8px; }
+  #ha-gate input { padding:11px 16px; border-radius:6px; border:1px solid rgba(201,169,75,0.55); background:transparent; color:#fff; font-size:15px; outline:none; min-width:230px; font-family:inherit; }
+  #ha-gate input:focus { border-color:#c9a94b; box-shadow:0 0 0 3px rgba(201,169,75,0.18); }
+  #ha-gate button { padding:11px 22px; border-radius:6px; border:none; background:#c9a94b; color:#0f1f3c; font-weight:600; cursor:pointer; font-family:inherit; font-size:15px; }
+  #ha-gate button:hover { background:#d8b962; }
+  #ha-gate .err { margin-top:12px; color:#ff9d9d; font-size:13px; min-height:18px; }
+</style>
+<script>
+(function(){
+  if (sessionStorage.getItem('haAuth') === 'ok') return;
+  document.documentElement.classList.add('ha-locked');
+  function mount(){
+    var g = document.createElement('div');
+    g.id = 'ha-gate';
+    g.innerHTML = '<div class="mark">Helm &amp; Able</div><div class="sub">Restricted preview</div><form><input id="ha-pw" type="password" placeholder="Password" autofocus autocomplete="off"><button type="submit">Enter</button></form><div class="err" id="ha-err"></div>';
+    document.body.appendChild(g);
+    g.querySelector('form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var pw = document.getElementById('ha-pw').value;
+      if (pw === 'Dinken') {
+        sessionStorage.setItem('haAuth','ok');
+        g.remove();
+        document.documentElement.classList.remove('ha-locked');
+      } else {
+        document.getElementById('ha-err').textContent = 'Incorrect password';
+        document.getElementById('ha-pw').value = '';
+      }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  else mount();
+})();
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helm &amp; Able — Operations Intelligence × AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:   #0f1f3c;
+  --navy2:  #0b1729;
+  --ink:    #0a0f1a;
+  --gold:   #c9a94b;
+  --gold2:  #e8cc80;
+  --white:  #fefeff;
+  --cream:  #f7f4ee;
+  --line:   rgba(201,169,75,0.18);
+  --bodydim: rgba(255,255,255,0.62);
+  --bodydim2: rgba(255,255,255,0.45);
+  --maxw: 1180px;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--navy2);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 48px; }
+
+/* diagonal texture */
+.texture {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(135deg, transparent, transparent 28px, rgba(201,169,75,0.045) 28px, rgba(201,169,75,0.045) 29px);
+}
+body.no-texture .texture { display: none; }
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold);
+}
+.serif { font-family: 'Playfair Display', serif; }
+.rule { width: 64px; height: 3px; background: var(--gold); }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.02em; cursor: pointer; border: none;
+  transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+}
+.btn-gold {
+  background: var(--gold); color: var(--navy); padding: 15px 28px;
+}
+.btn-gold:hover { background: var(--gold2); transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent; color: var(--white); padding: 15px 24px;
+  border: 1px solid rgba(255,255,255,0.22);
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold2); }
+.btn .arr { font-family: 'DM Mono', monospace; }
+
+/* ───────────── NAV ───────────── */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(11,23,41,0.82);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,169,75,0.12);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 76px;
+}
+.lockup { display: flex; align-items: center; gap: 13px; }
+.lockup .word { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 23px; color: var(--white); letter-spacing: 0.01em; }
+.lockup .tag { font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; margin-top: 3px; }
+.nav-links { display: flex; align-items: center; gap: 38px; }
+.nav-links a {
+  font-size: 14px; color: rgba(255,255,255,0.7); letter-spacing: 0.01em;
+  transition: color .15s ease;
+}
+.nav-links a:hover { color: var(--gold2); }
+.nav-cta { font-size: 14px; font-weight: 600; padding: 11px 20px; }
+.nav-burger { display: none; }
+
+/* ───────────── HERO ───────────── */
+.hero { position: relative; overflow: hidden; background: var(--navy); }
+.hero-strip { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--gold); z-index: 3; }
+.hero-wheel { position: absolute; right: -160px; top: 50%; transform: translateY(-50%); opacity: 0.07; pointer-events: none; }
+.hero-inner { position: relative; z-index: 2; padding: 124px 0 108px; max-width: 860px; }
+.hero h1 {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: clamp(40px, 6.2vw, 76px); line-height: 1.04; letter-spacing: -0.012em;
+  color: var(--white); margin: 26px 0 30px; text-wrap: balance;
+}
+.hero h1 em { font-style: italic; color: var(--gold2); }
+.hero-sub {
+  font-size: 19px; line-height: 1.7; color: var(--bodydim);
+  max-width: 600px; margin: 30px 0 40px;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.hero-meta {
+  display: flex; gap: 0; margin-top: 56px; border-top: 1px solid var(--line);
+  max-width: 620px;
+}
+.hero-meta .item { padding: 22px 36px 0 0; margin-right: 36px; border-right: 1px solid var(--line); }
+.hero-meta .item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.hero-meta .num { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 700; color: var(--gold2); line-height: 1; }
+.hero-meta .lbl { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bodydim2); margin-top: 9px; }
+
+/* ───────────── SECTION SHELL ───────────── */
+section { position: relative; }
+.band { padding: 110px 0; }
+.band-deep { background: var(--navy2); }
+.band-navy { background: var(--navy); }
+.sec-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.sec-eyebrow .n { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--gold); }
+.sec-eyebrow .ln { width: 38px; height: 1px; background: var(--gold); opacity: 0.6; }
+.sec-eyebrow .t { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bodydim2); }
+.sec-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(30px, 4vw, 46px); line-height: 1.12; letter-spacing: -0.01em; color: var(--white); max-width: 720px; text-wrap: balance; }
+.sec-desc { font-size: 18px; line-height: 1.7; color: var(--bodydim); max-width: 600px; margin-top: 22px; }
+
+/* leaks */
+.leaks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); margin-top: 64px; border: 1px solid var(--line); }
+.leak { background: var(--navy2); padding: 40px 36px; }
+.band-deep .leak { background: var(--navy); }
+.leak .idx { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: var(--gold); }
+.leak h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 27px; color: var(--white); margin: 18px 0 14px; }
+.leak p { font-size: 15px; line-height: 1.72; color: var(--bodydim); }
+
+/* steps */
+.steps { margin-top: 64px; border-top: 1px solid var(--line); }
+.step { display: grid; grid-template-columns: 120px 1fr auto; gap: 40px; align-items: start; padding: 38px 0; border-bottom: 1px solid var(--line); }
+.step .si { font-family: 'Playfair Display', serif; font-size: 46px; font-weight: 700; color: var(--gold); line-height: 0.9; }
+.step h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 26px; color: var(--white); margin-bottom: 10px; }
+.step p { font-size: 16px; line-height: 1.7; color: var(--bodydim); max-width: 560px; }
+.step .tick { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bodydim2); white-space: nowrap; padding-top: 8px; }
+
+/* score feature */
+.score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; margin-top: 8px; }
+.score-list { margin-top: 34px; display: flex; flex-direction: column; gap: 0; }
+.score-list .li { display: flex; gap: 18px; padding: 18px 0; border-top: 1px solid var(--line); }
+.score-list .li:last-child { border-bottom: 1px solid var(--line); }
+.score-list .li .k { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); padding-top: 3px; }
+.score-list .li .v { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.78); }
+
+/* scorecard mock */
+.card {
+  position: relative; background: var(--navy2); border: 1px solid var(--line);
+  padding: 40px; box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+.band-deep .card { background: var(--navy); }
+.card .card-strip { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--gold); }
+.card-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+.card-score { display: flex; align-items: baseline; gap: 12px; margin: 16px 0 4px; }
+.card-score .big { font-family: 'Playfair Display', serif; font-size: 78px; font-weight: 700; color: var(--white); line-height: 1; }
+.card-score .den { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--bodydim2); }
+.card-tier { font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--gold2); margin-bottom: 30px; }
+.bar-row { margin-bottom: 18px; }
+.bar-row .bl { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bodydim2); margin-bottom: 8px; }
+.bar-track { height: 5px; background: rgba(255,255,255,0.08); position: relative; }
+.bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold); }
+
+/* who */
+.who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); margin-top: 60px; border: 1px solid var(--line); }
+.who-col { background: var(--navy); padding: 44px 40px; }
+.band-navy .who-col { background: var(--navy2); }
+.who-col .h { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 26px; }
+.who-col.for .h { color: var(--gold2); }
+.who-col.not .h { color: var(--bodydim2); }
+.who-item { font-size: 16px; line-height: 1.5; color: rgba(255,255,255,0.8); padding: 14px 0 14px 26px; position: relative; border-top: 1px solid rgba(255,255,255,0.07); }
+.who-item:first-of-type { border-top: none; }
+.who-col.for .who-item::before { content: ''; position: absolute; left: 0; top: 21px; width: 11px; height: 1px; background: var(--gold); }
+.who-col.not .who-item { color: var(--bodydim2); }
+.who-col.not .who-item::before { content: ''; position: absolute; left: 0; top: 21px; width: 11px; height: 1px; background: rgba(255,255,255,0.22); }
+
+/* CTA band */
+.cta { position: relative; overflow: hidden; background: var(--ink); padding: 120px 0; text-align: center; }
+.cta-wheel { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0.05; pointer-events: none; }
+.cta-inner { position: relative; z-index: 2; }
+.cta h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(36px, 5.4vw, 64px); line-height: 1.06; color: var(--white); margin-bottom: 22px; text-wrap: balance; }
+.cta p { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 38px; }
+
+/* footer */
+.footer { background: var(--navy2); border-top: 1px solid rgba(201,169,75,0.12); padding: 60px 0 44px; }
+.footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+.footer-links { display: flex; gap: 52px; flex-wrap: wrap; }
+.footer-col .fh { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bodydim2); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.72); padding: 6px 0; transition: color .15s; }
+.footer-col a:hover { color: var(--gold2); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 50px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.07); flex-wrap: wrap; gap: 14px; }
+.footer-bottom .c { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--bodydim2); }
+
+@media (max-width: 900px) {
+  .wrap { padding: 0 28px; }
+  .nav-links { display: none; }
+  .hero-inner { padding: 88px 0 76px; }
+  .leaks { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 70px 1fr; gap: 22px; }
+  .step .tick { display: none; }
+  .score-grid { grid-template-columns: 1fr; gap: 44px; }
+  .who-grid { grid-template-columns: 1fr; }
+  .band { padding: 80px 0; }
+  .hero-meta .item { padding-right: 22px; margin-right: 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ───────────── NAV ───────────── -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="lockup" aria-label="Helm & Able home">
+      <svg width="38" height="38" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="2.5"/>
+        <circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="2.5"/>
+        <circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+        <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="48.24" cy="24" r="1.92" fill="#c9a94b"/>
+        <line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="41.14" r="1.92" fill="#c9a94b"/>
+        <line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="48.24" r="1.92" fill="#c9a94b"/>
+        <line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="41.14" r="1.92" fill="#c9a94b"/>
+        <line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="-0.24" cy="24" r="1.92" fill="#c9a94b"/>
+        <line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="6.86" r="1.92" fill="#c9a94b"/>
+        <line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="-0.24" r="1.92" fill="#c9a94b"/>
+        <line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="6.86" r="1.92" fill="#c9a94b"/>
+      </svg>
+      <div>
+        <div class="word">Helm &amp; Able</div>
+        <div class="tag">Operations Intelligence × AI</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#approach">Approach</a>
+      <a href="score.html">The Score</a>
+      <a href="#who">Who it's for</a>
+      <a href="about.html">About</a>
+    </div>
+    <a href="score.html" class="btn btn-gold nav-cta cta-label">Get your score <span class="arr">→</span></a>
+  </div>
+</nav>
+
+<!-- ───────────── HERO ───────────── -->
+<header class="hero" id="top">
+  <div class="texture"></div>
+  <div class="hero-strip"></div>
+  <div class="hero-wheel">
+    <svg width="620" height="620" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+      <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="1.2"/>
+      <circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="1.2"/>
+      <circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+      <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="1.2"/><circle cx="48.24" cy="24" r="1.4" fill="#c9a94b"/>
+      <line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="1.2"/><circle cx="41.14" cy="41.14" r="1.4" fill="#c9a94b"/>
+      <line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="1.2"/><circle cx="24" cy="48.24" r="1.4" fill="#c9a94b"/>
+      <line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="1.2"/><circle cx="6.86" cy="41.14" r="1.4" fill="#c9a94b"/>
+      <line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="1.2"/><circle cx="-0.24" cy="24" r="1.4" fill="#c9a94b"/>
+      <line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="1.2"/><circle cx="6.86" cy="6.86" r="1.4" fill="#c9a94b"/>
+      <line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="1.2"/><circle cx="24" cy="-0.24" r="1.4" fill="#c9a94b"/>
+      <line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="1.2"/><circle cx="41.14" cy="6.86" r="1.4" fill="#c9a94b"/>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="eyebrow">Operations Intelligence × AI</div>
+      <h1 id="hero-headline">Stop running 2009 workflows in an <em>AI world.</em></h1>
+      <div class="rule"></div>
+      <p class="hero-sub">Helm &amp; Able finds exactly where your operation is leaking time, money, and momentum — and what to do about it. Eight questions get you to your first answer.</p>
+      <div class="hero-actions">
+        <a href="score.html" class="btn btn-gold cta-label">Get your Operations Score <span class="arr">→</span></a>
+        <a href="#approach" class="btn btn-ghost">See how it works</a>
+      </div>
+      <div class="hero-meta">
+        <div class="item"><div class="num">8</div><div class="lbl">Questions</div></div>
+        <div class="item"><div class="num">2</div><div class="lbl">Minutes</div></div>
+        <div class="item"><div class="num">$0</div><div class="lbl">Free to start</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ───────────── 02 — THE PROBLEM ───────────── -->
+<section class="band band-deep" id="problem">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="n">01</span><span class="ln"></span><span class="t">The problem</span></div>
+    <h2 class="sec-title">Most businesses are leaking — and can't see where.</h2>
+    <p class="sec-desc">The tools changed. The workflows didn't. Three places it shows up first.</p>
+    <div class="leaks">
+      <div class="leak">
+        <div class="idx">01</div>
+        <h3>Time</h3>
+        <p>Hours every week spent on work AI could already be doing. Manual handoffs, copy-paste, and approvals that nobody remembers deciding on.</p>
+      </div>
+      <div class="leak">
+        <div class="idx">02</div>
+        <h3>Money</h3>
+        <p>Spend that compounds quietly — duplicated tools, rework, and headcount thrown at problems a better system would absorb.</p>
+      </div>
+      <div class="leak">
+        <div class="idx">03</div>
+        <h3>Momentum</h3>
+        <p>The slow drag of a team running 2009 processes. Good people, stuck moving at the speed of the slowest step.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 03 — APPROACH ───────────── -->
+<section class="band band-navy" id="approach">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="n">02</span><span class="ln"></span><span class="t">How it works</span></div>
+    <h2 class="sec-title">From blind spots to a plan in two minutes.</h2>
+    <p class="sec-desc">No login. No sales call. Just a clear read on where you stand and what to do next.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="si">01</div>
+        <div>
+          <h3>Answer eight questions</h3>
+          <p>Built by operators, not consultants. Each one targets a place businesses quietly lose ground. Two minutes, start to finish.</p>
+        </div>
+        <div class="tick">≈ 2 min</div>
+      </div>
+      <div class="step">
+        <div class="si">02</div>
+        <div>
+          <h3>See your Operations Score</h3>
+          <p>A clear read on how your operation stacks up against an AI-era standard — scored across the systems that actually move the needle.</p>
+        </div>
+        <div class="tick">Instant</div>
+      </div>
+      <div class="step">
+        <div class="si">03</div>
+        <div>
+          <h3>Know where to start</h3>
+          <p>A prioritized map of what to fix first, what it's worth, and what to leave alone for now. You leave with a direction, not a framework.</p>
+        </div>
+        <div class="tick">Actionable</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 04 — THE SCORE ───────────── -->
+<section class="band band-deep" id="score">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="n">03</span><span class="ln"></span><span class="t">The Operations Score</span></div>
+    <div class="score-grid">
+      <div>
+        <h2 class="sec-title">One number that tells you where you really stand.</h2>
+        <p class="sec-desc">Your Operations Score benchmarks your business against what a sharp, AI-era operation looks like — then breaks it down by where the gaps are.</p>
+        <div class="score-list">
+          <div class="li"><span class="k">A.</span><span class="v">A single score, benchmarked — not a vague "you could do better."</span></div>
+          <div class="li"><span class="k">B.</span><span class="v">Category-level detail, so you can see exactly which systems are dragging.</span></div>
+          <div class="li"><span class="k">C.</span><span class="v">A starting point you can act on this week, ranked by what it's worth.</span></div>
+        </div>
+        <div style="margin-top:38px;">
+          <a href="score.html" class="btn btn-gold cta-label">Get your Operations Score <span class="arr">→</span></a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-strip"></div>
+        <div class="card-eyebrow">Your Operations Score</div>
+        <div class="card-score"><span class="big">64</span><span class="den">/ 100</span></div>
+        <div class="card-tier">Capable — but leaking in two systems.</div>
+        <div class="bar-row">
+          <div class="bl"><span>Automation</span><span>48</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bl"><span>Data &amp; Visibility</span><span>71</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:71%;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bl"><span>Team Workflows</span><span>58</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:58%;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bl"><span>Decision Speed</span><span>79</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:79%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 05 — WHO IT'S FOR ───────────── -->
+<section class="band band-navy" id="who">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="n">04</span><span class="ln"></span><span class="t">Who it's for</span></div>
+    <h2 class="sec-title">Built for operators, not theorists.</h2>
+    <p class="sec-desc">We're founders who run our own businesses. We give the advice we'd want — direct, specific, and yours to act on.</p>
+    <div class="who-grid">
+      <div class="who-col for">
+        <div class="h">For — sounds like you</div>
+        <div class="who-item">Founders who run the business, not just advise on it.</div>
+        <div class="who-item">Operators who want a clear answer, not another framework.</div>
+        <div class="who-item">Teams that know they're behind on AI and want to start somewhere real.</div>
+        <div class="who-item">People who'd rather fix the leak than admire the diagram.</div>
+      </div>
+      <div class="who-col not">
+        <div class="h">Not for</div>
+        <div class="who-item">Anyone shopping for a 60-slide strategy deck.</div>
+        <div class="who-item">Teams looking to "explore synergies" indefinitely.</div>
+        <div class="who-item">Buyers who want hype, not a plan.</div>
+        <div class="who-item">Operations already running at AI-era speed. (Rare — but real.)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── 06 — ABOUT ───────────── -->
+<section class="band band-deep" id="about">
+  <div class="wrap">
+    <div class="sec-eyebrow"><span class="n">05</span><span class="ln"></span><span class="t">About</span></div>
+    <div class="score-grid">
+      <div>
+        <h2 class="sec-title">The name is the promise.</h2>
+        <p class="sec-desc"><em style="color:var(--gold2);font-style:italic;">Helm</em> — direction, captaincy, a steady hand at the controls. <em style="color:var(--gold2);font-style:italic;">Able</em> — capacity, execution, the ability to actually do the thing.</p>
+        <p class="sec-desc">Together: knowing where to steer, and being able to get there. The ship's wheel is our anchor — a reminder that operations is navigation, and that the point isn't a prettier map. It's knowing where to turn next.</p>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <svg width="280" height="280" viewBox="-4 -4 56 56" fill="none" aria-hidden="true" style="opacity:0.9;">
+          <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="1.6"/>
+          <circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="1.6"/>
+          <circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+          <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="1.6"/><circle cx="48.24" cy="24" r="1.7" fill="#c9a94b"/>
+          <line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="1.6"/><circle cx="41.14" cy="41.14" r="1.7" fill="#c9a94b"/>
+          <line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="1.6"/><circle cx="24" cy="48.24" r="1.7" fill="#c9a94b"/>
+          <line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="1.6"/><circle cx="6.86" cy="41.14" r="1.7" fill="#c9a94b"/>
+          <line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="1.6"/><circle cx="-0.24" cy="24" r="1.7" fill="#c9a94b"/>
+          <line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="1.6"/><circle cx="6.86" cy="6.86" r="1.7" fill="#c9a94b"/>
+          <line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="1.6"/><circle cx="24" cy="-0.24" r="1.7" fill="#c9a94b"/>
+          <line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="1.6"/><circle cx="41.14" cy="6.86" r="1.7" fill="#c9a94b"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── CTA ───────────── -->
+<section class="cta">
+  <div class="texture"></div>
+  <div class="cta-wheel">
+    <svg width="540" height="540" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+      <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="1.2"/>
+      <circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="1.2"/>
+      <circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+      <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="1.2"/><line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="1.2"/><line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="1.2"/><line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="1.2"/><line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="1.2"/><line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="1.2"/><line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="1.2"/><line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="1.2"/>
+    </svg>
+  </div>
+  <div class="wrap cta-inner">
+    <h2 id="cta-headline">Know where to navigate next.</h2>
+    <p>Eight questions · Two minutes · Free</p>
+    <a href="score.html" class="btn btn-gold cta-label" style="padding:17px 34px; font-size:16px;">Get your Operations Score <span class="arr">→</span></a>
+  </div>
+</section>
+
+<!-- ───────────── FOOTER ───────────── -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div style="max-width:300px;">
+        <a href="#top" class="lockup" style="margin-bottom:18px;">
+          <svg width="34" height="34" viewBox="-4 -4 56 56" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="21.6" stroke="#c9a94b" stroke-width="2.5"/>
+            <circle cx="24" cy="24" r="6.24" stroke="#c9a94b" stroke-width="2.5"/>
+            <circle cx="24" cy="24" r="2.81" fill="#c9a94b"/>
+            <line x1="30.24" y1="24" x2="45.6" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="48.24" cy="24" r="1.92" fill="#c9a94b"/>
+            <line x1="28.41" y1="28.41" x2="39.27" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="41.14" r="1.92" fill="#c9a94b"/>
+            <line x1="24" y1="30.24" x2="24" y2="45.6" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="48.24" r="1.92" fill="#c9a94b"/>
+            <line x1="19.59" y1="28.41" x2="8.73" y2="39.27" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="41.14" r="1.92" fill="#c9a94b"/>
+            <line x1="17.76" y1="24" x2="2.4" y2="24" stroke="#c9a94b" stroke-width="2.5"/><circle cx="-0.24" cy="24" r="1.92" fill="#c9a94b"/>
+            <line x1="19.59" y1="19.59" x2="8.73" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="6.86" cy="6.86" r="1.92" fill="#c9a94b"/>
+            <line x1="24" y1="17.76" x2="24" y2="2.4" stroke="#c9a94b" stroke-width="2.5"/><circle cx="24" cy="-0.24" r="1.92" fill="#c9a94b"/>
+            <line x1="28.41" y1="19.59" x2="39.27" y2="8.73" stroke="#c9a94b" stroke-width="2.5"/><circle cx="41.14" cy="6.86" r="1.92" fill="#c9a94b"/>
+          </svg>
+          <div><div class="word">Helm &amp; Able</div><div class="tag">Operations Intelligence × AI</div></div>
+        </a>
+        <p style="font-size:14px; line-height:1.65; color:var(--bodydim2); margin-top:14px;">Operations intelligence for the AI era. Know where to navigate next.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <div class="fh">Product</div>
+          <a href="score.html">Operations Score</a>
+          <a href="#approach">How it works</a>
+          <a href="#who">Who it's for</a>
+        </div>
+        <div class="footer-col">
+          <div class="fh">Company</div>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <div class="fh">Start</div>
+          <a href="score.html">Get your score</a>
+          <a href="contact.html">Book a call</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="c">© 2026 Helm &amp; Able. All rights reserved.</div>
+      <div class="c">helmandable.com</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ───────────── TWEAKS ───────────── -->
+<div id="tweaks-root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const HEADLINES = {
+  "2009 workflows": 'Stop running 2009 workflows in an <em>AI world.</em>',
+  "Where you're leaking": "Know exactly where your business is <em>leaking.</em>",
+  "Navigate next": "Know where to <em>navigate next.</em>",
+};
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "headline": "2009 workflows",
+  "ctaLabel": "Get your Operations Score",
+  "accent": "#c9a94b",
+  "texture": true
+}/*EDITMODE-END*/;
+
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const h = document.getElementById('hero-headline');
+    if (h) h.innerHTML = HEADLINES[t.headline] || HEADLINES["2009 workflows"];
+  }, [t.headline]);
+
+  React.useEffect(() => {
+    document.querySelectorAll('.cta-label').forEach(el => {
+      const arrow = el.querySelector('.arr');
+      el.childNodes[0].nodeValue = t.ctaLabel + ' ';
+      if (!arrow) {
+        const s = document.createElement('span'); s.className = 'arr'; s.textContent = '→';
+        el.appendChild(s);
+      }
+    });
+  }, [t.ctaLabel]);
+
+  React.useEffect(() => {
+    document.documentElement.style.setProperty('--gold', t.accent);
+  }, [t.accent]);
+
+  React.useEffect(() => {
+    document.body.classList.toggle('no-texture', !t.texture);
+  }, [t.texture]);
+
+  return (
+    <TweaksPanel>
+      <TweakSection label="Messaging" />
+      <TweakSelect label="Headline" value={t.headline}
+        options={Object.keys(HEADLINES)}
+        onChange={(v) => setTweak('headline', v)} />
+      <TweakText label="CTA label" value={t.ctaLabel}
+        onChange={(v) => setTweak('ctaLabel', v)} />
+      <TweakSection label="Brand" />
+      <TweakColor label="Gold accent" value={t.accent}
+        options={['#c9a94b', '#e8cc80', '#b8923a']}
+        onChange={(v) => setTweak('accent', v)} />
+      <TweakToggle label="Diagonal texture" value={t.texture}
+        onChange={(v) => setTweak('texture', v)} />
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp />);
+</script>
+
+<!-- ───────────── SCROLL-DRIVEN WHEEL SPIN ───────────── -->
+<script>
+(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var wheels = document.querySelectorAll('.hero-wheel svg, .cta-wheel svg');
+  wheels.forEach(function(w){ w.style.willChange = 'transform'; });
+  var ticking = false;
+  function update(){
+    var deg = window.scrollY * 0.08; // positive = clockwise
+    for (var i = 0; i < wheels.length; i++) wheels[i].style.transform = 'rotate(' + deg + 'deg)';
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
