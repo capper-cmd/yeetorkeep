@@ -1,0 +1,21 @@
+vercel.json
+  s_365fcc6875b1d8::t_b7523f193c0a40 9
+public/dromos/index.html
+  s_365fcc6875b1d8::t_9a754b9bb04e38 1-1083
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "e1a325aeff1d2af3e98f05b6a0ea744c67d3db5a",
+  "prompts": {},
+  "sessions": {
+    "s_365fcc6875b1d8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ef7df93b-9fab-4790-8404-54709485ab46",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Chad Capp <capper@mlbcity.com>"
+    }
+  }
+}
