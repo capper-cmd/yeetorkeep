@@ -469,6 +469,27 @@ section { position: relative; }
   text-transform: uppercase;
   color: var(--ink-soft);
 }
+.about-portrait {
+  margin-top: 12px;
+  max-width: 280px;
+}
+.about-portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 3.6;
+  object-fit: cover;
+  object-position: center 30%;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 10px;
+  box-shadow: 0 24px 50px -24px rgba(23, 21, 17, 0.22);
+}
+.about-portrait-cap {
+  margin: 12px 0 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--ink-faint);
+}
 .about-copy h2 {
   font-size: clamp(30px, 3.6vw, 42px);
   margin-bottom: 26px;

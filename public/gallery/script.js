@@ -61,7 +61,7 @@
         '',
         message
       ];
-      var mailto = 'mailto:hello@formandfigure.art'
+      var mailto = 'mailto:hello@ericsamueltimm.com'
         + '?subject=' + encodeURIComponent(mailSubject)
         + '&body=' + encodeURIComponent(bodyLines.join('\n'));
 
