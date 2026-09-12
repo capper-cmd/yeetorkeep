@@ -9,12 +9,35 @@ plain static HTML/CSS/JS to match this repo's existing pattern (see
 install.
 
 ## Files
-- `index.html` — the whole one-page site (hero, work grid, lifestyle,
-  process, commission form, footer)
+- `index.html` — the whole one-page site (nav, hero, image marquee,
+  bottom teaser, work grid, lifestyle, process, commission form, footer)
 - `styles.css` — all styling (CSS variables at the top for quick
   re-theming)
-- `script.js` — nav scroll state, mobile menu, scroll-reveal animation,
-  commission form → mailto handoff
+- `script.js` — nav scroll state, drawer menu open/close + stagger,
+  image-marquee drag physics, scroll-reveal animation, commission form
+  → mailto handoff
+
+## The nav / hero / marquee / bottom-CTA pattern
+The top of the page (fixed nav with a two-line hamburger, a full-screen /
+right-drawer menu, a centered no-image hero, a draggable auto-scrolling
+image marquee with curved white top/bottom masks, then a short two-link
+CTA strip) follows a structural spec the client supplied from an
+unrelated "Bespoke Architecture Studio" React/Tailwind project. Reused
+here: the layout shape and the interaction physics (rAF auto-scroll +
+pointer-drag momentum + seamless duplicated-strip loop, the drawer's
+staggered link entrance, the hamburger→X morph). Not reused: that
+project's stack (this stays plain HTML/CSS/JS, no React/Vite/Tailwind
+build step, to match the rest of this repo), its fonts (kept
+Fraunces/Inter, not Geist), its literal black/white/no-brass palette
+(kept Eric's cream/ink/brass palette), its copy, its logo glyph (swapped
+for a small three-stroke brush mark), and its architecture photos
+(swapped for nine of Eric's own paintings, duplicated once for the
+marquee's seamless loop).
+
+The Selected Work shop grid — the part that actually carries pricing,
+availability, and "Inquire" links — was kept as its own section below
+the marquee rather than folded into the reference layout, since that
+spec was a pure marketing teaser with no shop functionality of its own.
 - `images/` — supplied reference photos, cropped tight to each canvas:
   `griffey-portrait.jpg` (in-room, barn-door shot, used in the hero),
   `griffey-studio.jpg` / `griffey-rookie.jpg`, `jordan.jpg`, `kobe.jpg`,

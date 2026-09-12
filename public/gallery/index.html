@@ -6,8 +6,11 @@
 <title>Eric Samuel Timm — Original Paintings of Iconic Athletes</title>
 <meta name="description" content="Hand-painted, one-of-one portraits of legendary athletes by Eric Samuel Timm. Originals and signed editions, built for the collector's wall.">
 
-<!-- Built from a MotionSites.ai "Lumen" layout — minimal hero, generous white space,
-     restrained scroll motion — adapted for a fine-art sports portrait shop. -->
+<!-- Built from a MotionSites.ai "Lumen" layout, then updated with a
+     navbar/hero/drag-marquee/bottom-CTA interaction pattern the client
+     supplied from a separate "Bespoke Architecture Studio" spec —
+     reskinned here with Eric's own palette, type, and paintings rather
+     than that spec's literal copy, logo, fonts, or images. -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,55 +21,99 @@
 
 <!-- ============ NAV ============ -->
 <header class="nav" id="nav">
-  <div class="wrap">
-    <a href="#top" class="wordmark">Eric Samuel <span>Timm</span></a>
-    <nav>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#work">The Work</a></li>
-        <li><a href="#about">Process</a></li>
-        <li><a href="#lifestyle">Collector's Wall</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <div style="display:flex; align-items:center; gap:16px;">
-      <a href="#contact" class="btn btn-sm">Inquire</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span>
-      </button>
-    </div>
+  <div class="wrap nav-bar">
+    <a href="#top" class="logo-mark" aria-label="Eric Samuel Timm — home">
+      <svg viewBox="0 0 28 28" width="28" height="28" fill="none" aria-hidden="true">
+        <path d="M4 23 L10 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M12 24 L18 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M20 24 L25 9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+    </a>
+
+    <button class="hamburger" id="menuOpen" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+
+    <a href="#contact" class="btn btn-sm nav-cta">Inquire</a>
   </div>
 </header>
+
+<!-- ============ MENU OVERLAY + DRAWER ============ -->
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="menu-drawer" id="menuDrawer" aria-hidden="true">
+  <div class="menu-drawer-head">
+    <svg viewBox="0 0 28 28" width="28" height="28" fill="none" aria-hidden="true">
+      <path d="M4 23 L10 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M12 24 L18 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M20 24 L25 9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    <button class="menu-close" id="menuClose" aria-label="Close menu">
+      <span></span><span></span>
+    </button>
+  </div>
+  <nav class="menu-links" id="menuLinks">
+    <a href="#work">The Work</a>
+    <a href="#about">Process</a>
+    <a href="#lifestyle">Collector's Wall</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a href="#contact" class="btn menu-cta">Inquire</a>
+</div>
 
 <main id="top">
 
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <div class="wrap">
-      <div class="hero-copy reveal is-visible">
-        <p class="eyebrow">Hand-Painted &middot; One of One</p>
-        <h1>Icons of the game,<br>painted by <em>hand</em>.</h1>
-        <p class="hero-lede">Every canvas starts with a single frame — the swing, the stance, the knockout — and becomes an original painting built to outlast the highlight reel.</p>
-        <div class="hero-actions">
-          <a href="#work" class="btn">View the Collection</a>
-          <a href="#contact" class="btn btn-ghost">Commission a Piece</a>
-        </div>
-        <div class="hero-note"><span class="dot"></span> Originals ship framed &amp; ready to hang</div>
-      </div>
-      <div class="hero-frame">
-        <img src="images/griffey-portrait.jpg" alt="Original hand-painted portrait of Ken Griffey Jr., &quot;The Kid,&quot; signed artist proof">
-        <div class="hero-frame-cap">Ken Griffey Jr. &middot; Artist Proof</div>
-      </div>
+    <div class="wrap hero-center reveal is-visible">
+      <p class="eyebrow" style="justify-content:center;">Hand-Painted &middot; One of One</p>
+      <h1>Icons of the game,<br>painted by <em>hand</em>.</h1>
+      <p class="hero-lede">Every canvas starts with a single frame — the swing, the stance, the knockout — and becomes an original painting built to outlast the highlight reel.</p>
     </div>
   </section>
 
-  <!-- ============ TICKER ============ -->
-  <div class="ticker">
-    <div class="ticker-track">
-      <span>Griffey Jr.</span><span>Jordan</span><span>Kobe</span><span>Gretzky</span><span>Mantle</span><span>Robinson</span><span>Ohtani</span>
-      <span>Griffey Jr.</span><span>Jordan</span><span>Kobe</span><span>Gretzky</span><span>Mantle</span><span>Robinson</span><span>Ohtani</span>
-      <span>Griffey Jr.</span><span>Jordan</span><span>Kobe</span><span>Gretzky</span><span>Mantle</span><span>Robinson</span><span>Ohtani</span>
+  <!-- ============ IMAGE MARQUEE ============ -->
+  <section class="marquee-section reveal is-visible">
+    <div class="marquee-mask marquee-mask-top" aria-hidden="true">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path class="mask-fill" d="M0 0H1440V50C1440 50 1200 100 720 100C240 100 0 50 0 50V0Z"/></svg>
     </div>
-  </div>
+
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-slide"><img src="images/griffey-studio.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/jordan.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/kobe.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/gretzky.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/mantle-themick.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/jackie-robinson.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/ohtani.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/mantle-1952.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/griffey-rookie.jpg" alt="" loading="lazy" draggable="false"></div>
+      <!-- duplicated for a seamless loop -->
+      <div class="marquee-slide"><img src="images/griffey-studio.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/jordan.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/kobe.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/gretzky.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/mantle-themick.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/jackie-robinson.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/ohtani.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/mantle-1952.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="images/griffey-rookie.jpg" alt="" loading="lazy" draggable="false"></div>
+    </div>
+
+    <div class="marquee-mask marquee-mask-bottom" aria-hidden="true">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path class="mask-fill" d="M0 100H1440V50C1440 50 1200 0 720 0C240 0 0 50 0 50V100Z"/></svg>
+    </div>
+  </section>
+
+  <!-- ============ BOTTOM TEASER ============ -->
+  <section class="bottom-teaser reveal is-visible">
+    <div class="wrap">
+      <p class="bottom-teaser-copy">We paint the athletes who defined the game — hand-built, one canvas at a time. No templates, no print runs pretending to be originals.</p>
+      <div class="bottom-teaser-links">
+        <a href="#contact" class="link-underline">Start a Commission</a>
+        <a href="#work" class="link-underline">See the Collection</a>
+      </div>
+    </div>
+  </section>
 
   <!-- ============ WORK / SHOP ============ -->
   <section class="work" id="work">
