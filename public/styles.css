@@ -426,9 +426,22 @@ section { position: relative; }
 }
 .status-pill.is-available { color: var(--brass-deep); }
 .status-pill.is-soon { color: var(--ink-faint); }
+.status-pill.is-sold { color: var(--ink-faint); }
+.piece.is-sold .piece-frame img { filter: grayscale(0.4) opacity(0.85); }
 
 .piece-title { font-family: var(--serif); font-size: 22px; margin-bottom: 6px; }
 .piece-meta { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 14px; }
+.piece-prints-note {
+  display: block;
+  margin: -8px 0 14px;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--brass-deep);
+  border-bottom: 1px solid var(--brass);
+  padding-bottom: 2px;
+  width: fit-content;
+}
+.piece-prints-note:hover { color: var(--ink); border-color: var(--ink); }
 .piece-foot {
   display: flex;
   align-items: center;
@@ -484,6 +497,66 @@ section { position: relative; }
   color: var(--ink-soft);
   font-size: 14.5px;
   margin: 0 0 20px;
+}
+
+/* ==========================================================================
+   LIMITED EDITION PRINTS
+   ========================================================================== */
+.editions { padding: 20px 0 140px; }
+
+.editions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.edition-card {
+  display: flex;
+  gap: 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 20px;
+}
+.edition-thumb {
+  flex: none;
+  width: 92px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.edition-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.edition-info { flex: 1; min-width: 0; }
+.edition-title { font-family: var(--serif); font-size: 18px; line-height: 1.25; margin-bottom: 4px; }
+.edition-sub {
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 10px;
+}
+.edition-original {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.edition-original strong { color: var(--brass-deep); font-weight: 600; }
+.edition-original.is-sold strong { color: var(--ink-faint); }
+
+.edition-tiers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.edition-tiers li { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 12.5px; }
+.edition-tiers li span:first-child { color: var(--ink-soft); flex: 1; }
+.edition-tiers li span:nth-child(2) { color: var(--ink-faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.edition-tiers li span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.editions-note {
+  max-width: 620px;
+  margin: 56px auto 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-soft);
 }
 
 /* ==========================================================================
@@ -596,6 +669,17 @@ section { position: relative; }
   font-style: italic;
   font-size: 22px;
   color: var(--ink);
+}
+.process-quote {
+  margin: 30px 0 0;
+  padding-left: 22px;
+  border-left: 2px solid var(--brass);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 560px;
 }
 
 .about .wrap.process-block {
@@ -715,6 +799,7 @@ form.commission { display: flex; flex-direction: column; gap: 20px; }
 @media (max-width: 980px) {
   .hero { padding-top: 140px; }
   .work-grid { grid-template-columns: repeat(2, 1fr); }
+  .editions-grid { grid-template-columns: repeat(2, 1fr); }
   .lifestyle { grid-template-columns: 1fr; }
   .lifestyle-media { min-height: 380px; }
   .about .wrap { grid-template-columns: 1fr; }
@@ -725,6 +810,7 @@ form.commission { display: flex; flex-direction: column; gap: 20px; }
 @media (max-width: 720px) {
   .nav-cta { display: none; }
   .work-grid { grid-template-columns: 1fr; }
+  .editions-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .menu-drawer { max-width: none; transform: translateY(100%); }
   .menu-drawer.is-open { transform: translateY(0); }
