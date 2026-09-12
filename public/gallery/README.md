@@ -14,10 +14,11 @@ HTML/CSS/JS to match this repo's existing pattern (see `/public/ha`,
   re-theming)
 - `script.js` — nav scroll state, mobile menu, scroll-reveal animation,
   commission form → mailto handoff
-- `images/` — the two supplied reference photos: a tight product crop of
-  the Ken Griffey Jr. piece (`griffey-artwork.jpg`), the same piece
-  in-room (`griffey-portrait.jpg`, used in the hero), and a collector's
-  wall shot (`collector-wall.jpg`, used in the "Collector's Wall" section)
+- `images/` — supplied reference photos, cropped tight to each canvas:
+  `griffey-portrait.jpg` (in-room, barn-door shot, used in the hero),
+  `griffey-studio.jpg`, `jordan.jpg`, `gretzky.jpg`, `mantle-themick.jpg`,
+  `mantle-1952.jpg` (studio easel shots, used in the "Selected Work"
+  grid), and `collector-wall.jpg` (used in the "Collector's Wall" section)
 
 ## Placeholders to swap before going live
 This was built without the artist's real name, brand, bio, email, or
@@ -34,10 +35,11 @@ replace them:
   placeholders, not confirmed pricing
 
 ## Adding more artwork
-The "Selected Work" grid (`#work` in `index.html`) currently shows one
-real piece plus two intentionally-empty "coming soon" tiles. To add a
-new piece, copy the `.piece` block, drop a new photo in `images/`, and
-fill in title / medium / status / price.
+The "Selected Work" grid (`#work` in `index.html`) currently shows five
+real pieces (Griffey Jr., Jordan, Gretzky, and two Mantle paintings) plus
+one intentionally-empty "reserved for the next commission" tile. To add a
+new piece, copy a `.piece` block, drop a new photo in `images/`, and fill
+in title / medium / status / price.
 
 ## Selling art
 The commission form currently opens the visitor's email client with the
