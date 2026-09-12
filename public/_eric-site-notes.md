@@ -1,12 +1,17 @@
 # Eric Samuel Timm — Painter Portfolio & Shop
 
-Live at `/gallery` on this deployment. A minimal, high-end, single-page
-site for Eric Samuel Timm, a painter who hand-paints portraits of pro
-athletes. Layout is based on MotionSites.ai's **"Lumen"** template — a
-cinematic, minimal, whitespace-forward portfolio treatment — rebuilt as
-plain static HTML/CSS/JS to match this repo's existing pattern (see
-`/public/ha`, `/public/dromos`), so there's no build step or framework to
-install.
+Live at `/` (the homepage) on this deployment — it replaced the old
+YeetOrKeep affiliate homepage, which is now archived at
+`public/_legacy/yeetorkeep-affiliate/` (see the root `README.md`). A
+minimal, high-end, single-page site for Eric Samuel Timm, a painter who
+hand-paints portraits of pro athletes. Layout is based on MotionSites.ai's
+**"Lumen"** template — a cinematic, minimal, whitespace-forward portfolio
+treatment — rebuilt as plain static HTML/CSS/JS to match this repo's
+existing pattern (see `/public/ha`, `/public/dromos`), so there's no
+build step or framework to install.
+
+`/gallery` (this site's original path, before it became the homepage)
+redirects to `/` — see `vercel.json`.
 
 ## Files
 - `index.html` — the whole one-page site (nav, hero, image marquee,
@@ -16,6 +21,13 @@ install.
 - `script.js` — nav scroll state, drawer menu open/close + stagger,
   image-marquee drag physics, scroll-reveal animation, commission form
   → mailto handoff
+- `images/` — supplied reference photos, cropped tight to each canvas:
+  `griffey-portrait.jpg` (in-room, barn-door shot, used in the hero),
+  `griffey-studio.jpg` / `griffey-rookie.jpg`, `jordan.jpg`, `kobe.jpg`,
+  `gretzky.jpg`, `mantle-themick.jpg`, `mantle-1952.jpg`,
+  `jackie-robinson.jpg`, `ohtani.jpg` (studio easel shots, used in the
+  "Selected Work" grid), `collector-wall.jpg` (used in the "Collector's
+  Wall" section), and `artist-portrait.jpg` (used in "The Process")
 
 ## The nav / hero / marquee / bottom-CTA pattern
 The top of the page (fixed nav with a two-line hamburger, a full-screen /
@@ -38,13 +50,6 @@ The Selected Work shop grid — the part that actually carries pricing,
 availability, and "Inquire" links — was kept as its own section below
 the marquee rather than folded into the reference layout, since that
 spec was a pure marketing teaser with no shop functionality of its own.
-- `images/` — supplied reference photos, cropped tight to each canvas:
-  `griffey-portrait.jpg` (in-room, barn-door shot, used in the hero),
-  `griffey-studio.jpg` / `griffey-rookie.jpg`, `jordan.jpg`, `kobe.jpg`,
-  `gretzky.jpg`, `mantle-themick.jpg`, `mantle-1952.jpg`,
-  `jackie-robinson.jpg`, `ohtani.jpg` (studio easel shots, used in the
-  "Selected Work" grid), `collector-wall.jpg` (used in the "Collector's
-  Wall" section), and `artist-portrait.jpg` (used in "The Process")
 
 ## Still worth confirming with Eric
 A couple of details here are reasonable placeholders, not confirmed facts
