@@ -152,6 +152,19 @@ function serveStaticFile(pathname, res) {
     
     fs.readFile(filePath, (err, data) => {
         if (err) {
+            if (err.code === 'EISDIR') {
+                // Directory request (e.g. /gallery/) - serve its index.html
+                fs.readFile(path.join(filePath, 'index.html'), (err2, data2) => {
+                    if (err2) {
+                        res.writeHead(404);
+                        res.end('Not Found');
+                        return;
+                    }
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    res.end(data2);
+                });
+                return;
+            }
             if (err.code === 'ENOENT') {
                 // Try index.html for SPA routing
                 fs.readFile(path.join(PUBLIC_DIR, 'index.html'), (err2, data2) => {
@@ -169,7 +182,7 @@ function serveStaticFile(pathname, res) {
             res.end('Server Error');
             return;
         }
-        
+
         res.writeHead(200, { 'Content-Type': contentType });
         res.end(data);
     });
