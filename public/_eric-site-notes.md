@@ -21,13 +21,27 @@ redirects to `/` — see `vercel.json`.
 - `script.js` — nav scroll state, drawer menu open/close + stagger,
   image-marquee drag physics, scroll-reveal animation, commission form
   → mailto handoff
-- `images/` — supplied reference photos, cropped tight to each canvas:
-  `griffey-portrait.jpg` (in-room, barn-door shot, used in the hero),
-  `griffey-studio.jpg` / `griffey-rookie.jpg`, `jordan.jpg`, `kobe.jpg`,
-  `gretzky.jpg`, `mantle-themick.jpg`, `mantle-1952.jpg`,
-  `jackie-robinson.jpg`, `ohtani.jpg` (studio easel shots, used in the
-  "Selected Work" grid), `collector-wall.jpg` (used in the "Collector's
-  Wall" section), and `artist-portrait.jpg` (used in "The Process")
+- `images/` — product shots used in the marquee and "Selected Work" grid:
+  `griffey-studio.jpg`, `jordan.jpg`, `kobe.jpg`, `gretzky.jpg`,
+  `mantle-1952.jpg`, `ohtani.jpg` are professional flatbed art scans from
+  Eric's Dropbox (`card art web/Art Scans/`), cropped tight to the canvas
+  — these replaced earlier handheld-photo crops of the same six pieces.
+  `mantle-themick.jpg`, `jackie-robinson.jpg`, `griffey-rookie.jpg` are
+  still handheld studio-easel photos (no clean scan was available for
+  these three) — swap them in if Eric sends scans later, same crop
+  treatment. `installed-wall.jpg` (used in "Collector's Wall") is a
+  photo from Eric's Dropbox (`card art web/House location 1/`) of four
+  framed originals — Mantle, Gretzky, Ohtani, Jordan — hung together in
+  a client's home. `collector-wall.jpg` (the original memorabilia-shelf
+  photo, no longer referenced in `index.html`) and `griffey-portrait.jpg`
+  (the original barn-door hero shot, also no longer referenced) are kept
+  in the folder unused, in case either is wanted again.
+  `artist-portrait.jpg` (used in "The Process") is unchanged.
+
+  Eric's Dropbox also has two more "House location" folders (single
+  paintings rotated through a shelf display and a barn-door wall) and an
+  "Original Phots" folder of additional studio shots — not all pulled in
+  yet; worth another pass if more variety is wanted later.
 
 ## The nav / hero / marquee / bottom-CTA pattern
 The top of the page (fixed nav with a two-line hamburger, a full-screen /
