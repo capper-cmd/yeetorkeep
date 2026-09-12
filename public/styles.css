@@ -598,6 +598,40 @@ section { position: relative; }
   color: var(--ink);
 }
 
+.about .wrap.process-block {
+  display: block;
+  margin-top: 70px;
+}
+.process-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.detail-shot {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.detail-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(.16,.84,.44,1);
+}
+.detail-shot:hover img { transform: scale(1.06); }
+.process-details-cap {
+  margin: 20px 0 0;
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-faint);
+}
+
 /* ==========================================================================
    CONTACT / COMMISSION
    ========================================================================== */

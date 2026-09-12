@@ -87,11 +87,30 @@ A couple of details here are reasonable placeholders, not confirmed facts
   relevant to this specific painting collection.
 
 ## Adding more artwork
-The "Selected Work" grid (`#work` in `index.html`) now shows nine real
+The "Selected Work" grid (`#work` in `index.html`) now shows ten real
 pieces (two Griffey Jr. paintings, Jordan, Kobe, Gretzky, two Mantle
-paintings, Jackie Robinson, and Ohtani). To add a new one, copy a
-`.piece` block, drop a new photo in `images/`, and fill in
-title / medium / status / price.
+paintings, Jackie Robinson, Ohtani, and Tom Brady). To add a new one,
+copy a `.piece` block, drop a new photo in `images/`, and fill in
+title / medium / status / price — and add a matching `<div
+class="marquee-slide">` to both halves of the marquee track (it's
+duplicated once for the seamless loop, so a new piece goes in both
+copies).
+
+New pieces don't need the same crop treatment: Brady's painting
+(`brady.jpg`) is mounted on a shaped wood panel rather than matted like
+the trading-card-style pieces, so it was cropped to the panel's own
+edge instead of to a canvas/mat boundary — look at the source photo
+first to see which applies before cropping a new one.
+
+## Brushwork detail strip (Process section)
+`detail-brushwork-1/2/3.jpg` are macro close-ups of paint texture and
+canvas grain (helmet, jersey fabric, and a face, from three different
+paintings) — shown as a small triptych under the process copy to back
+up the "hand-painted, no filters" claim with something a print couldn't
+show. They're deliberately generic in the alt text since identifying
+the exact painting isn't the point of a texture shot. Swap in different
+detail crops any time by replacing those three files (square-ish crops
+work best, `.detail-shot` crops to 1:1 with `object-fit: cover`).
 
 ## Selling art
 The commission form currently opens the visitor's email client with the
