@@ -230,3 +230,16 @@ branded domains too are in the root `README.md`.
 When Eric sends new artwork, the original goes in `assets/originals/`
 and the script stamps it — don't drop an unwatermarked file straight
 into `public/images/`.
+
+## Low-resolution serving
+yeetorkeep.io serves `images/lowres/` — the same watermarked images
+capped at 900px on the long edge (about 2x3 inches at 300dpi, so not
+reproducible). The branded domains still serve the full-size set, so
+the two can be compared. `installed-wall.jpg` is exempted up to 1800px
+because the Collector's Wall split shows it half-viewport wide and the
+cap visibly upscaled it.
+
+Downscaling is what actually protects the work; the watermark only
+deters. While both sets are live the full-size files are still
+reachable at `/images/<name>.jpg`, so this is a preview of the look
+rather than protection — that needs `public/images/` capped too.

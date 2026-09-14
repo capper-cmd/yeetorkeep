@@ -22,7 +22,26 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "assets" / "originals"
-DEST = ROOT / "public" / "images"
+
+# Each variant is (destination, max long edge in px). None keeps the
+# original dimensions. Downscaling is the real protection — the watermark
+# only deters, but a 900px file simply isn't enough pixels to reproduce a
+# 16x20 painting at any size worth having.
+VARIANTS = [
+    (ROOT / "public" / "images", None),
+    (ROOT / "public" / "images" / "lowres", 900),
+]
+DEST = VARIANTS[0][0]
+
+# A few images are displayed far larger than the rest, so the shared cap
+# would upscale them — soft, and the watermark grows with the upscale.
+# These are room photos rather than artwork, so the protection lost by
+# giving them more pixels costs little. Keyed by filename; the value
+# replaces the variant's cap only when it is larger.
+DISPLAY_OVERRIDES = {
+    # spans half the viewport in the Collector's Wall split
+    "installed-wall.jpg": 1800,
+}
 
 TEXT = "© ERIC SAMUEL TIMM"
 ANGLE = 30           # degrees, bottom-left to top-right
@@ -72,8 +91,12 @@ def build_tile(size, font):
     return layer.crop((left, top, left + w, top + h))
 
 
-def stamp(path):
+def stamp(path, max_edge=None):
     im = ImageOps.exif_transpose(Image.open(path)).convert("RGBA")
+    if max_edge and max(im.size) > max_edge:
+        im.thumbnail((max_edge, max_edge), Image.LANCZOS)
+    # FONT_RATIO is a fraction of the long edge, so the mark stays the same
+    # relative size however far the image has been scaled down.
     font = load_font(max(11, int(max(im.size) * FONT_RATIO)))
     im = Image.alpha_composite(im, build_tile(im.size, font))
     return im.convert("RGB")
@@ -96,26 +119,41 @@ def main():
     missing = served - {p.name for p in originals}
 
     if args.check:
-        for p in originals:
-            out = DEST / p.name
-            print(f"  {'ok     ' if out.exists() else 'MISSING'} {p.name}")
+        gaps = 0
+        for dest, max_edge in VARIANTS:
+            label = dest.relative_to(ROOT)
+            absent = [p.name for p in originals if not (dest / p.name).exists()]
+            cap = f"<= {max_edge}px" if max_edge else "full size"
+            print(f"  {len(originals) - len(absent):>2}/{len(originals)} {label} ({cap})")
+            for n in absent:
+                print(f"       MISSING {n}")
+                gaps += 1
         if missing:
             print(f"\n{len(missing)} served image(s) have no original and are "
                   f"therefore unstamped: {', '.join(sorted(missing))}")
+            gaps += len(missing)
+        if gaps:
             return 1
-        print(f"\n{len(originals)} image(s) stamped from originals.")
+        print(f"\n{len(originals)} image(s) stamped in each of "
+              f"{len(VARIANTS)} variants.")
         return 0
 
-    for p in originals:
-        out = DEST / p.name
-        stamp(p).save(out, quality=QUALITY, optimize=True, progressive=True)
-        print(f"  stamped  {p.name}")
+    for dest, max_edge in VARIANTS:
+        dest.mkdir(parents=True, exist_ok=True)
+        for p in originals:
+            cap = max_edge
+            override = DISPLAY_OVERRIDES.get(p.name)
+            if cap and override and override > cap:
+                cap = override
+            stamp(p, cap).save(dest / p.name, quality=QUALITY,
+                               optimize=True, progressive=True)
+        cap = f"<= {max_edge}px" if max_edge else "full size"
+        print(f"  stamped  {len(originals):>2} -> {dest.relative_to(ROOT)} ({cap})")
 
     if missing:
         print(f"\n! unstamped (no original): {', '.join(sorted(missing))}")
         return 1
-    print(f"\n{len(originals)} image(s) stamped. Originals untouched in "
-          f"{SRC.relative_to(ROOT)}.")
+    print(f"\nOriginals untouched in {SRC.relative_to(ROOT)}.")
     return 0
 
 

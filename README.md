@@ -127,11 +127,31 @@ disappears at the size the grid renders and is unmistakable at full
 resolution — which is the size worth stealing.
 
 ```
-assets/originals/   pristine, never deployed (.vercelignore)
+assets/originals/          pristine, never deployed (.vercelignore)
      |  python3 scripts/watermark.py
-     v
-public/images/      watermarked, what the site serves
+     +-> public/images/           watermarked, full size  -> branded domains
+     +-> public/images/lowres/    watermarked, <= 900px   -> yeetorkeep.io
 ```
+
+**Downscaling is the actual protection; the watermark only deters.** At
+900px on the long edge a piece prints to about 2x3 inches at 300dpi —
+not enough pixels to reproduce a 16x20 painting at any size worth
+having. It's also 2.9MB of images instead of 7.5MB.
+
+Staging is on the low-res set and the branded domains are still on the
+full-size one, so the two can be compared side by side. Once low-res
+wins, `public/images/` should be regenerated at the cap too and the
+override list revisited — until then the full-size files are still
+reachable at `/images/<name>.jpg`, so the low-res set is a preview of
+the look, not yet real protection.
+
+A few images are displayed much larger than the rest and would be
+upscaled by the shared cap — soft, with the watermark growing to match.
+`DISPLAY_OVERRIDES` in the script raises the cap for those by filename.
+Right now that's just `installed-wall.jpg`, which spans half the
+viewport in the Collector's Wall split; it's a room photo rather than
+artwork, so the protection given up is small. Add to that list if a new
+image is ever shown full-bleed.
 
 The script always reads from `assets/originals/`, so **re-running never
 double-stamps**. To change the text, angle, opacity or density, edit the
@@ -168,7 +188,7 @@ assets/
 scripts/
 ├── promote.mjs      # staging -> branded domains (see above); --check verifies sync
 ├── brands.json      # the per-domain name substitutions promote.mjs applies
-└── watermark.py     # assets/originals/ -> public/images/, stamped; --check verifies coverage
+└── watermark.py     # assets/originals/ -> public/images/{,lowres/}, stamped; --check verifies coverage
 server.js            # local static file server (mirrors vercel.json's routing for the common cases)
 vercel.json          # production routing — source of truth for how paths map to files
 ```
