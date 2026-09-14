@@ -153,7 +153,7 @@
         '',
         message
       ];
-      var mailto = 'mailto:hello@ericsamueltimm.com'
+      var mailto = 'mailto:eric@ericsamueltimm.com'
         + '?subject=' + encodeURIComponent(mailSubject)
         + '&body=' + encodeURIComponent(bodyLines.join('\n'));
 

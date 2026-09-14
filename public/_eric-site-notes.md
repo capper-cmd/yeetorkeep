@@ -69,18 +69,19 @@ spec was a pure marketing teaser with no shop functionality of its own.
 A couple of details here are reasonable placeholders, not confirmed facts
 — worth a real check before this goes live:
 
-- **Email / Instagram**: `hello@ericsamueltimm.com` and
-  `@ericsamueltimm` were inferred from his known domain
-  (ericsamueltimm.com) — not given directly, so confirm the real
-  addresses (footer, contact section, and the mailto handler in
-  `script.js`).
+- **Instagram**: `@ericsamueltimm` is still inferred from his known
+  domain, not confirmed. **Email is confirmed**: `eric@ericsamueltimm.com`
+  (Eric's call, "for now"), used in the contact section on all four page
+  variants and in the mailto handler in `script.js`.
 - **Existing shop**: a web search turned up an existing storefront at
   `shop.ericsamueltimm.com`. Worth asking whether this page should link
   out to that shop for checkout, replace it, or stay a separate
   portfolio-style landing page feeding inquiries by email.
-- **Medium/materials** on each piece (currently "Mixed media on
-  canvas/paper") is still a rough placeholder — the pricing PDF (see
-  below) didn't specify exact materials per piece.
+- **Existing shop** (above) is still open. **Medium/materials** is
+  resolved: Eric confirmed "Wood, Acrylic, Charcoal, Marker, Spray
+  Paint", now on all ten pieces. It's applied uniformly — if individual
+  pieces actually differ (the Griffey '89 was previously listed as
+  paper, Brady as a wood panel), those lines need Eric's per-piece call.
 
 The **artist bio** placeholder above is resolved — see "Real pricing,
 scarcity, and bio" below.
@@ -164,3 +165,49 @@ wanted instead (e.g. for signed print editions), swap the form action for
 a form service (Formspree/Getform), wire up Stripe Checkout / Shopify Buy
 Buttons for the print SKUs, or link out to the existing
 shop.ericsamueltimm.com storefront.
+
+## Never crop the artwork
+
+Eric's first review note, twice over: *"a number of images need to be
+cropped correct so we can see it all, right now they are all cut off"*
+and *"these need to be able to be seen. Rather than cropped."* So the
+rule for anything showing a painting is **`object-fit: contain`, not
+`cover`**:
+
+- `.piece-frame img` — a 3/4 mat box, art contained inside it. The
+  paintings range from ratio 0.68 to 0.84, so no single box fits them
+  all; the leftover margin is deliberate and reads as mat board. The
+  old hover zoom (`scale(1.045)`) was dropped, since scaling inside a
+  fixed frame re-crops the art — the frame now lifts on a shadow instead.
+- `.marquee-slide img` — contained, with vertical padding sized to clear
+  the curved `.marquee-mask` arcs. The masks were cut from 90px to 50px
+  (desktop) and the slides grown to 440px for the same reason: at the
+  old depth the arcs ate the top and bottom of every card.
+- `.edition-thumb img` — contained, and `align-self: flex-start` so the
+  thumb keeps its ratio instead of stretching to the card's height
+  (a stretched box + contain = the art floating in dead space).
+
+Photographs of *rooms* are the exception and still use `cover`:
+`.installed-item img`, `.lifestyle-media img`, `.detail-shot` (macro
+texture crops), `.about-portrait img`. There the room is the subject.
+
+## In-situ shots (the `.installed` row)
+Eric: *"we need to have a few more spots where the art is shown on the
+wall or home... this kind of stuff really sells it."* Three shots under
+the Collector's Wall split, one per location in the Dropbox:
+`installed-solo.jpg` (House location 1 / IMG_9165 — Mantle in a wide
+white frame), `installed-door.jpg` (House Location 2 / IMG_9179 —
+Griffey beside a sliding barn door), `installed-ledge.jpg` (House
+Lcoation 3 / IMG_9185 — Gretzky on a picture ledge with a signed
+jersey). Cropped 4:5 with `ImageOps.exif_transpose` applied first —
+these are iPhone shots and carry EXIF orientation.
+
+There are ~19 more in those three folders if the row should grow or
+rotate; the contact sheet is worth regenerating before picking, since
+most are the same wall with a different painting swapped in.
+
+## Still open from Eric's review
+- **sport vs sports** in the domain/brand name — his open question.
+- **Original dimensions in inches** — he's adding them to the Dropbox
+  master. They'd go on the `.piece-meta` line next to the medium.
+- **Copy pass** — he offered to rewrite the copy himself.
