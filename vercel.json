@@ -6,6 +6,12 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
+
+    { "src": "/", "dest": "/public/sportslegendsart/index.html", "has": [{ "type": "host", "value": "sportslegendsart.com" }] },
+    { "src": "/", "dest": "/public/sportslegendsart/index.html", "has": [{ "type": "host", "value": "www.sportslegendsart.com" }] },
+    { "src": "/", "dest": "/public/sportslegends/index.html", "has": [{ "type": "host", "value": "sportslegends.art" }] },
+    { "src": "/", "dest": "/public/sportslegends/index.html", "has": [{ "type": "host", "value": "www.sportslegends.art" }] },
+
     { "src": "/dromos/?", "dest": "/public/dromos/index.html" },
     { "src": "/ha/?$", "dest": "/public/ha/index.html" },
     { "src": "/ha/(.+)", "dest": "/public/ha/$1" },
