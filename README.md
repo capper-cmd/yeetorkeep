@@ -21,8 +21,38 @@ Then open http://localhost:3001
 | `/ha` | Helm & Able — password-gated preview |
 | `/dromos` | Dromos Discipleship Path brief |
 | `/gallery` | Redirects to `/` (Eric's site's old path before it became the homepage) |
-| `/sportslegendsart` | Branding preview: same site, wordmark/contact details rebranded as "Sports Legends Art" (candidate domain `sportslegendsart.com`) |
-| `/sportslegends` | Branding preview: same site, rebranded as "Sports Legends" (candidate domain `sportslegends.art`) |
+| `/sportslegendsart` | Branding variant: same site, rebranded "Sports Legends Art" — also served at the root of `sportslegendsart.com` |
+| `/sportslegends` | Branding variant: same site, rebranded "Sports Legends" — also served at the root of `sportslegends.art` |
+
+## Per-domain branding (host-based routing)
+
+This project is attached to several domains, and **which domain you
+arrive on changes what `/` serves**:
+
+| Domain | Serves |
+|---|---|
+| `yeetorkeep.io` | `public/index.html` — "Eric Samuel Timm" branding |
+| `sportslegendsart.com` | `public/sportslegendsart/index.html` — "Sports Legends Art" |
+| `sportslegends.art` | `public/sportslegends/index.html` — "Sports Legends" |
+
+(`www.` variants of each behave identically.)
+
+This is done with host-conditioned entries at the top of `routes` in
+`vercel.json`, using `"has": [{ "type": "host", "value": "..." }]`.
+Two things to know before editing them:
+
+- **`vercel dev` ignores `has`** and prints a warning saying so, so
+  these rules cannot be tested locally — only against a real
+  deployment. Verify on a preview deploy or after promoting.
+- **The failure mode is inert, not broken.** If a host rule stops
+  matching, the request falls through to the existing catch-all and
+  serves `public/index.html` — the same thing every domain showed
+  before this was added. A misconfigured host rule shows the wrong
+  branding; it doesn't take a site down.
+
+The branding variants share the root site's `styles.css`, `script.js`,
+and `images/` by absolute path rather than duplicating them, so there's
+one source of truth for everything except the brand name itself.
 
 ## Project structure
 
