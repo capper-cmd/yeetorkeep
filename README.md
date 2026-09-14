@@ -23,6 +23,7 @@ Then open http://localhost:3001
 | `/gallery` | Redirects to `/` (Eric's site's old path before it became the homepage) |
 | `/sportslegendsart` | Branding variant: same site, rebranded "Sports Legends Art" — also served at the root of `sportslegendsart.com` |
 | `/sportslegends` | Branding variant: same site, rebranded "Sports Legends" — also served at the root of `sportslegends.art` |
+| `/sportlegendsart` | Branding variant: same site, rebranded "Sport Legends Art" (singular) — also served at the root of `sportlegendsart.com` |
 
 ## Per-domain branding (host-based routing)
 
@@ -34,6 +35,7 @@ arrive on changes what `/` serves**:
 | `yeetorkeep.io` | `public/index.html` — "Eric Samuel Timm" branding |
 | `sportslegendsart.com` | `public/sportslegendsart/index.html` — "Sports Legends Art" |
 | `sportslegends.art` | `public/sportslegends/index.html` — "Sports Legends" |
+| `sportlegendsart.com` | `public/sportlegendsart/index.html` — "Sport Legends Art" (singular) |
 
 (`www.` variants of each behave identically.)
 

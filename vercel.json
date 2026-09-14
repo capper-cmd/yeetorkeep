@@ -1,25 +1,120 @@
 {
   "version": 2,
   "builds": [
-    { "src": "public/**", "use": "@vercel/static" },
-    { "src": "api/**/*.js", "use": "@vercel/node" }
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-
-    { "src": "/", "dest": "/public/sportslegendsart/index.html", "has": [{ "type": "host", "value": "sportslegendsart.com" }] },
-    { "src": "/", "dest": "/public/sportslegendsart/index.html", "has": [{ "type": "host", "value": "www.sportslegendsart.com" }] },
-    { "src": "/", "dest": "/public/sportslegends/index.html", "has": [{ "type": "host", "value": "sportslegends.art" }] },
-    { "src": "/", "dest": "/public/sportslegends/index.html", "has": [{ "type": "host", "value": "www.sportslegends.art" }] },
-
-    { "src": "/dromos/?", "dest": "/public/dromos/index.html" },
-    { "src": "/ha/?$", "dest": "/public/ha/index.html" },
-    { "src": "/ha/(.+)", "dest": "/public/ha/$1" },
-    { "src": "/gallery/?$", "dest": "/", "status": 301 },
-    { "src": "/sportslegendsart/?$", "dest": "/public/sportslegendsart/index.html" },
-    { "src": "/sportslegends/?$", "dest": "/public/sportslegends/index.html" },
-    { "src": "/category/(.*)", "dest": "/public/index.html" },
-    { "src": "/(.*\\.[a-z]+)$", "dest": "/public/$1" },
-    { "src": "/(.*)", "dest": "/public/index.html" }
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/public/sportslegendsart/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "sportslegendsart.com"
+        }
+      ]
+    },
+    {
+      "src": "/",
+      "dest": "/public/sportslegendsart/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.sportslegendsart.com"
+        }
+      ]
+    },
+    {
+      "src": "/",
+      "dest": "/public/sportslegends/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "sportslegends.art"
+        }
+      ]
+    },
+    {
+      "src": "/",
+      "dest": "/public/sportslegends/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.sportslegends.art"
+        }
+      ]
+    },
+    {
+      "src": "/",
+      "dest": "/public/sportlegendsart/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "sportlegendsart.com"
+        }
+      ]
+    },
+    {
+      "src": "/",
+      "dest": "/public/sportlegendsart/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.sportlegendsart.com"
+        }
+      ]
+    },
+    {
+      "src": "/dromos/?",
+      "dest": "/public/dromos/index.html"
+    },
+    {
+      "src": "/ha/?$",
+      "dest": "/public/ha/index.html"
+    },
+    {
+      "src": "/ha/(.+)",
+      "dest": "/public/ha/$1"
+    },
+    {
+      "src": "/gallery/?$",
+      "dest": "/",
+      "status": 301
+    },
+    {
+      "src": "/sportslegendsart/?$",
+      "dest": "/public/sportslegendsart/index.html"
+    },
+    {
+      "src": "/sportlegendsart/?$",
+      "dest": "/public/sportlegendsart/index.html"
+    },
+    {
+      "src": "/sportslegends/?$",
+      "dest": "/public/sportslegends/index.html"
+    },
+    {
+      "src": "/category/(.*)",
+      "dest": "/public/index.html"
+    },
+    {
+      "src": "/(.*\\.[a-z]+)$",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/index.html"
+    }
   ]
 }
