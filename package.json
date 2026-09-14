@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "sync-products": "node scripts/sync-products.js"
+    "sync-products": "node scripts/sync-products.js",
+    "promote": "node scripts/promote.mjs",
+    "promote:check": "node scripts/promote.mjs --check"
   },
   "keywords": [
     "amazon",

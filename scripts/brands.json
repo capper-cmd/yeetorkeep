@@ -1,0 +1,23 @@
+{
+  "sportslegendsart": {
+    "domain": "sportslegendsart.com",
+    "name": "Sports Legends Art",
+    "logoHtml": "Sports Legends <em>Art</em>",
+    "footerHtml": "Sports Legends <span>Art</span>",
+    "instagram": "@sportslegendsart"
+  },
+  "sportslegends": {
+    "domain": "sportslegends.art",
+    "name": "Sports Legends",
+    "logoHtml": "Sports <em>Legends</em>",
+    "footerHtml": "Sports <span>Legends</span>",
+    "instagram": "@sportslegends"
+  },
+  "sportlegendsart": {
+    "domain": "sportlegendsart.com",
+    "name": "Sport Legends Art",
+    "logoHtml": "Sport Legends <em>Art</em>",
+    "footerHtml": "Sport Legends <span>Art</span>",
+    "instagram": "@sportlegendsart"
+  }
+}

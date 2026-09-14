@@ -1,6 +1,9 @@
 # Eric Samuel Timm — Painter Portfolio & Shop
 
-Live at `/` (the homepage) on this deployment — it replaced the old
+Live at `/` (the homepage) on this deployment — and `/` on
+`yeetorkeep.io` is **staging**, so that's where work-in-progress shows
+up for review before `npm run promote` pushes it to the branded
+domains (see the root `README.md`) — it replaced the old
 YeetOrKeep affiliate homepage, which is now archived at
 `public/_legacy/yeetorkeep-affiliate/` (see the root `README.md`). A
 minimal, high-end, single-page site for Eric Samuel Timm, a painter who
