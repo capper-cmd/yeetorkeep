@@ -243,3 +243,54 @@ Downscaling is what actually protects the work; the watermark only
 deters. While both sets are live the full-size files are still
 reachable at `/images/<name>.jpg`, so this is a preview of the look
 rather than protection — that needs `public/images/` capped too.
+
+## Eric's copy pass (web copy master.pdf)
+Eric replaced `card icon art idea.pdf` in the Dropbox with `web copy
+master.pdf` / `.pages`. It carries the original dimensions he owed us,
+three new piece titles, and a rewrite of most of the page copy. Pricing
+is unchanged — every number still matches what's live.
+
+Dimensions now lead the `.piece-meta` line (materials moved to a
+quieter `.piece-materials` line beneath), because the originals run
+four to five feet and that is the fact a buyer needs first — it also
+makes the 16x20 prints read as a different product rather than a
+cheaper one.
+
+| Piece | Size |
+|---|---|
+| Mantle '52, Griffey "The Kid" | 45" x 64" |
+| Griffey '89 Star, Mantle "The Mick" | 41" x 58.5" |
+| Jordan, Brady, Gretzky, Kobe | 42" x 60" |
+| Ohtani Goudey, Jackie Robinson | 49" x 58" |
+
+### Assumptions made — check these with Eric
+His document left real ambiguities. Rather than block, these calls were
+made and should be confirmed:
+
+1. **The quote appears twice, worded differently.** Used the version
+   from his "Web copy" section (the one headed for the site), not the
+   one in his "Bio" section. Changed "invites my viewers inspiration"
+   to "invites my viewers *toward* inspiration" — one word, to fix the
+   grammar without touching his meaning.
+2. **Typos fixed:** "LIMTED EDITIONS" -> "Limited Editions"; "it is
+   just speaks beauty, class and iconic success" -> "it just speaks
+   beauty, class, and iconic success."
+3. **"The Mick 89 Star — $3500"** in his Originals list reads as two
+   entries merged — his own dimensions list keeps them separate, and
+   the site sells them as two pieces at $3,500 each. Left as two.
+4. **"hand-built frames"** in the new teaser copy is kept verbatim.
+   Unclear whether he means he builds the physical frames or paints the
+   card frames; either reading is his claim to make, so it wasn't
+   altered.
+5. **"THE ORIGINAL COLLECTION"** became the section `<h2>`, and the
+   eyebrow above it changed from "The Collection" to "Originals" so the
+   two don't say the same thing twice.
+6. **"Goudy"** in his document is spelled "Goudey" on the site — the
+   actual card brand. Kept the site's spelling.
+7. His bio says the work is rebuilt "in acrylic, ink and effort" while
+   the medium line reads "Wood, acrylic, charcoal, marker, spray
+   paint", and his hero says "Every canvas starts..." while the pieces
+   are on wood. Both are his own words in his own document, so they
+   stand — but they contradict each other if read side by side. The
+   Process detail-strip caption still says "raw canvas grain" for the
+   same reason.
