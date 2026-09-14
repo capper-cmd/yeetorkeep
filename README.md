@@ -84,6 +84,8 @@ git show <ref>:public/script.js  > public/release/script.js
 Adding an image is safe (the frozen pages don't reference it yet), but
 *replacing* one in place changes the branded domains immediately. To
 re-crop something without promoting, save it under a new filename.
+(The watermark below is deliberately pushed through that leak — see
+why.)
 
 ## Per-domain branding (host-based routing)
 
@@ -117,6 +119,37 @@ rather than duplicating them. Their CSS and JS come from
 `public/release/` instead — see "Staging vs. the branded domains" above
 for why.
 
+## Watermarking
+
+Every image in `public/images/` carries a tiled
+`© ERIC SAMUEL TIMM` watermark, baked into the JPEG. It's weighted so it
+disappears at the size the grid renders and is unmistakable at full
+resolution — which is the size worth stealing.
+
+```
+assets/originals/   pristine, never deployed (.vercelignore)
+     |  python3 scripts/watermark.py
+     v
+public/images/      watermarked, what the site serves
+```
+
+The script always reads from `assets/originals/`, so **re-running never
+double-stamps**. To change the text, angle, opacity or density, edit the
+constants at the top of `scripts/watermark.py` and run it again.
+`--check` reports coverage without writing, and flags any served image
+that has no original behind it (those would be silently unstamped).
+
+**This covers all four domains, not just staging — on purpose.** A
+watermark is only worth anything if the clean file isn't sitting one URL
+away on the same host. Watermarking staging alone would have left every
+original reachable at `/images/<name>.jpg` from any domain, so this is
+the one change that intentionally crosses the staging boundary. It
+changes the pixels the branded domains serve; it does not touch their
+layout, copy or branding, which stay reverted.
+
+Never commit an unwatermarked file into `public/images/` — put it in
+`assets/originals/` and run the script.
+
 ## Project structure
 
 ```
@@ -130,9 +163,12 @@ public/
     └── yeetorkeep-affiliate/                     # original YeetOrKeep Deals affiliate site (retired from homepage, kept for reference)
 api/
 └── products.js                                   # serverless function for the legacy affiliate site's /api/products
+assets/
+└── originals/       # pristine unwatermarked images — NOT deployed (.vercelignore)
 scripts/
 ├── promote.mjs      # staging -> branded domains (see above); --check verifies sync
-└── brands.json      # the per-domain name substitutions promote.mjs applies
+├── brands.json      # the per-domain name substitutions promote.mjs applies
+└── watermark.py     # assets/originals/ -> public/images/, stamped; --check verifies coverage
 server.js            # local static file server (mirrors vercel.json's routing for the common cases)
 vercel.json          # production routing — source of truth for how paths map to files
 ```

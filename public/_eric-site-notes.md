@@ -214,3 +214,19 @@ most are the same wall with a different painting swapped in.
 - **Original dimensions in inches** — he's adding them to the Dropbox
   master. They'd go on the `.piece-meta` line next to the medium.
 - **Copy pass** — he offered to rewrite the copy himself.
+
+## Watermarks
+Every image the site serves is watermarked — a tiled
+`© ERIC SAMUEL TIMM` at ~10% opacity, running bottom-left to top-right,
+with a dark pass under a light one so it reads over both pale mat board
+and near-black studio photos. Weighted to vanish at grid size and be
+unmistakable at full resolution.
+
+Pristine originals live in `assets/originals/` (not deployed);
+`python3 scripts/watermark.py` regenerates `public/images/` from them,
+so re-running never double-stamps. Details and the reason it covers the
+branded domains too are in the root `README.md`.
+
+When Eric sends new artwork, the original goes in `assets/originals/`
+and the script stamps it — don't drop an unwatermarked file straight
+into `public/images/`.
