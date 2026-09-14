@@ -48,9 +48,37 @@ page from `public/index.html` with that domain's name substituted in
 are in sync without writing anything, and exits non-zero if the branded
 domains are behind.
 
+**Right now the branded domains are deliberately behind**, and
+`promote:check` reports drift because of it — that's the system working,
+not a fault. They sit at the state from commit `b604891`: the artwork
+still crops, the medium still reads "Mixed media on canvas", there's no
+in-situ row, and each one keeps its own `hello@<domain>` contact
+address. Everything from Eric's review lives on staging only, until
+someone decides to promote it.
+
+Note what promoting will change beyond the obvious: the generator uses a
+single contact address for every branded page (Eric's call —
+`eric@ericsamueltimm.com`), so the per-domain `hello@` addresses those
+pages currently show disappear on the next promote.
+
 **Don't hand-edit `public/sportslegendsart/index.html` or its siblings**
-— they're generated, and the next promote overwrites them. Content
-changes go in `public/index.html`.
+— the next promote overwrites them from staging. Content changes go in
+`public/index.html`. (They're currently checked out from `b604891`
+rather than generated, so they don't match what the generator would
+produce — see above.)
+
+To roll the branded domains back to some earlier commit again, restore
+those three pages and the two release assets from that ref and re-point
+the pages' CSS/JS at `/release/`:
+
+```bash
+git checkout <ref> -- public/sportslegendsart/index.html public/sportslegends/index.html public/sportlegendsart/index.html
+for v in sportslegendsart sportslegends sportlegendsart; do
+  sed -i 's|href="/styles\.css"|href="/release/styles.css"|; s|src="/script\.js"|src="/release/script.js"|' public/$v/index.html
+done
+git show <ref>:public/styles.css > public/release/styles.css
+git show <ref>:public/script.js  > public/release/script.js
+```
 
 **One leak to know about:** `public/images/` is shared, not snapshotted.
 Adding an image is safe (the frozen pages don't reference it yet), but
@@ -64,10 +92,10 @@ arrive on changes what `/` serves**:
 
 | Domain | Serves | Tracks |
 |---|---|---|
-| `yeetorkeep.io` | `public/index.html` — "Eric Samuel Timm" branding | staging |
-| `sportslegendsart.com` | `public/sportslegendsart/index.html` — "Sports Legends Art" | last promote |
-| `sportslegends.art` | `public/sportslegends/index.html` — "Sports Legends" | last promote |
-| `sportlegendsart.com` | `public/sportlegendsart/index.html` — "Sport Legends Art" (singular) | last promote |
+| `yeetorkeep.io` | `public/index.html` — "Eric Samuel Timm" branding | staging (current) |
+| `sportslegendsart.com` | `public/sportslegendsart/index.html` — "Sports Legends Art" | `b604891` |
+| `sportslegends.art` | `public/sportslegends/index.html` — "Sports Legends" | `b604891` |
+| `sportlegendsart.com` | `public/sportlegendsart/index.html` — "Sport Legends Art" (singular) | `b604891` |
 
 (`www.` variants of each behave identically.)
 
