@@ -21,6 +21,8 @@ Then open http://localhost:3001
 | `/ha` | Helm & Able — password-gated preview |
 | `/dromos` | Dromos Discipleship Path brief |
 | `/gallery` | Redirects to `/` (Eric's site's old path before it became the homepage) |
+| `/sportslegendsart` | Branding preview: same site, wordmark/contact details rebranded as "Sports Legends Art" (candidate domain `sportslegendsart.com`) |
+| `/sportslegends` | Branding preview: same site, rebranded as "Sports Legends" (candidate domain `sportslegends.art`) |
 
 ## Project structure
 
