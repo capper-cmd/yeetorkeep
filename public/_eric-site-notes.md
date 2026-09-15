@@ -203,10 +203,22 @@ rule for anything showing a painting is **`object-fit: contain`, not
   `--curve-overlap - --art-inset`. Currently 150 / 96 / 8 on desktop and
   78 / 52 / 6 on mobile.
 
-  Slide heights are picked so a typical card nearly fills them — with
-  `contain`, leftover letterbox slack centres the painting and quietly
-  swallows the arc's bite, so a slide that is too tall makes the effect
-  disappear even when the numbers look right.
+  **How deep the arc can go is set by Ohtani, and it is solved, not
+  eyeballed.** His cap sits 4.5% down his card — higher than any other
+  face in the strip — so if the arc clears his hairline every face is
+  safe. The arc's deepest point is `--mask-h`; his hairline sits at
+  `(--mask-h - --curve-overlap) + --art-inset + slack + 0.045 x art
+  height`. They meet when `--curve-overlap = --art-inset + slack +
+  head`. Slack comes from the slide height, so the heights are derived:
+  a taller slide starts the art lower and buys a deeper arc. And
+  `--curve-overlap` has to stay above `--mask-h / 2` or the arc stops
+  touching the cards at the far left and right.
+
+  Current desktop: mask 120, overlap 66, inset 8, slide 439 — verified
+  in the browser at hairline y = 120 against arc depth 120. Mobile:
+  80 / 46 / 6 / 298. `scripts/` has no helper for this; re-derive with
+  the three relations above if the slide width, inset or his crop
+  changes, and re-measure the 4.5% if `ohtani-marquee.jpg` is recropped.
 
   Because the arc reaches its full depth only at the exact centre and
   half that at the edges, the overlap has to *exceed* half the mask

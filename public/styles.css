@@ -305,9 +305,21 @@ section { position: relative; }
      top and bottom edge; --art-inset is the white frame left before the
      painting starts. Overlap greater than inset means the arc cuts into
      the paint itself, which is the point: the strip should read as
-     wrapping past the viewer, not sitting behind a clean margin. */
-  --mask-h: 78px;
-  --curve-overlap: 52px;
+     wrapping past the viewer, not sitting behind a clean margin.
+
+     What caps the depth: Ohtani's cap sits 4.5% down his card, higher
+     than any other face in the strip, so he is the binding constraint —
+     if the arc clears his hairline every other face is safe. The arc's
+     deepest point equals --mask-h, and the hairline sits at
+     (--mask-h - --curve-overlap) + --art-inset + slack + 4.5% of the art
+     height, so the two meet when --curve-overlap = --art-inset + slack +
+     head. Slack comes from the slide height, which is why the heights
+     below are solved rather than picked: a taller slide lets the art
+     start lower, which buys a deeper arc. --curve-overlap must also stay
+     above --mask-h / 2 or the arc stops touching the cards at the far
+     left and right. Re-run the numbers if any of these change. */
+  --mask-h: 80px;
+  --curve-overlap: 46px;
   --art-inset: 6px;
   position: relative;
   padding: calc(var(--mask-h) - var(--curve-overlap)) 0;
@@ -330,7 +342,7 @@ section { position: relative; }
 .marquee-mask-top { top: 0; }
 .marquee-mask-bottom { bottom: 0; }
 @media (min-width: 640px) {
-  .marquee-section { --mask-h: 150px; --curve-overlap: 96px; --art-inset: 8px; }
+  .marquee-section { --mask-h: 120px; --curve-overlap: 66px; --art-inset: 8px; }
 }
 
 .marquee-track {
@@ -351,7 +363,7 @@ section { position: relative; }
 .marquee-slide {
   flex: none;
   width: 190px;
-  height: 262px;
+  height: 298px;
   border-radius: 18px;
   overflow: hidden;
   background: var(--paper);
@@ -368,10 +380,11 @@ section { position: relative; }
   pointer-events: none;
 }
 @media (min-width: 640px) {
-  /* Height chosen so a typical card (~0.70 ratio at 260px of art width)
-     nearly fills it — otherwise `contain` centres the painting and the
-     leftover letterbox slack swallows the arc's bite. */
-  .marquee-slide { width: 280px; height: 388px; gap: 18px; }
+  /* Height is solved, not chosen. With `contain` the painting is centred
+     and the leftover letterbox slack decides how far down the art starts —
+     which is what caps how deep the arc can go before it covers a face.
+     See the block comment on .marquee-section. */
+  .marquee-slide { width: 280px; height: 439px; gap: 18px; }
   .marquee-slide img { padding-inline: 10px; }
   .marquee-track { gap: 18px; }
 }
