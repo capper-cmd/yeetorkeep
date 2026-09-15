@@ -190,6 +190,20 @@ rule for anything showing a painting is **`object-fit: contain`, not
   thumb keeps its ratio instead of stretching to the card's height
   (a stretched box + contain = the art floating in dead space).
 
+**One deliberate exception: `ohtani-marquee.jpg`.** Ohtani's painting is
+the widest of the set (ratio 0.837 against the others' ~0.70), so in the
+tall marquee slide it letterboxed and shrank — and because his is the
+only full-figure batting pose rather than a head-and-shoulders portrait,
+his face ended up tiny next to every card beside it. The marquee now
+uses a copy trimmed 48px from each side (8% total, centred so both the
+"MAJOR LEAGUE" and "BUBBLE GUM" nameplates survive), which fills the
+slide at the same scale as its neighbours. The Selected Work grid and
+the edition card still use the full uncropped `ohtani.jpg` — the
+no-cropping rule holds where the piece is actually being sold; the
+marquee is a teaser. If another piece ever reads small in the strip,
+this is the pattern: a `-marquee` crop in `assets/originals/`, never a
+change to the shared CSS.
+
 Photographs of *rooms* are the exception and still use `cover`:
 `.installed-item img`, `.lifestyle-media img`, `.detail-shot` (macro
 texture crops), `.about-portrait img`. There the room is the subject.
