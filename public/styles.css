@@ -300,11 +300,15 @@ section { position: relative; }
    ========================================================================== */
 .marquee-section {
   /* The mask path dips to its full height at the centre and half at the
-     edges, so --mask-h is the depth of the curve's tip. The cards are inset
-     by that depth less --curve-overlap, which is exactly how far the tip
-     crosses each card's top and bottom edge. */
-  --mask-h: 56px;
-  --curve-overlap: 34px;
+     edges, so --mask-h is how far the arc travels — raise it and the curve
+     sweeps deeper. --curve-overlap is how far the tip crosses each card's
+     top and bottom edge; --art-inset is the white frame left before the
+     painting starts. Overlap greater than inset means the arc cuts into
+     the paint itself, which is the point: the strip should read as
+     wrapping past the viewer, not sitting behind a clean margin. */
+  --mask-h: 78px;
+  --curve-overlap: 52px;
+  --art-inset: 6px;
   position: relative;
   padding: calc(var(--mask-h) - var(--curve-overlap)) 0;
   overflow: hidden;
@@ -326,7 +330,7 @@ section { position: relative; }
 .marquee-mask-top { top: 0; }
 .marquee-mask-bottom { bottom: 0; }
 @media (min-width: 640px) {
-  .marquee-section { --mask-h: 96px; --curve-overlap: 58px; }
+  .marquee-section { --mask-h: 150px; --curve-overlap: 96px; --art-inset: 8px; }
 }
 
 .marquee-track {
@@ -347,7 +351,7 @@ section { position: relative; }
 .marquee-slide {
   flex: none;
   width: 190px;
-  height: 330px;
+  height: 262px;
   border-radius: 18px;
   overflow: hidden;
   background: var(--paper);
@@ -358,14 +362,16 @@ section { position: relative; }
   height: 100%;
   object-fit: contain;
   object-position: center;
-  /* Must be >= --curve-overlap. The arc is allowed to cut into the card's
-     white frame; it is never allowed to reach the painting. Derived rather
-     than hard-coded so changing the overlap can't quietly start clipping. */
-  padding: calc(var(--curve-overlap) + 2px) 8px;
+  /* Deliberately smaller than --curve-overlap, so the arc passes through
+     the white frame and into the painting's own colour. */
+  padding: var(--art-inset) 8px;
   pointer-events: none;
 }
 @media (min-width: 640px) {
-  .marquee-slide { width: 280px; height: 460px; gap: 18px; }
+  /* Height chosen so a typical card (~0.70 ratio at 260px of art width)
+     nearly fills it — otherwise `contain` centres the painting and the
+     leftover letterbox slack swallows the arc's bite. */
+  .marquee-slide { width: 280px; height: 388px; gap: 18px; }
   .marquee-slide img { padding-inline: 10px; }
   .marquee-track { gap: 18px; }
 }

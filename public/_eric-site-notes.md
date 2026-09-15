@@ -182,15 +182,31 @@ rule for anything showing a painting is **`object-fit: contain`, not
   all; the leftover margin is deliberate and reads as mat board. The
   old hover zoom (`scale(1.045)`) was dropped, since scaling inside a
   fixed frame re-crops the art — the frame now lifts on a shadow instead.
-- `.marquee-slide img` — contained, and inset so the curved
-  `.marquee-mask` arcs can cut the card's white frame but never the
-  painting. Two tunables on `.marquee-section` drive the whole thing:
+- `.marquee-slide img` — contained, and inset *less* than the arc's
+  overlap so the curve cuts through the white frame and into the
+  painting's own colour. That is deliberate: the client wants the strip
+  to read as circulating past the viewer, and the arc only sells that
+  if it hits paint rather than stopping at a clean margin. It is the one
+  place on the site where artwork is allowed to be covered — the grid,
+  the editions and the scale band all still show every piece whole. Two tunables on `.marquee-section` drive the whole thing:
   `--mask-h` (96px desktop / 56px mobile) is how deep the arc's tip
   reaches, and `--curve-overlap` (48px / 28px) is how far that tip
   crosses each card's top and bottom edge. The cards are inset by
   `--mask-h - --curve-overlap`, and the image padding is
   `--curve-overlap + 2px` — derived, not hard-coded, so raising the
   overlap can't quietly start clipping artwork.
+
+  Three vars on `.marquee-section` drive it: `--mask-h` (how far the arc
+  travels), `--curve-overlap` (how far its tip crosses each card's edge)
+  and `--art-inset` (the white frame before the painting starts). Cards
+  sit at `--mask-h - --curve-overlap`; the bite into paint is
+  `--curve-overlap - --art-inset`. Currently 150 / 96 / 8 on desktop and
+  78 / 52 / 6 on mobile.
+
+  Slide heights are picked so a typical card nearly fills them — with
+  `contain`, leftover letterbox slack centres the painting and quietly
+  swallows the arc's bite, so a slide that is too tall makes the effect
+  disappear even when the numbers look right.
 
   Because the arc reaches its full depth only at the exact centre and
   half that at the edges, the overlap has to *exceed* half the mask
