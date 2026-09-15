@@ -478,6 +478,29 @@ section { position: relative; }
    to five feet. Materials follow a shade quieter. */
 .piece-meta { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 3px; }
 .piece-materials { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 14px; }
+/* Detail close-ups pinned to their own piece — the point is to show the
+   surface and the hand-built card frame at a size the grid shot can't. Only
+   some pieces have close-ups; .piece-foot uses margin-top:auto so the cards
+   without them still line their prices up with the rest of the row. */
+.piece-details { margin: 0 0 14px; }
+.piece-details-thumbs { display: flex; gap: 8px; }
+.piece-details-thumbs img {
+  width: 74px;
+  height: 74px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  transition: transform 0.5s cubic-bezier(.16,.84,.44,1);
+}
+.piece-details-thumbs img:hover { transform: scale(1.06); }
+.piece-details-cap {
+  margin: 8px 0 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-faint);
+}
+
 .piece-prints-note {
   display: block;
   margin: -8px 0 14px;

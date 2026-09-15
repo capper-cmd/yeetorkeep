@@ -385,3 +385,41 @@ This also resolves a tension worth remembering: the in-situ row sells
 the **prints**, and the scale band sells the **originals**. Keep those
 straight in any future copy — a 16x20 framed print and a 45x64 original
 are not the same product.
+
+## Per-piece detail close-ups
+Each piece in Selected Work can carry its own close-ups, shown as small
+square thumbnails with a one-line caption between the materials line and
+the price. `.piece-foot` uses `margin-top: auto`, so pieces without
+close-ups still line their prices up with the rest of the row — the
+feature degrades cleanly and doesn't need every piece covered.
+
+Sources are Eric's `Close Up Shots of Art for Texture` folder, cropped
+square into `assets/originals/detail-<piece>-N.jpg` and run through
+`scripts/watermark.py` like everything else.
+
+| Piece | Close-ups | From |
+|---|---|---|
+| Wayne Gretzky | helmet/face, Oilers crest | IMG_6449, IMG_6451 |
+| Shohei Ohtani | face/helmet, Major League nameplate | IMG_6759, IMG_6754 |
+| Tom Brady | the hand-built card frame | IMG_7977 |
+| Ken Griffey Jr. '89 Star | the panel seen edge-on | IMG_6327 |
+
+**"Hand-built frames" is settled.** In Eric's copy that phrase means the
+*painted card frame* he builds around each portrait — the striped,
+gilded border you can see in `detail-brady-1.jpg` — not physical framing
+for prints. The caption on that piece says so directly. Don't rewrite it
+to sound like framing services.
+
+### Still open
+- Two close-ups could not be matched to a piece: **IMG_6656** (grey,
+  monochrome, an ear against a faint city skyline) and **IMG_6658** (a
+  smiling face in warm browns). Neither matches any of the ten paintings
+  confidently — 6656 in particular may be from work that isn't on the
+  site. Ask Eric before using them.
+- Six pieces have no close-up yet: Griffey "The Kid", Jordan, Kobe,
+  Mantle "The Mick", Jackie Robinson, Mantle '52. Worth asking Eric for
+  one or two each if he wants full coverage.
+- Eric removed `IMG_7983` and `IMG_7986` from that Dropbox folder on
+  15 Sep. Our copies survive as `detail-brushwork-*.jpg` in
+  `assets/originals/`, which is the only reason the Process strip still
+  works — another reason never to treat Dropbox as the backup.
