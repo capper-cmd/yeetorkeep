@@ -192,13 +192,22 @@ rule for anything showing a painting is **`object-fit: contain`, not
   `--curve-overlap + 2px` — derived, not hard-coded, so raising the
   overlap can't quietly start clipping artwork.
 
-  Two dead ends worth not repeating. Flattening the arcs to 50px bought
-  clearance by destroying the curve, which is the whole point of the
-  section. And a small overlap (4-14px) is effectively invisible: the
-  mask path dips to its *full* height only at the exact centre and rises
-  to half that at the edges, so a few pixels of overlap shows on one
-  card at a time and nowhere else. Around half the mask height is where
-  the sweep reads across the whole strip.
+  Because the arc reaches its full depth only at the exact centre and
+  half that at the edges, the overlap has to *exceed* half the mask
+  height before the curve touches the cards near the left and right of
+  the strip at all. At exactly half it is tangent there — visually it
+  looks like it misses. 58px against a 96px mask puts it 10px over at
+  the sides and 58px over at the centre.
+
+  Three dead ends worth not repeating. Flattening the arcs to 50px
+  bought clearance by destroying the curve, which is the whole point of
+  the section. A small overlap (4-14px) is effectively invisible for the
+  reason above. And `.marquee-track` used to carry its own
+  `padding: 24px 0`, which silently pushed the cards 24px below where
+  the section's padding put them — so the arc missed them everywhere
+  except dead centre no matter what the overlap was set to. The track's
+  vertical padding is now 0 and `.marquee-section` is the single source
+  of truth for that inset; don't reintroduce a second one.
 - `.edition-thumb img` — contained, and `align-self: flex-start` so the
   thumb keeps its ratio instead of stretching to the card's height
   (a stretched box + contain = the art floating in dead space).

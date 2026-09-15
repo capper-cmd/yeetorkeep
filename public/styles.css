@@ -304,7 +304,7 @@ section { position: relative; }
      by that depth less --curve-overlap, which is exactly how far the tip
      crosses each card's top and bottom edge. */
   --mask-h: 56px;
-  --curve-overlap: 28px;
+  --curve-overlap: 34px;
   position: relative;
   padding: calc(var(--mask-h) - var(--curve-overlap)) 0;
   overflow: hidden;
@@ -326,13 +326,17 @@ section { position: relative; }
 .marquee-mask-top { top: 0; }
 .marquee-mask-bottom { bottom: 0; }
 @media (min-width: 640px) {
-  .marquee-section { --mask-h: 96px; --curve-overlap: 48px; }
+  .marquee-section { --mask-h: 96px; --curve-overlap: 58px; }
 }
 
 .marquee-track {
   display: flex;
   gap: 14px;
-  padding: 24px 0;
+  /* No vertical padding: .marquee-section's padding is the single source of
+     truth for how far the cards sit below the arc. A second inset here put
+     the cards 24px lower than the geometry assumed, so the arc stopped
+     reaching them anywhere except dead centre. */
+  padding: 0;
   width: max-content;
   cursor: grab;
   user-select: none;
