@@ -183,9 +183,14 @@ rule for anything showing a painting is **`object-fit: contain`, not
   old hover zoom (`scale(1.045)`) was dropped, since scaling inside a
   fixed frame re-crops the art — the frame now lifts on a shadow instead.
 - `.marquee-slide img` — contained, with vertical padding sized to clear
-  the curved `.marquee-mask` arcs. The masks were cut from 90px to 50px
-  (desktop) and the slides grown to 440px for the same reason: at the
-  old depth the arcs ate the top and bottom of every card.
+  the curved `.marquee-mask` arcs. Flattening the arcs to buy that
+  clearance was tried and reverted: the curve is the point of the
+  section, and at 50px it stopped reading as a curve at all. The masks
+  are back at 96px desktop / 56px mobile, and the clearance comes from
+  taller slides instead (528px desktop, 376px mobile) with the image
+  padded by at least the mask height. The mask path dips to its *full*
+  height at the centre and half at the edges, so the padding has to
+  match the full height, not the average.
 - `.edition-thumb img` — contained, and `align-self: flex-start` so the
   thumb keeps its ratio instead of stretching to the card's height
   (a stretched box + contain = the art floating in dead space).
