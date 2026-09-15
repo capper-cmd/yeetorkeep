@@ -182,15 +182,23 @@ rule for anything showing a painting is **`object-fit: contain`, not
   all; the leftover margin is deliberate and reads as mat board. The
   old hover zoom (`scale(1.045)`) was dropped, since scaling inside a
   fixed frame re-crops the art — the frame now lifts on a shadow instead.
-- `.marquee-slide img` — contained, with vertical padding sized to clear
-  the curved `.marquee-mask` arcs. Flattening the arcs to buy that
-  clearance was tried and reverted: the curve is the point of the
-  section, and at 50px it stopped reading as a curve at all. The masks
-  are back at 96px desktop / 56px mobile, and the clearance comes from
-  taller slides instead (528px desktop, 376px mobile) with the image
-  padded by at least the mask height. The mask path dips to its *full*
-  height at the centre and half at the edges, so the padding has to
-  match the full height, not the average.
+- `.marquee-slide img` — contained, and inset so the curved
+  `.marquee-mask` arcs can cut the card's white frame but never the
+  painting. Two tunables on `.marquee-section` drive the whole thing:
+  `--mask-h` (96px desktop / 56px mobile) is how deep the arc's tip
+  reaches, and `--curve-overlap` (48px / 28px) is how far that tip
+  crosses each card's top and bottom edge. The cards are inset by
+  `--mask-h - --curve-overlap`, and the image padding is
+  `--curve-overlap + 2px` — derived, not hard-coded, so raising the
+  overlap can't quietly start clipping artwork.
+
+  Two dead ends worth not repeating. Flattening the arcs to 50px bought
+  clearance by destroying the curve, which is the whole point of the
+  section. And a small overlap (4-14px) is effectively invisible: the
+  mask path dips to its *full* height only at the exact centre and rises
+  to half that at the edges, so a few pixels of overlap shows on one
+  card at a time and nowhere else. Around half the mask height is where
+  the sweep reads across the whole strip.
 - `.edition-thumb img` — contained, and `align-self: flex-start` so the
   thumb keeps its ratio instead of stretching to the card's height
   (a stretched box + contain = the art floating in dead space).

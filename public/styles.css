@@ -299,8 +299,14 @@ section { position: relative; }
    IMAGE MARQUEE
    ========================================================================== */
 .marquee-section {
+  /* The mask path dips to its full height at the centre and half at the
+     edges, so --mask-h is the depth of the curve's tip. The cards are inset
+     by that depth less --curve-overlap, which is exactly how far the tip
+     crosses each card's top and bottom edge. */
+  --mask-h: 56px;
+  --curve-overlap: 28px;
   position: relative;
-  padding: 4px 0;
+  padding: calc(var(--mask-h) - var(--curve-overlap)) 0;
   overflow: hidden;
   background: var(--cream);
 }
@@ -310,7 +316,7 @@ section { position: relative; }
 .marquee-mask {
   position: absolute;
   left: 0; right: 0;
-  height: 56px;
+  height: var(--mask-h);
   pointer-events: none;
   z-index: 2;
   line-height: 0;
@@ -320,7 +326,7 @@ section { position: relative; }
 .marquee-mask-top { top: 0; }
 .marquee-mask-bottom { bottom: 0; }
 @media (min-width: 640px) {
-  .marquee-mask { height: 96px; }
+  .marquee-section { --mask-h: 96px; --curve-overlap: 48px; }
 }
 
 .marquee-track {
@@ -337,7 +343,7 @@ section { position: relative; }
 .marquee-slide {
   flex: none;
   width: 190px;
-  height: 376px;
+  height: 330px;
   border-radius: 18px;
   overflow: hidden;
   background: var(--paper);
@@ -348,12 +354,15 @@ section { position: relative; }
   height: 100%;
   object-fit: contain;
   object-position: center;
-  padding: 60px 8px;   /* >= .marquee-mask height, so the curve never clips art */
+  /* Must be >= --curve-overlap. The arc is allowed to cut into the card's
+     white frame; it is never allowed to reach the painting. Derived rather
+     than hard-coded so changing the overlap can't quietly start clipping. */
+  padding: calc(var(--curve-overlap) + 2px) 8px;
   pointer-events: none;
 }
 @media (min-width: 640px) {
-  .marquee-slide { width: 280px; height: 528px; gap: 18px; }
-  .marquee-slide img { padding: 100px 10px; }
+  .marquee-slide { width: 280px; height: 460px; gap: 18px; }
+  .marquee-slide img { padding-inline: 10px; }
   .marquee-track { gap: 18px; }
 }
 
