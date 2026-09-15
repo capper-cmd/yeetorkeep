@@ -626,6 +626,31 @@ section { position: relative; }
 }
 
 /* ==========================================================================
+   SCALE
+   One wide band under the collection, because the dimensions on each piece
+   ("45in x 64in") mean nothing without something to measure against.
+   ========================================================================== */
+.scale { padding: clamp(8px, 2vw, 24px) 0 clamp(56px, 7vw, 96px); }
+.scale-figure { margin: 0; }
+.scale-figure img {
+  width: 100%;
+  display: block;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.scale-figure figcaption {
+  max-width: 620px;
+  margin: 20px auto 0;
+  padding: 0 var(--gutter);
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+
+/* ==========================================================================
    INSTALLED / IN SITU
    A quiet three-up of the work hanging in real homes — the point is the
    room around the painting, so these crop (unlike the artwork itself).

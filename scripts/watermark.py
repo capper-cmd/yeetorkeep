@@ -41,6 +41,8 @@ DEST = VARIANTS[0][0]
 DISPLAY_OVERRIDES = {
     # spans half the viewport in the Collector's Wall split
     "installed-wall.jpg": 1800,
+    # full-width scale band under the collection
+    "booth.jpg": 1800,
 }
 
 TEXT = "© ERIC SAMUEL TIMM"

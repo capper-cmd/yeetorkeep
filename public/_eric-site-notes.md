@@ -294,3 +294,30 @@ made and should be confirmed:
    stand — but they contradict each other if read side by side. The
    Process detail-strip caption still says "raw canvas grain" for the
    same reason.
+
+## Eric's answers (15 Sep) — prints vs originals
+He confirmed the rule: **if it is framed like a print, it is a print.**
+That covers every in-situ shot on the page — the four-piece wall beside
+the kitchen included — so all of those now say "print" in their alt text
+and captions. They had briefly said "original", which was wrong.
+
+He also confirmed the originals are large. Note he wrote "all originals
+are big 45*64" as shorthand for the scale, not as a correction to the
+per-piece list in `web copy master.pdf` — the site keeps his specific
+per-piece dimensions (45x64, 41x58.5, 42x60, 49x58), which are more
+precise than one flat number. Worth a second confirmation if it matters.
+
+Two images approved and added:
+- `brady.jpg` is now IMG_7974, a clean straight-on shot, replacing the
+  handheld one. Same crop treatment: to the wood panel's own edge.
+- `booth.jpg` (IMG_6918) is new — five originals standing at full height
+  on a lit display wall. It drives the new `.scale` band directly under
+  the collection, because "45in x 64in" on a card means nothing without
+  something to measure against. Cropped above the table graphics so no
+  logo or wordmark is clipped; exempted to 1800px in
+  `DISPLAY_OVERRIDES` since it runs full width.
+
+This also resolves a tension worth remembering: the in-situ row sells
+the **prints**, and the scale band sells the **originals**. Keep those
+straight in any future copy — a 16x20 framed print and a 45x64 original
+are not the same product.
