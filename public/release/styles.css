@@ -299,15 +299,40 @@ section { position: relative; }
    IMAGE MARQUEE
    ========================================================================== */
 .marquee-section {
+  /* The mask path dips to its full height at the centre and half at the
+     edges, so --mask-h is how far the arc travels — raise it and the curve
+     sweeps deeper. --curve-overlap is how far the tip crosses each card's
+     top and bottom edge; --art-inset is the white frame left before the
+     painting starts. Overlap greater than inset means the arc cuts into
+     the paint itself, which is the point: the strip should read as
+     wrapping past the viewer, not sitting behind a clean margin.
+
+     What caps the depth: Ohtani's cap sits 4.5% down his card, higher
+     than any other face in the strip, so he is the binding constraint —
+     if the arc clears his hairline every other face is safe. The arc's
+     deepest point equals --mask-h, and the hairline sits at
+     (--mask-h - --curve-overlap) + --art-inset + slack + 4.5% of the art
+     height, so the two meet when --curve-overlap = --art-inset + slack +
+     head. Slack comes from the slide height, which is why the heights
+     below are solved rather than picked: a taller slide lets the art
+     start lower, which buys a deeper arc. --curve-overlap must also stay
+     above --mask-h / 2 or the arc stops touching the cards at the far
+     left and right. Re-run the numbers if any of these change. */
+  --mask-h: 80px;
+  --curve-overlap: 46px;
+  --art-inset: 6px;
   position: relative;
-  padding: 4px 0;
+  padding: calc(var(--mask-h) - var(--curve-overlap)) 0;
   overflow: hidden;
   background: var(--cream);
 }
+/* The mask path dips to its full height at the centre and half at the edges,
+   so the slides pad by at least this much (see .marquee-slide img) and the
+   curve reads as a curve without ever touching the art. */
 .marquee-mask {
   position: absolute;
   left: 0; right: 0;
-  height: 60px;
+  height: var(--mask-h);
   pointer-events: none;
   z-index: 2;
   line-height: 0;
@@ -317,13 +342,17 @@ section { position: relative; }
 .marquee-mask-top { top: 0; }
 .marquee-mask-bottom { bottom: 0; }
 @media (min-width: 640px) {
-  .marquee-mask { height: 90px; }
+  .marquee-section { --mask-h: 120px; --curve-overlap: 66px; --art-inset: 8px; }
 }
 
 .marquee-track {
   display: flex;
   gap: 14px;
-  padding: 24px 0;
+  /* No vertical padding: .marquee-section's padding is the single source of
+     truth for how far the cards sit below the arc. A second inset here put
+     the cards 24px lower than the geometry assumed, so the arc stopped
+     reaching them anywhere except dead centre. */
+  padding: 0;
   width: max-content;
   cursor: grab;
   user-select: none;
@@ -334,7 +363,7 @@ section { position: relative; }
 .marquee-slide {
   flex: none;
   width: 190px;
-  height: 250px;
+  height: 298px;
   border-radius: 18px;
   overflow: hidden;
   background: var(--paper);
@@ -343,11 +372,20 @@ section { position: relative; }
 .marquee-slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  /* Deliberately smaller than --curve-overlap, so the arc passes through
+     the white frame and into the painting's own colour. */
+  padding: var(--art-inset) 8px;
   pointer-events: none;
 }
 @media (min-width: 640px) {
-  .marquee-slide { width: 280px; height: 360px; gap: 18px; }
+  /* Height is solved, not chosen. With `contain` the painting is centred
+     and the leftover letterbox slack decides how far down the art starts —
+     which is what caps how deep the arc can go before it covers a face.
+     See the block comment on .marquee-section. */
+  .marquee-slide { width: 280px; height: 439px; gap: 18px; }
+  .marquee-slide img { padding-inline: 10px; }
   .marquee-track { gap: 18px; }
 }
 
@@ -403,15 +441,21 @@ section { position: relative; }
   padding: 14px;
   border: 1px solid var(--line);
   margin-bottom: 22px;
-  overflow: hidden;
+  transition: border-color 0.5s ease, box-shadow 0.6s cubic-bezier(.16,.84,.44,1);
 }
+/* Each painting is a different shape, so the frame is a fixed-ratio mat and
+   the art is contained inside it at its own proportions — never cropped.
+   The uneven margin left over reads as mat board, which is what it is. */
 .piece-frame img {
   width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  transition: transform 0.7s cubic-bezier(.16,.84,.44,1);
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  object-position: center;
 }
-.piece:hover .piece-frame img { transform: scale(1.045); }
+.piece:hover .piece-frame {
+  border-color: var(--line-strong);
+  box-shadow: 0 18px 44px -28px rgba(23, 21, 17, 0.45);
+}
 
 .status-pill {
   position: absolute;
@@ -430,7 +474,10 @@ section { position: relative; }
 .piece.is-sold .piece-frame img { filter: grayscale(0.4) opacity(0.85); }
 
 .piece-title { font-family: var(--serif); font-size: 22px; margin-bottom: 6px; }
-.piece-meta { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 14px; }
+/* Size leads — it is the fact a buyer needs first, and these run four
+   to five feet. Materials follow a shade quieter. */
+.piece-meta { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 3px; }
+.piece-materials { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 14px; }
 .piece-prints-note {
   display: block;
   margin: -8px 0 14px;
@@ -519,12 +566,14 @@ section { position: relative; }
 }
 .edition-thumb {
   flex: none;
-  width: 92px;
-  aspect-ratio: 4 / 5;
+  align-self: flex-start;   /* keep the ratio; don't stretch to card height */
+  width: 104px;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   border: 1px solid var(--line);
+  background: var(--paper);
 }
-.edition-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.edition-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
 
 .edition-info { flex: 1; min-width: 0; }
 .edition-title { font-family: var(--serif); font-size: 18px; line-height: 1.25; margin-bottom: 4px; }
@@ -610,6 +659,62 @@ section { position: relative; }
 }
 
 /* ==========================================================================
+   SCALE
+   One wide band under the collection, because the dimensions on each piece
+   ("45in x 64in") mean nothing without something to measure against.
+   ========================================================================== */
+.scale { padding: clamp(8px, 2vw, 24px) 0 clamp(56px, 7vw, 96px); }
+.scale-figure { margin: 0; }
+.scale-figure img {
+  width: 100%;
+  display: block;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.scale-figure figcaption {
+  max-width: 620px;
+  margin: 20px auto 0;
+  padding: 0 var(--gutter);
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+
+/* ==========================================================================
+   INSTALLED / IN SITU
+   A quiet three-up of the work hanging in real homes — the point is the
+   room around the painting, so these crop (unlike the artwork itself).
+   ========================================================================== */
+.installed { padding: clamp(64px, 8vw, 110px) 0 clamp(40px, 6vw, 72px); }
+.installed-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 3vw, 44px);
+}
+.installed-item { margin: 0; }
+.installed-item img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+.installed-item figcaption {
+  margin-top: 16px;
+  font-size: 12.5px;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  color: var(--ink-faint);
+  font-family: var(--serif);
+  font-style: italic;
+}
+@media (max-width: 760px) {
+  .installed-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ==========================================================================
    ABOUT / PROCESS
    ========================================================================== */
 .about { padding: 140px 0; }
@@ -664,11 +769,21 @@ section { position: relative; }
   margin: 0 0 18px;
 }
 .about-copy .signature {
-  margin-top: 30px;
+  margin-top: 26px;
   font-family: var(--serif);
   font-style: italic;
   font-size: 22px;
   color: var(--ink);
+}
+/* Eric's real signature, black on transparent, so it sits straight on the
+   cream. Height-capped rather than width-capped: it is a very wide, short
+   mark and a width rule would make it tower on narrow screens. */
+.about-copy .signature img {
+  width: auto;
+  height: 46px;
+  max-width: min(260px, 100%);
+  object-fit: contain;
+  object-position: left center;
 }
 .process-quote {
   margin: 30px 0 0;
@@ -689,9 +804,12 @@ section { position: relative; }
 .process-details {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 14px;
   max-width: 640px;
   margin: 0 auto;
+}
+@media (max-width: 520px) {
+  .process-details { gap: 10px; }
 }
 .detail-shot {
   aspect-ratio: 1 / 1;

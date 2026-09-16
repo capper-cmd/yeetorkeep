@@ -49,18 +49,10 @@ page from `public/index.html` with that domain's name substituted in
 are in sync without writing anything, and exits non-zero if the branded
 domains are behind.
 
-**Right now the branded domains are deliberately behind**, and
-`promote:check` reports drift because of it — that's the system working,
-not a fault. They sit at the state from commit `b604891`: the artwork
-still crops, the medium still reads "Mixed media on canvas", there's no
-in-situ row, and each one keeps its own `hello@<domain>` contact
-address. Everything from Eric's review lives on staging only, until
-someone decides to promote it.
-
-Note what promoting will change beyond the obvious: the generator uses a
-single contact address for every branded page (Eric's call —
-`eric@ericsamueltimm.com`), so the per-domain `hello@` addresses those
-pages currently show disappear on the next promote.
+As of 16 Sep the branded domains are **current** — staging was
+promoted, so `sportslegendsart.com` is the live site. `yeetorkeep.io`
+carries on as staging, which is the whole point of the split: new work
+lands there and only reaches the branded domains on the next promote.
 
 **Don't hand-edit `public/sportslegendsart/index.html` or its siblings**
 — the next promote overwrites them from staging. Content changes go in

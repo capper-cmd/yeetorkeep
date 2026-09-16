@@ -532,3 +532,27 @@ anyway.
 extension, a different and later file than the `IMG_7974.jpg` sitting
 beside it. It is smaller (950x1280 against 1400x1887) but has the
 contrast and the gold frame edge the earlier one lost.
+
+## sportslegendsart.com is the live site as of 16 Sep
+Promoted staging to the branded domains, so `sportslegendsart.com` now
+carries everything: the photographs of the originals at full frame, the
+dimensions, Eric's rewritten copy, the signature, the nine texture
+icons, the scale band, the framed-print thumbnails, the deep marquee arc
+and the Jordan/Kobe separation.
+
+**yeetorkeep.io stays staging.** That is the point of the split — new
+work lands there first and only reaches the branded domains on the next
+`npm run promote`. `/fix` is still the colour-corrected comparison of
+whatever staging is currently showing.
+
+Note the promote updated **all three** branded domains, not just
+sportslegendsart.com — `sportslegends.art` and `sportlegendsart.com` now
+show the same current site under their own wordmarks. The branding
+comparison they existed for is settled, so they are redundant; nothing
+points at them and no decision has been made about redirecting them to
+the winner or letting them lapse.
+
+It also did the thing flagged when the pipeline was built: the
+per-domain `hello@<domain>` contact addresses those pages used to carry
+are gone, replaced by `eric@ericsamueltimm.com` on all three. That was
+Eric's call and is now live.
