@@ -386,16 +386,18 @@ the **prints**, and the scale band sells the **originals**. Keep those
 straight in any future copy — a 16x20 framed print and a 45x64 original
 are not the same product.
 
-## Per-piece detail close-ups
-Each piece in Selected Work can carry its own close-ups, shown as small
-square thumbnails with a one-line caption between the materials line and
-the price. `.piece-foot` uses `margin-top: auto`, so pieces without
-close-ups still line their prices up with the rest of the row — the
-feature degrades cleanly and doesn't need every piece covered.
+## Per-piece detail close-ups — tried and removed
+Thumbnails of each piece's close-ups were added under the painting in
+Selected Work and then taken out: the client didn't want them there, and
+the texture strip in the Process section already covers that ground.
+**Don't re-add them per piece without asking.**
 
-Sources are Eric's `Close Up Shots of Art for Texture` folder, cropped
-square into `assets/originals/detail-<piece>-N.jpg` and run through
-`scripts/watermark.py` like everything else.
+The crops survive in `assets/unused/` — deliberately outside
+`assets/originals/`, since `scripts/watermark.py` globs that folder and
+would otherwise keep regenerating them into `public/images/` where they
+would ship unused. (`--check` reports served files with no original, so
+it catches that class of leftover.) To bring them back, move them into
+`assets/originals/` and re-run the script.
 
 | Piece | Close-ups | From |
 |---|---|---|
