@@ -571,3 +571,40 @@ treatment — the arc has to carry the colour of whatever it sweeps into.
 
 **This is on staging only.** `promote:check` reports one file behind by
 design; `sportslegendsart.com` is unaffected until someone promotes.
+
+## Grid tail, waitlist bar, detail strip (staging only, 16 Sep)
+Three asks in one pass, all on yeetorkeep.
+
+**"Who's next?" card.** The originals grid ran 10 pieces into a 3-column
+layout, leaving two dead cells beside Brady. An 11th card fills the first
+one: a dashed frame, brass eyebrow, linking to `#contact`. It is not a
+loose box — `.piece-next-frame` mirrors `.piece-frame` exactly (same 14px
+mat, an inner `.piece-next-inner` at the same 3/4 ratio) so its top and
+bottom line up with the paintings beside it to the pixel. Measured: both
+frames 329x429 at the same y. If the piece count ever changes so the grid
+fills evenly, this card should move or the row will look crowded.
+
+**Teaser text centred to the arc.** "Center to the arc" means centred
+against the black shape *including* the curve's deepest point, not against
+the section box. The arc reaches full `--mask-h` only at dead centre,
+which is where the text is, so the top reference is
+`teaser.top - var(--mask-h)`. That is why `--mask-h` lives on `:root` —
+`.bottom-teaser` needs it for its own padding:
+`padding: var(--teaser-pad) 0 calc(var(--mask-h) + var(--teaser-pad))`.
+Measured 140/140 desktop, 92/92 mobile.
+
+**Waitlist on a black bar.** It used to float in cream inside `#work`,
+with a large gap before the booth photo — it read as unattached to
+anything. It is now its own `.work-more` section on `var(--ink)`, and
+`.scale` lost its top padding so the photo butts flush against the bar.
+The bar anchors the CTA to the picture it is selling.
+
+**Detail strip.** Eric's nine zoomed-in icons were crowded under the
+signature at the tail of the Process column. They now have their own
+full-bleed `.detail-strip` on `var(--ink)`, with the tiles switched to
+translucent cream borders since the old `var(--line)` was invisible on
+black. `.about` gained bottom padding to replace the spacing the strip
+used to provide.
+
+**This is on staging only.** `sportslegendsart.com` is unaffected until
+someone promotes.
