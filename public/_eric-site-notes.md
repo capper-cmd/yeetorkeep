@@ -481,3 +481,26 @@ side. Kobe and Gretzky are swapped in both the work grid and the
 editions grid to break that up. The `reveal-delay-*` stagger is
 positional, so it is reassigned after any reorder rather than travelling
 with the card.
+
+## The Process quote, and the signature that goes under it
+The blockquote is now Eric's first-person line: *"I start every canvas
+with a single frame — the swing, the stance, the knockout, your vision —
+and the moment becomes an original painting built to outlast the
+highlight reel to inspire you."* It replaced the mirror/window/door
+quote.
+
+`<p class="signature">— Eric Samuel Timm</p>` sits directly beneath it.
+Eric is putting a signature image in the Dropbox to go there; when it
+lands, drop it in `assets/originals/signature.png` (keep the alpha — the
+watermark pipeline is JPEG-only, so a transparent signature needs to
+bypass `scripts/watermark.py` and be copied straight into
+`public/images/`), then swap the typed attribution for the image.
+
+**Flagged, unresolved:** the same idea is now on the page three times.
+The hero lede is almost word-for-word the new quote, in third person
+("Every canvas starts with a single frame — the swing, the stance, the
+knockout — and becomes an original painting built to outlast the
+highlight reel and inspire you"), and the bio paragraph *directly above
+the quote* opens "Each portrait begins the same way — pulling a single
+frame...". Two of the three are adjacent. All three are Eric's own
+words, so none were changed; it needs his call on which survives.
