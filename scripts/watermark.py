@@ -15,6 +15,7 @@ isn't sitting one URL away on the same host.
 """
 import argparse
 import math
+import shutil
 import sys
 from pathlib import Path
 
@@ -140,6 +141,11 @@ def main():
     if not originals:
         sys.exit(f"no .jpg files in {SRC.relative_to(ROOT)}")
 
+    # PNGs pass through untouched. The signature is black on transparent and
+    # a JPEG round-trip would flatten the alpha to a white box on the cream
+    # page — and there is nothing to protect in a signature anyway.
+    passthrough = sorted(SRC.glob("*.png"))
+
     served = {p.name for p in DEST.glob("*.jpg")}
     missing = served - {p.name for p in originals}
 
@@ -172,10 +178,13 @@ def main():
                 cap = override
             stamp(p, cap, correct).save(dest / p.name, quality=QUALITY,
                                         optimize=True, progressive=True)
+        for q in passthrough:
+            shutil.copy2(q, dest / q.name)
         cap = f"<= {max_edge}px" if max_edge else "full size"
         if correct:
             cap += ", colour-corrected"
-        print(f"  stamped  {len(originals):>2} -> {dest.relative_to(ROOT)} ({cap})")
+        extra = f" + {len(passthrough)} copied" if passthrough else ""
+        print(f"  stamped  {len(originals):>2} -> {dest.relative_to(ROOT)} ({cap}){extra}")
 
     if missing:
         print(f"\n! unstamped (no original): {', '.join(sorted(missing))}")
