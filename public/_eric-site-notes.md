@@ -504,3 +504,31 @@ highlight reel and inspire you"), and the bio paragraph *directly above
 the quote* opens "Each portrait begins the same way — pulling a single
 frame...". Two of the three are adjacent. All three are Eric's own
 words, so none were changed; it needs his call on which survives.
+
+## Signature, and the nine texture icons
+`assets/originals/signature.png` is Eric's real signature, black on
+transparent, sitting under the Process quote in place of the typed
+"— Eric Samuel Timm". It is height-capped (46px) rather than
+width-capped: it is a very wide, short mark and a width rule makes it
+tower on narrow screens. It reaches `public/images/` through the PNG
+passthrough in `scripts/watermark.py` — **never route it through the
+stamper**, which is JPEG-only and would flatten the alpha into a white
+box on the cream.
+
+The Process texture strip went from three icons to **nine**, at Eric's
+request ("nine little zoomed in icons that kinda sell the art"). Six of
+them are the per-piece crops that were built, removed from under the
+paintings, and parked in `assets/unused/` — they are back in
+`assets/originals/` now and serve the purpose Eric actually wanted, as
+a texture wall rather than per-piece thumbnails. `assets/unused/` is
+gone.
+
+The caption widened with the set: it used to say "acrylic, ink, and raw
+canvas grain", which no longer covers the Brady frame edge or the
+Griffey panel seen edge-on, and "canvas" contradicts the wood medium
+anyway.
+
+`brady.jpg` is now `Original Photos/IMG_7974.jpeg` — note the **.jpeg**
+extension, a different and later file than the `IMG_7974.jpg` sitting
+beside it. It is smaller (950x1280 against 1400x1887) but has the
+contrast and the gold frame edge the earlier one lost.

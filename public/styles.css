@@ -769,11 +769,21 @@ section { position: relative; }
   margin: 0 0 18px;
 }
 .about-copy .signature {
-  margin-top: 30px;
+  margin-top: 26px;
   font-family: var(--serif);
   font-style: italic;
   font-size: 22px;
   color: var(--ink);
+}
+/* Eric's real signature, black on transparent, so it sits straight on the
+   cream. Height-capped rather than width-capped: it is a very wide, short
+   mark and a width rule would make it tower on narrow screens. */
+.about-copy .signature img {
+  width: auto;
+  height: 46px;
+  max-width: min(260px, 100%);
+  object-fit: contain;
+  object-position: left center;
 }
 .process-quote {
   margin: 30px 0 0;
@@ -794,9 +804,12 @@ section { position: relative; }
 .process-details {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 14px;
   max-width: 640px;
   margin: 0 auto;
+}
+@media (max-width: 520px) {
+  .process-details { gap: 10px; }
 }
 .detail-shot {
   aspect-ratio: 1 / 1;
