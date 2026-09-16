@@ -556,3 +556,18 @@ It also did the thing flagged when the pipeline was built: the
 per-domain `hello@<domain>` contact addresses those pages used to carry
 are gone, replaced by `eric@ericsamueltimm.com` on all three. That was
 Eric's call and is now live.
+
+## Dark bottom teaser (staging only, 16 Sep)
+The teaser under the marquee is on `var(--ink)` with cream text, echoing
+the Collector's Wall panel further down.
+
+The part that made it work: **the marquee's bottom arc had to be filled
+ink too**. `.mask-fill` is cream for both arcs, so darkening only the
+section below left a hard cream-to-black horizontal seam right under the
+cards. `.marquee-mask-bottom .mask-fill` is now `var(--ink)`, so the
+black sweeps up in a curve and the paintings appear to rise out of it.
+Any future section colour change under the marquee needs the same
+treatment — the arc has to carry the colour of whatever it sweeps into.
+
+**This is on staging only.** `promote:check` reports one file behind by
+design; `sportslegendsart.com` is unaffected until someone promotes.

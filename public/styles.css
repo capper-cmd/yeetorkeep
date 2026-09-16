@@ -339,6 +339,9 @@ section { position: relative; }
 }
 .marquee-mask svg { width: 100%; height: 100%; display: block; }
 .mask-fill { fill: var(--cream); }
+/* The section below the marquee is dark, so its arc is too — the curve has to
+   carry the colour of whatever it sweeps into, or it reads as a seam. */
+.marquee-mask-bottom .mask-fill { fill: var(--ink); }
 .marquee-mask-top { top: 0; }
 .marquee-mask-bottom { bottom: 0; }
 @media (min-width: 640px) {
@@ -392,14 +395,27 @@ section { position: relative; }
 /* ==========================================================================
    BOTTOM TEASER
    ========================================================================== */
-.bottom-teaser { padding: 12px 0 72px; text-align: center; }
+/* Dark, to match the Collector's Wall panel further down. The marquee's
+   bottom arc is filled ink to match (see .marquee-mask-bottom below), so the
+   black sweeps up in a curve into the cards instead of meeting them at a
+   hard horizontal line. */
+.bottom-teaser {
+  background: var(--ink);
+  padding: clamp(40px, 5vw, 64px) 0 clamp(64px, 7vw, 96px);
+  text-align: center;
+}
 .bottom-teaser .wrap { max-width: 640px; }
 .bottom-teaser-copy {
   font-size: 18px;
-  color: var(--ink);
+  color: rgba(250,247,242,0.78);
   line-height: 1.6;
   margin: 0;
 }
+.bottom-teaser .link-underline {
+  color: var(--cream);
+  text-decoration-color: rgba(250,247,242,0.32);
+}
+.bottom-teaser .link-underline:hover { text-decoration-color: var(--brass); }
 .bottom-teaser-links {
   margin-top: 30px;
   display: flex;
