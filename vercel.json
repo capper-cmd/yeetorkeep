@@ -93,6 +93,10 @@
       "status": 301
     },
     {
+      "src": "/fix/?$",
+      "dest": "/public/fix/index.html"
+    },
+    {
       "src": "/sportslegendsart/?$",
       "dest": "/public/sportslegendsart/index.html"
     },

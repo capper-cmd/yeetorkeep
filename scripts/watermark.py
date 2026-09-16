@@ -27,9 +27,13 @@ SRC = ROOT / "assets" / "originals"
 # original dimensions. Downscaling is the real protection — the watermark
 # only deters, but a 900px file simply isn't enough pixels to reproduce a
 # 16x20 painting at any size worth having.
+# (destination, max long edge, colour-correct?)
 VARIANTS = [
-    (ROOT / "public" / "images", None),
-    (ROOT / "public" / "images" / "lowres", 900),
+    (ROOT / "public" / "images", None, False),
+    (ROOT / "public" / "images" / "lowres", 900, False),
+    # Feeds /fix, a side-by-side of the same site with the room's warm cast
+    # and underexposure pulled out of Eric's photographs of the originals.
+    (ROOT / "public" / "images" / "fix", 900, True),
 ]
 DEST = VARIANTS[0][0]
 
@@ -93,8 +97,27 @@ def build_tile(size, font):
     return layer.crop((left, top, left + w, top + h))
 
 
-def stamp(path, max_edge=None):
-    im = ImageOps.exif_transpose(Image.open(path)).convert("RGBA")
+def colour_correct(im):
+    """Neutralise the warm cast and recover exposure from the originals'
+    photographs. A per-channel percentile stretch moves the file toward the
+    painting's real colour — it does not invent colour, and it cannot undo
+    the vignette, which is lighting rather than grading."""
+    import numpy as np
+    a = np.asarray(im.convert("RGB")).astype(np.float32)
+    out = np.empty_like(a)
+    for c in range(3):
+        lo = np.percentile(a[..., c], 0.4)
+        hi = np.percentile(a[..., c], 99.6)
+        out[..., c] = np.clip((a[..., c] - lo) * 255.0 / max(hi - lo, 1), 0, 255)
+    out = a * 0.25 + out * 0.75          # hold it back from looking bleached
+    return Image.fromarray(out.astype(np.uint8))
+
+
+def stamp(path, max_edge=None, correct=False):
+    im = ImageOps.exif_transpose(Image.open(path))
+    if correct:
+        im = colour_correct(im)
+    im = im.convert("RGBA")
     if max_edge and max(im.size) > max_edge:
         im.thumbnail((max_edge, max_edge), Image.LANCZOS)
     # FONT_RATIO is a fraction of the long edge, so the mark stays the same
@@ -122,7 +145,7 @@ def main():
 
     if args.check:
         gaps = 0
-        for dest, max_edge in VARIANTS:
+        for dest, max_edge, _ in VARIANTS:
             label = dest.relative_to(ROOT)
             absent = [p.name for p in originals if not (dest / p.name).exists()]
             cap = f"<= {max_edge}px" if max_edge else "full size"
@@ -140,16 +163,18 @@ def main():
               f"{len(VARIANTS)} variants.")
         return 0
 
-    for dest, max_edge in VARIANTS:
+    for dest, max_edge, correct in VARIANTS:
         dest.mkdir(parents=True, exist_ok=True)
         for p in originals:
             cap = max_edge
             override = DISPLAY_OVERRIDES.get(p.name)
             if cap and override and override > cap:
                 cap = override
-            stamp(p, cap).save(dest / p.name, quality=QUALITY,
-                               optimize=True, progressive=True)
+            stamp(p, cap, correct).save(dest / p.name, quality=QUALITY,
+                                        optimize=True, progressive=True)
         cap = f"<= {max_edge}px" if max_edge else "full size"
+        if correct:
+            cap += ", colour-corrected"
         print(f"  stamped  {len(originals):>2} -> {dest.relative_to(ROOT)} ({cap})")
 
     if missing:
