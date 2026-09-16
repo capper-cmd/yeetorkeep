@@ -458,3 +458,26 @@ Note Ohtani's cap moved from 4.5% to 7.1% down his card in the new
 photograph. The marquee arc is solved against that number (see the
 watermark section above); it was left at the more conservative setting,
 so there is now spare headroom if the arc should ever sweep deeper.
+
+## Prints vs originals: which image goes where
+- **Selected Work / marquee** — Eric's photographs of the originals, from
+  Dropbox `Original Photos`, used at **full frame with no trim**. An
+  earlier pass shaved 1.8% off each edge and that cut into the painted
+  borders, so the whole photo goes in, dark surround and all. That
+  surround is wanted: it shows where the painting ends.
+- **Limited Edition Prints** — photographs of the *framed prints* from
+  Dropbox `Print Acutal Photos Framed` (`print-<piece>.jpg`), not the
+  artwork files. The section sells prints, so it should show prints as
+  they arrive: matted and framed.
+
+Three of the six framed prints are in **black** frames (Gretzky, Kobe,
+Ohtani); only Griffey, Jordan and Mantle are white. All six have a white
+mat. If consistency matters, those three need reshooting in white — the
+photos don't exist yet.
+
+Jordan and Kobe are deliberately **not adjacent** in either grid: both
+are near-identical dunk compositions and read as repetitive side by
+side. Kobe and Gretzky are swapped in both the work grid and the
+editions grid to break that up. The `reveal-delay-*` stagger is
+positional, so it is reassigned after any reorder rather than travelling
+with the card.
