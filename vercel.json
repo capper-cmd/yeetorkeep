@@ -96,6 +96,7 @@
       "src": "/fix/?$",
       "dest": "/public/fix/index.html"
     },
+    { "src": "/v2/?$", "dest": "/public/v2/index.html" },
     {
       "src": "/sportslegendsart/?$",
       "dest": "/public/sportslegendsart/index.html"

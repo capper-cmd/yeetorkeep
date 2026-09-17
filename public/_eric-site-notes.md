@@ -687,3 +687,47 @@ signature still appears on every branded page under the Process quote,
 so his authorship is not lost. `scripts/promote.mjs` was updated to
 match the new markup; it had failed loudly rather than mis-brand, which
 is the behaviour to preserve.
+
+## /v2 — Eric's 17 Sep review pass (17 Sep)
+`/v2` is a generated preview of the changes from Eric's "Few ideas.
+Changes" email. Staging and all three branded domains are untouched;
+`scripts/build-v2.mjs` regenerates `public/v2/index.html` from
+`public/index.html` with ~31 guarded substitutions. If staging moves, the
+generator fails loudly rather than half-applying. When Eric approves,
+replay the same substitutions onto staging and delete the generator.
+
+**The email is the source of truth, not the Markdown brief.** The brief
+that came with it had transcribed Eric's hero line into two sentences,
+which orphaned "the swing, the stance, the knockout" as the subject of
+"becomes". Eric's original is one grammatical sentence with the list in
+em-dashes, and that is what is built. The brief also dropped "just" from
+the collection statement and flattened two em-dashes, and reduced the
+signature mockup to "keep the signature on black" when nothing of the
+kind existed on the site. Read the email, not the summary.
+
+**The signature on the black teaser needs inverting.** `signature.png` is
+pure black on transparent (mean luminance 0/255) and renders invisible on
+the ink band. `/v2` applies `filter: invert(1)`. A dedicated white asset
+would be cleaner if this ships.
+
+**The grid order is an instruction, not a list of prices.** Eric's
+section is headed "Original Order of art. I wanna change that so
+psychologically it works for us." The reveal-delay classes are reassigned
+by position in the generator, so the stagger still reads left to right
+after the reorder; moving the blocks verbatim would scramble it.
+
+**Two reference screenshots changed the build.** The "commission bar" is
+the contact form's Budget dropdown, not a new section -- two rows merge
+into one. The "custom dimensions" line replaces the Who's next copy
+rather than being added under it. Both would have been built wrong from
+the text alone.
+
+**Not built:** the $50 numbered-print drop. Eric is still doing the math
+and asked Chad "What do you think?" -- that is a question, not a build
+instruction.
+
+**Still open:** the hero eyebrow still reads "One of One", which is the
+exact phrase Eric wants gone; he scoped his ask to "under originals", so
+it was left alone rather than changed silently. The bio paragraph still
+says "pulling a single frame", which now contradicts the hero's "custom
+frame" -- awaiting Eric.

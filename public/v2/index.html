@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eric Samuel Timm — Original Paintings of Iconic Athletes</title>
+<meta name="description" content="Hand-painted, one-of-one portraits of legendary athletes by Eric Samuel Timm. Originals and signed editions, built for the collector's wall.">
+
+<!-- GENERATED FILE — do not edit by hand.
+     Built by scripts/build-v2.mjs from public/index.html (staging).
+     Any edit here is overwritten on the next build; change staging or the
+     generator instead.
+
+     This is Eric's 17 Sep review pass. See public/_eric-site-notes.md.
+
+     Built from a MotionSites.ai "Lumen" layout, then updated with a
+     navbar/hero/drag-marquee/bottom-CTA interaction pattern the client
+     supplied from a separate "Bespoke Architecture Studio" spec —
+     reskinned here with Eric's own palette, type, and paintings rather
+     than that spec's literal copy, logo, fonts, or images. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  /* Eric asked for "red or an accent color" on the two keywords he thinks
+     sell the work. Brass is the existing accent, so red is a second one --
+     deep enough to sit beside brass on cream without turning into a warning. */
+  :root { --accent-red: #a8271b; }
+  .hero-lede .kw { color: var(--accent-red); font-weight: 500; }
+
+  /* His signature on the black teaser. The asset is pure black on
+     transparent (luminance 0/255), so it must be inverted or it renders
+     invisible on the ink band. Height-capped like the other two placements. */
+  .teaser-signature { margin: 26px 0 0; }
+  .teaser-signature img {
+    width: auto; height: 44px; max-width: min(280px, 100%);
+    object-fit: contain; filter: invert(1); opacity: 0.92;
+    display: inline-block;
+  }
+  .bottom-teaser-links { margin-top: 22px; }
+
+  /* Jackie Robinson is commission-only, numbered /42, and will never have
+     a print edition. That is a rule about the piece, not a price. */
+  .piece-rule {
+    display: block; margin: -8px 0 14px;
+    font-size: 12.5px; letter-spacing: 0.04em; color: var(--accent-red);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-bar">
+    <a href="#top" class="logo-mark" aria-label="Eric Samuel Timm — home">
+      <svg viewBox="0 0 28 28" width="28" height="28" fill="none" aria-hidden="true">
+        <path d="M4 23 L10 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M12 24 L18 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M20 24 L25 9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+    </a>
+
+    <button class="hamburger" id="menuOpen" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+
+    <a href="#contact" class="btn btn-sm nav-cta">Inquire</a>
+  </div>
+</header>
+
+<!-- ============ MENU OVERLAY + DRAWER ============ -->
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="menu-drawer" id="menuDrawer" aria-hidden="true">
+  <div class="menu-drawer-head">
+    <svg viewBox="0 0 28 28" width="28" height="28" fill="none" aria-hidden="true">
+      <path d="M4 23 L10 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M12 24 L18 4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M20 24 L25 9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    <button class="menu-close" id="menuClose" aria-label="Close menu">
+      <span></span><span></span>
+    </button>
+  </div>
+  <nav class="menu-links" id="menuLinks">
+    <a href="#work">The Work</a>
+    <a href="#editions">Prints</a>
+    <a href="#about">Process</a>
+    <a href="#lifestyle">Collector's Wall</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a href="#contact" class="btn menu-cta">Inquire</a>
+</div>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-center reveal is-visible">
+      <p class="eyebrow" style="justify-content:center;">Hand-Painted &middot; One of One &middot; Limited Editions</p>
+      <h1>Icons of the game,<br>painted by <em>hand</em>.</h1>
+      <p class="hero-lede">Every canvas starts with a <span class="kw">custom frame</span> then — the swing, the stance, the knockout — becomes an <span class="kw">original canvas</span> painting built to outlast the highlight reel and inspire you.</p>
+    </div>
+  </section>
+
+  <!-- ============ IMAGE MARQUEE ============ -->
+  <section class="marquee-section reveal is-visible">
+    <div class="marquee-mask marquee-mask-top" aria-hidden="true">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path class="mask-fill" d="M0 0H1440V50C1440 50 1200 100 720 100C240 100 0 50 0 50V0Z"/></svg>
+    </div>
+
+    <!-- One set only. script.js clones it as many times as the widest
+         viewport needs, so the loop never runs short. -->
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-slide"><img src="/images/lowres/griffey-studio.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="/images/lowres/jordan.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="/images/lowres/gretzky.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="/images/lowres/jackie-robinson.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="/images/lowres/ohtani-marquee.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="/images/lowres/mantle-1952.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="/images/lowres/griffey-rookie.jpg" alt="" loading="lazy" draggable="false"></div>
+      <div class="marquee-slide"><img src="/images/lowres/brady.jpg" alt="" loading="lazy" draggable="false"></div>
+    </div>
+
+    <div class="marquee-mask marquee-mask-bottom" aria-hidden="true">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path class="mask-fill" d="M0 100H1440V50C1440 50 1200 0 720 0C240 0 0 50 0 50V100Z"/></svg>
+    </div>
+  </section>
+
+  <!-- ============ BOTTOM TEASER ============ -->
+  <section class="bottom-teaser reveal is-visible">
+    <div class="wrap">
+      <p class="bottom-teaser-copy">I paint the athletes who defined the game — hand-built frames, one canvas at a time, each one unique. No print runs pretending to be originals. I can do this for your favorite player or sports moment, I would be honored.</p>
+      <p class="teaser-signature"><img src="/images/lowres/signature.png" alt="Eric Samuel Timm" width="1200" height="232" loading="lazy"></p>
+      <div class="bottom-teaser-links">
+        <a href="#contact" class="link-underline">Start a Commission</a>
+        <a href="#work" class="link-underline">See the Collection</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WORK / SHOP ============ -->
+  <section class="work" id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" style="justify-content:center;">Originals</p>
+        <h2>The original collection</h2>
+        <p>A running collection of custom originals and signed, jersey matched numbered print edition runs. New collectible pieces are added as each painting is finished for the buyer — check back often, or order your own custom original by Eric.</p>
+      </div>
+
+      <div class="work-grid">
+        <div class="piece reveal">
+          <div class="piece-frame">
+            <span class="status-pill is-available">Available &middot; Make Offer</span>
+            <img src="/images/lowres/jordan.jpg" alt="Painting of Michael Jordan dunking in a Chicago Bulls jersey, Fleer Premier card style">
+          </div>
+          <h3 class="piece-title">Michael Jordan — &ldquo;Fleer Premier&rdquo;</h3>
+          <p class="piece-meta">42&Prime; &times; 60&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <a href="#edition-jordan" class="piece-prints-note">Prints from $300 &rarr;</a>
+          <div class="piece-foot">
+            <span class="piece-price">Make Offer</span>
+            <a href="#contact" class="piece-link">Inquire &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal reveal-delay-1 is-sold">
+          <div class="piece-frame">
+            <span class="status-pill is-sold">Sold</span>
+            <img src="/images/lowres/gretzky.jpg" alt="Painting of Wayne Gretzky in an Edmonton Oilers jersey, vintage hockey card style">
+          </div>
+          <h3 class="piece-title">Wayne Gretzky — &ldquo;HKYGD&rdquo;</h3>
+          <p class="piece-meta">42&Prime; &times; 60&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <a href="#edition-gretzky" class="piece-prints-note">Prints from $400 &rarr;</a>
+          <div class="piece-foot">
+            <span class="piece-price">Sold</span>
+            <a href="#contact" class="piece-link">Commission Similar &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal reveal-delay-2">
+          <div class="piece-frame">
+            <span class="status-pill is-available">Available &middot; Inquire</span>
+            <img src="/images/lowres/kobe.jpg" alt="Painting of Kobe Bryant dunking in a Los Angeles Lakers jersey, &quot;Flair Purpose&quot; card style">
+          </div>
+          <h3 class="piece-title">Kobe Bryant — &ldquo;L.A. Mamba&rdquo;</h3>
+          <p class="piece-meta">42&Prime; &times; 60&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <a href="#edition-kobe" class="piece-prints-note">Prints from $300 &rarr;</a>
+          <div class="piece-foot">
+            <span class="piece-price">$5,000</span>
+            <a href="#contact" class="piece-link">Inquire &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal is-sold">
+          <div class="piece-frame">
+            <span class="status-pill is-sold">Sold</span>
+            <img src="/images/lowres/jackie-robinson.jpg" alt="Painting of Jackie Robinson in a Brooklyn cap against a golden halo background">
+          </div>
+          <h3 class="piece-title">Jackie Robinson — &ldquo;42 on Leaf 48&rdquo;</h3>
+          <p class="piece-meta">49&Prime; &times; 58&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <span class="piece-rule">Commissioned originals only &middot; numbered /42 &middot; no print editions</span>
+          <div class="piece-foot">
+            <span class="piece-price">Sold</span>
+            <a href="#contact" class="piece-link">Commission Similar &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal reveal-delay-1">
+          <div class="piece-frame">
+            <span class="status-pill is-available">Available &middot; Inquire</span>
+            <img src="/images/lowres/ohtani.jpg" alt="Painting of Shohei Ohtani batting for the Los Angeles Dodgers, &quot;Major League Bubble Gum&quot; card style">
+          </div>
+          <h3 class="piece-title">Shohei Ohtani — &lsquo;33 Goudey</h3>
+          <p class="piece-meta">49&Prime; &times; 58&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <a href="#edition-ohtani" class="piece-prints-note">Prints from $250 &rarr;</a>
+          <div class="piece-foot">
+            <span class="piece-price">$4,000</span>
+            <a href="#contact" class="piece-link">Inquire &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal reveal-delay-2 is-sold">
+          <div class="piece-frame">
+            <span class="status-pill is-sold">Sold</span>
+            <img src="/images/lowres/mantle-1952.jpg" alt="Painting of Mickey Mantle in a New York Yankees cap, 1952 Topps card style">
+          </div>
+          <h3 class="piece-title">Mickey Mantle — &lsquo;52</h3>
+          <p class="piece-meta">45&Prime; &times; 64&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <a href="#edition-mantle-52" class="piece-prints-note">Prints from $400 &rarr;</a>
+          <div class="piece-foot">
+            <span class="piece-price">Sold</span>
+            <a href="#contact" class="piece-link">Commission Similar &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal">
+          <div class="piece-frame">
+            <span class="status-pill is-available">Available &middot; Inquire</span>
+            <img src="/images/lowres/griffey-studio.jpg" alt="Painting of Ken Griffey Jr. in his Seattle batting stance, framed">
+          </div>
+          <h3 class="piece-title">Ken Griffey Jr. — &ldquo;The Kid&rdquo;</h3>
+          <p class="piece-meta">45&Prime; &times; 64&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <a href="#edition-griffey-kid" class="piece-prints-note">Prints from $200 &rarr;</a>
+          <div class="piece-foot">
+            <span class="piece-price">$4,000</span>
+            <a href="#contact" class="piece-link">Inquire &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal reveal-delay-1">
+          <div class="piece-frame">
+            <span class="status-pill is-available">Available &middot; Inquire</span>
+            <img src="/images/lowres/griffey-rookie.jpg" alt="Painting of a young smiling Ken Griffey Jr. in a Seattle card style, holding a bat">
+          </div>
+          <h3 class="piece-title">Ken Griffey Jr. — &lsquo;89 Star</h3>
+          <p class="piece-meta">41&Prime; &times; 58.5&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <div class="piece-foot">
+            <span class="piece-price">$2,500</span>
+            <a href="#contact" class="piece-link">Inquire &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal reveal-delay-2">
+          <div class="piece-frame">
+            <span class="status-pill is-available">Available &middot; Inquire</span>
+            <img src="/images/lowres/mantle-themick.jpg" alt="Painting of a young Mickey Mantle smiling in Yankees pinstripes, &quot;The Mick&quot;, rookie card style">
+          </div>
+          <h3 class="piece-title">Mickey Mantle — &ldquo;The Mick&rdquo;</h3>
+          <p class="piece-meta">41&Prime; &times; 58.5&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <div class="piece-foot">
+            <span class="piece-price">$2,500</span>
+            <a href="#contact" class="piece-link">Inquire &rarr;</a>
+          </div>
+        </div>
+
+        <div class="piece reveal is-sold">
+          <div class="piece-frame">
+            <span class="status-pill is-sold">Sold</span>
+            <img src="/images/lowres/brady.jpg" alt="Painting of Tom Brady in a New England Patriots uniform, 2000 Bowman Chrome rookie card style">
+          </div>
+          <h3 class="piece-title">Tom Brady — &ldquo;Refractor Rookie&rdquo;</h3>
+          <p class="piece-meta">42&Prime; &times; 60&Prime; &middot; #1</p>
+          <p class="piece-materials">Wood, acrylic, charcoal, marker, spray paint</p>
+          <div class="piece-foot">
+            <span class="piece-price">Sold</span>
+            <a href="#contact" class="piece-link">Commission Similar &rarr;</a>
+          </div>
+        </div>
+
+        <a href="#contact" class="piece piece-next reveal reveal-delay-1">
+          <span class="piece-next-frame">
+            <span class="piece-next-inner">
+              <span class="piece-next-eyebrow">Commission</span>
+              <span class="piece-next-title">Who&rsquo;s next?</span>
+              <span class="piece-next-copy">Painting with same or custom dimensions for your space.</span>
+              <span class="piece-next-link">Start a commission &rarr;</span>
+            </span>
+          </span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ WAITLIST BAR ============ -->
+  <section class="work-more reveal">
+    <div class="wrap">
+      <p>Want first look when a new painting is finished?</p>
+      <a href="#contact" class="btn btn-ghost btn-sm">Join the Waitlist</a>
+    </div>
+  </section>
+
+  <!-- ============ SCALE ============ -->
+  <section class="scale reveal">
+    <figure class="scale-figure">
+      <img src="/images/lowres/booth.jpg" alt="Five original paintings — Kobe Bryant, Mickey Mantle, Wayne Gretzky, Michael Jordan and Ken Griffey Jr. — standing at full height on a lit display wall behind a table" loading="lazy">
+      <figcaption>The originals, at size. Every one stands four to five feet tall &mdash; closer to a doorway than to the card it came from.</figcaption>
+    </figure>
+  </section>
+
+  <section class="editions" id="editions">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" style="justify-content:center;">Edition 1</p>
+        <h2>Collectible Jersey Match Print Editions</h2>
+        <p>Each print is a museum-quality 16&times;20 reproduction, hand-signed and numbered — many to the exact number of the player's own jersey. Artist proofs are always 1 of 1. Once Edition 1 sells out, it's retired for good; Edition 2 begins at a 30% premium, with no artist proofs.</p>
+      </div>
+
+      <div class="editions-grid">
+        <div class="edition-card reveal" id="edition-griffey-kid">
+          <div class="edition-thumb"><img src="/images/lowres/print-griffey-kid.jpg" alt="The Ken Griffey Jr. print, matted and framed on a wall" loading="lazy"></div>
+          <div class="edition-info">
+            <h3 class="edition-title">Ken Griffey Jr. — &ldquo;The Kid&rdquo;</h3>
+            <p class="edition-sub">Numbered to his No. 24</p>
+            <p class="edition-original">Original: <strong>Available — $5,000</strong></p>
+            <ul class="edition-tiers">
+              <li><span>Artist Proof</span><span>1/1</span><span>$500</span></li>
+              <li><span>Jersey Match</span><span>24/24</span><span>$400</span></li>
+              <li><span>Prints</span><span>1/24 – 23/24</span><span>$200</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="edition-card reveal reveal-delay-1" id="edition-jordan">
+          <div class="edition-thumb"><img src="/images/lowres/print-jordan.jpg" alt="The Michael Jordan print, matted and framed on a wall" loading="lazy"></div>
+          <div class="edition-info">
+            <h3 class="edition-title">Michael Jordan — &lsquo;86 Fleer</h3>
+            <p class="edition-sub">Numbered to his No. 23</p>
+            <p class="edition-original">Original: <strong>Available — Make Offer</strong></p>
+            <ul class="edition-tiers">
+              <li><span>Artist Proof</span><span>1/1</span><span>$800</span></li>
+              <li><span>Jersey Match</span><span>23/23</span><span>$600</span></li>
+              <li><span>Prints</span><span>2/23 – 22/23</span><span>$300</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="edition-card reveal" id="edition-gretzky">
+          <div class="edition-thumb"><img src="/images/lowres/print-gretzky.jpg" alt="The Wayne Gretzky print, matted and framed on a wall" loading="lazy"></div>
+          <div class="edition-info">
+            <h3 class="edition-title">Wayne Gretzky — &lsquo;77</h3>
+            <p class="edition-sub">Numbered to his No. 99</p>
+            <p class="edition-original is-sold">Original: <strong>Sold</strong> — this edition remains</p>
+            <ul class="edition-tiers">
+              <li><span>Artist Proof</span><span>1/1</span><span>$800</span></li>
+              <li><span>Jersey Match</span><span>9.9/9.9</span><span>$600</span></li>
+              <li><span>Prints</span><span>1.9/9.9 – 8.9/9.9</span><span>$400</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="edition-card reveal reveal-delay-2" id="edition-kobe">
+          <div class="edition-thumb"><img src="/images/lowres/print-kobe.jpg" alt="The Kobe Bryant print, matted and framed on a wall" loading="lazy"></div>
+          <div class="edition-info">
+            <h3 class="edition-title">Kobe Bryant — &lsquo;86 Flair</h3>
+            <p class="edition-sub">Numbered to his No. 8</p>
+            <p class="edition-original">Original: <strong>Available — $4,000</strong></p>
+            <ul class="edition-tiers">
+              <li><span>Artist Proof</span><span>1/1</span><span>$800</span></li>
+              <li><span>Jersey Match</span><span>8/8</span><span>$600</span></li>
+              <li><span>Prints</span><span>2/8 – 7/8</span><span>$300</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="edition-card reveal reveal-delay-1" id="edition-ohtani">
+          <div class="edition-thumb"><img src="/images/lowres/print-ohtani.jpg" alt="The Shohei Ohtani print, matted and framed on a wall" loading="lazy"></div>
+          <div class="edition-info">
+            <h3 class="edition-title">Shohei Ohtani — &lsquo;33 Goudey</h3>
+            <p class="edition-sub">Numbered to his No. 17</p>
+            <p class="edition-original">Original: <strong>Available — $5,000</strong></p>
+            <ul class="edition-tiers">
+              <li><span>Artist Proof</span><span>1/1</span><span>$500</span></li>
+              <li><span>Jersey Match</span><span>17/17</span><span>$400</span></li>
+              <li><span>Prints</span><span>1/17 – 16/17</span><span>$250</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="edition-card reveal reveal-delay-2" id="edition-mantle-52">
+          <div class="edition-thumb"><img src="/images/lowres/print-mantle-1952.jpg" alt="The Mickey Mantle print, matted and framed on a wall" loading="lazy"></div>
+          <div class="edition-info">
+            <h3 class="edition-title">Mickey Mantle — &lsquo;52</h3>
+            <p class="edition-sub">Numbered to his No. 7</p>
+            <p class="edition-original is-sold">Original: <strong>Sold</strong> — this edition remains</p>
+            <ul class="edition-tiers">
+              <li><span>Artist Proof</span><span>1/1</span><span>$800</span></li>
+              <li><span>Jersey Match</span><span>7/7</span><span>$600</span></li>
+              <li><span>Prints</span><span>1/7 – 6/7</span><span>$400</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <p class="editions-note">All prices include professional rapid or freight shipping to the continental US. Alaska, Hawaii, and international original orders are quoted individually. <a href="#contact" class="link-underline">Inquire about a piece &rarr;</a></p>
+    </div>
+  </section>
+
+  <!-- ============ LIFESTYLE / COLLECTOR'S WALL ============ -->
+  <section class="lifestyle" id="lifestyle">
+    <div class="lifestyle-media reveal">
+      <img src="/images/lowres/installed-wall.jpg" alt="Four framed prints — Mickey Mantle, Wayne Gretzky, Shohei Ohtani, and Michael Jordan — hung together on a wall in a client's home">
+    </div>
+    <div class="lifestyle-copy reveal">
+      <p class="eyebrow">Built For Where You Live</p>
+      <h2>From the studio to the man cave to the great room.</h2>
+      <p>Every piece is finished and easily framed to hold its own on a serious wall — whether that's a collector's den or a museum-quiet living room. Sports legends meet fine art — it just speaks beauty, class, and iconic success.</p>
+      <p class="caption">Mantle, Gretzky, Ohtani, and Jordan &mdash; framed prints, hung together in a client's home.</p>
+    </div>
+  </section>
+
+  <!-- ============ INSTALLED / IN SITU ============ -->
+  <section class="installed">
+    <div class="wrap">
+      <div class="installed-grid">
+        <figure class="installed-item reveal">
+          <img src="/images/lowres/installed-solo.jpg" alt="Framed Mickey Mantle print, double-matted in a wide white frame, hanging on a white wall" loading="lazy">
+          <figcaption>A Mantle print, framed and hung in a collector&rsquo;s front room.</figcaption>
+        </figure>
+        <figure class="installed-item reveal">
+          <img src="/images/lowres/installed-ledge.jpg" alt="Framed Wayne Gretzky print on a picture ledge alongside a framed signed jersey and other framed memorabilia" loading="lazy">
+          <figcaption>A Gretzky print, sharing a ledge with the rest of the collection.</figcaption>
+        </figure>
+        <figure class="installed-item reveal">
+          <img src="/images/lowres/installed-door.jpg" alt="Framed Ken Griffey Jr. print in a white frame on a grey wall beside a sliding barn door" loading="lazy">
+          <figcaption>A Griffey Jr. print, holding a wall on its own beside a sliding barn door.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT / PROCESS ============ -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="about-badges reveal">
+        <div class="badge">
+          <b>1 of 1</b>
+          <span>Originals, each one unique</span>
+        </div>
+        <div class="badge">
+          <b>Hand</b>
+          <span>Painted &amp; crafted by Eric Samuel Timm</span>
+        </div>
+        <div class="badge">
+          <b>Ready</b>
+          <span>Framed &amp; gallery finished</span>
+        </div>
+        <div class="badge">
+          <b>Limited</b>
+          <span>Jersey match print editions</span>
+        </div>
+        <div class="about-portrait">
+          <img src="/images/lowres/artist-portrait.jpg" alt="Eric Samuel Timm sitting beside his Mickey Mantle painting">
+          <p class="about-portrait-cap">Eric Samuel Timm, with &ldquo;Mickey Mantle&rdquo;</p>
+        </div>
+      </div>
+      <div class="about-copy reveal reveal-delay-1">
+        <p class="eyebrow">The Process</p>
+        <h2>Painted from the moment, not the merchandise.</h2>
+        <p>Eric Samuel Timm has spent more than 20 years bringing art and storytelling to life in front of over a million people across 39 countries. His love of collecting sports cards as a kid has come full circle into original artwork capturing the players, moments, and memories that made the game.</p>
+        <p>Each portrait begins the same way — pulling a single frame from the exact moment an athlete became a legend, then rebuilding it by hand in acrylic, ink and effort. No filters, just real art for real people.</p>
+        <blockquote class="process-quote">&ldquo;I see my sports legends art as three fold: a mirror that reflects your connected memories and moments, a window that shows you your own greatness as possibility, and a door that invites my viewers inspiration despite the failures and flaws these icons all had.&rdquo;</blockquote>
+        <p class="signature"><img src="/images/lowres/signature.png" alt="Eric Samuel Timm" width="1200" height="232" loading="lazy"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DETAIL STRIP ============
+       Eric's nine zoomed-in icons, lifted off the Process column onto a
+       dark full-bleed bar so they read as a small show of their own
+       instead of a footnote crowded under the signature. -->
+  <section class="detail-strip reveal">
+    <div class="wrap">
+      <p class="eyebrow detail-strip-eyebrow">Up Close</p>
+      <div class="process-details">
+        <div class="detail-shot"><img src="/images/lowres/detail-brushwork-1.jpg" alt="Macro detail of brushwork on a football helmet, acrylic and ink over raw canvas" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-gretzky-2.jpg" alt="Macro detail of the hand-lettered Edmonton Oilers crest" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-brushwork-3.jpg" alt="Macro detail of brushwork on a painted portrait" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-ohtani-1.jpg" alt="Macro detail of a painted face and batting helmet, canvas weave showing through" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-brady-1.jpg" alt="Macro detail of the hand-built card frame, painted stripes and a gilded edge" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-gretzky-1.jpg" alt="Macro detail of a painted helmet and face, canvas weave showing through" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-brushwork-2.jpg" alt="Macro detail of brushwork and canvas grain on a painted jersey" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-ohtani-2.jpg" alt="Macro detail of the hand-lettered Major League nameplate" loading="lazy"></div>
+        <div class="detail-shot"><img src="/images/lowres/detail-griffey-rookie-1.jpg" alt="A painting seen edge-on, showing the depth of the panel" loading="lazy"></div>
+      </div>
+      <p class="process-details-cap">The marks, the lettering, the edges. Every one of them by hand.</p>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT / COMMISSION ============ -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="contact-inner reveal">
+        <div class="contact-intro">
+          <p class="eyebrow">Own an Original</p>
+          <h2>Start a commission or ask about a piece.</h2>
+          <p>Tell us the athlete, the moment or the trading card and where it's going to hang. We'll follow up with availability, pricing, and timeline.</p>
+          <div class="contact-detail">
+            <span class="label">Email</span>
+            <a href="mailto:eric@ericsamueltimm.com">eric@ericsamueltimm.com</a>
+          </div>
+          <div class="contact-detail" style="margin-top:20px;">
+            <span class="label">Instagram</span>
+            <a href="#" id="instagramLink">@ericsamueltimm</a>
+          </div>
+        </div>
+
+        <form class="commission" id="commissionForm">
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="subject">Athlete / Piece of Interest</label>
+            <input type="text" id="subject" name="subject" placeholder="e.g. Ken Griffey Jr., or a new commission">
+          </div>
+          <div class="field">
+            <label for="budget">Budget Range</label>
+            <select id="budget" name="budget">
+              <option>Under $500 (Prints)</option>
+              <option>$500 – $2,000</option>
+              <option>$2,000 to $5,000+ Custom Commission</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about the moment, the athlete, or the space it's going in."></textarea>
+          </div>
+          <div class="form-foot">
+            <p class="form-note">Submitting opens your email client with the details pre-filled — nothing is sent from this page.</p>
+            <button type="submit" class="btn">Send Inquiry</button>
+          </div>
+          <p class="form-status" id="formStatus"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <a href="#top" class="footer-signature" aria-label="Eric Samuel Timm &mdash; home">
+      <img src="/images/lowres/signature.png" alt="Eric Samuel Timm" width="1200" height="232" loading="lazy">
+    </a>
+    <ul class="footer-links">
+      <li><a href="#work">The Work</a></li>
+      <li><a href="#editions">Prints</a></li>
+      <li><a href="#about">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="footer-fine">&copy; <span id="year"></span> Eric Samuel Timm. All originals.</p>
+  </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>
