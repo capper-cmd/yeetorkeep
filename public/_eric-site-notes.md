@@ -627,3 +627,22 @@ the white jersey pushed to grey, where the other nine are flat, evenly
 lit captures. No amount of resampling fixes that — it needs a reshoot to
 match the rest of the set. `/fix` shows how far colour correction gets
 it, which is some of the way but not all.
+
+## Marquee: eight paintings, and the loop now sizes itself (17 Sep)
+Eric asked for Kobe and "The Mick" out of the top scroll. Both are still
+in the originals grid and the print editions below, so nothing is lost
+from the site.
+
+Dropping to eight exposed a bug in how the loop was built. The old code
+wrapped on `track.scrollWidth / 2` and relied on the markup carrying a
+hand-duplicated second half. That only looks seamless while
+`total >= period + viewport`. Eight paintings made one set 2378px, so a
+2560px monitor showed a blank wedge at the wrap. Ten paintings would
+have done the same thing on a 4K display -- the bug was already there,
+just not yet visible.
+
+The markup now carries **one** set, and `script.js` clones it until the
+strip is wide enough, wrapping on the measured set width. Verified with
+no gap at 390 / 1440 / 2560 / 3840px by sampling 60 offsets across a
+full cycle. Add or remove paintings freely; do not re-introduce a
+duplicated half in the HTML.
