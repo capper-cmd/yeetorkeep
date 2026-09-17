@@ -68,7 +68,12 @@ function render(slug, brand, staging) {
     ['<a href="#" id="instagramLink">@ericsamueltimm</a>',
      `<a href="#" id="instagramLink">${brand.instagram}</a>`],
 
-    ['<a href="#top" class="wordmark">Eric Samuel <span>Timm</span></a>',
+    // Staging signs its footer with Eric's own signature. The branded
+    // domains carry their own name there instead -- that substitution is
+    // the whole point of these variants. Eric's signature still appears on
+    // every branded page, under the Process quote, which is not swapped.
+    // Note the leading slash: "images/ -> "/images/ has already run above.
+    ['<a href="#top" class="footer-signature" aria-label="Eric Samuel Timm &mdash; home">\n      <img src="/images/lowres/signature.png" alt="Eric Samuel Timm" width="1200" height="232" loading="lazy">\n    </a>',
      `<a href="#top" class="wordmark">${brand.footerHtml}</a>`],
 
     ['<p class="footer-fine">&copy; <span id="year"></span> Eric Samuel Timm. All originals.</p>',

@@ -47,7 +47,26 @@
   var track = document.getElementById('marqueeTrack');
   if (track) {
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var SPEED = reduceMotion ? 0 : 0.8;
+    // Pixels per frame (~60fps). 0.8 read as hurried; 0.4 lets each
+    // painting hold long enough to look at.
+    var SPEED = reduceMotion ? 0 : 0.4;
+
+    // The track holds one set of slides in the markup. Clone it until the
+    // strip is comfortably wider than the viewport, otherwise the wrap
+    // leaves a visible gap on wide screens -- which is exactly what
+    // happened when the set dropped from ten paintings to eight. Cloning
+    // here rather than duplicating in the HTML means the loop keeps
+    // working whatever the set size becomes.
+    var period = track.scrollWidth;
+    if (period > 0) {
+      var originals = Array.prototype.slice.call(track.children);
+      var copies = Math.max(2, Math.ceil((window.innerWidth * 2) / period) + 1);
+      for (var c = 1; c < copies; c++) {
+        for (var i = 0; i < originals.length; i++) {
+          track.appendChild(originals[i].cloneNode(true));
+        }
+      }
+    }
     var offset = 0;
     var velocity = 0;
     var dragging = false;
@@ -101,10 +120,9 @@
           offset -= SPEED;
         }
       }
-      var half = track.scrollWidth / 2;
-      if (half > 0) {
-        if (offset <= -half) offset += half;
-        if (offset > 0) offset -= half;
+      if (period > 0) {
+        if (offset <= -period) offset += period;
+        if (offset > 0) offset -= period;
       }
       track.style.transform = 'translate3d(' + offset + 'px, 0, 0)';
       requestAnimationFrame(frame);

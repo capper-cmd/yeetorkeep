@@ -4,6 +4,11 @@
    ========================================================================== */
 
 :root {
+  /* How far the marquee's arc travels. Lives here rather than on
+     .marquee-section because .bottom-teaser needs it too: the arc's ink is
+     part of that section's black, so its padding is measured against it. */
+  --mask-h: 80px;
+
   --cream:      #faf7f2;
   --paper:      #ffffff;
   --ink:        #171511;
@@ -318,7 +323,6 @@ section { position: relative; }
      start lower, which buys a deeper arc. --curve-overlap must also stay
      above --mask-h / 2 or the arc stops touching the cards at the far
      left and right. Re-run the numbers if any of these change. */
-  --mask-h: 80px;
   --curve-overlap: 46px;
   --art-inset: 6px;
   position: relative;
@@ -339,10 +343,14 @@ section { position: relative; }
 }
 .marquee-mask svg { width: 100%; height: 100%; display: block; }
 .mask-fill { fill: var(--cream); }
+/* The section below the marquee is dark, so its arc is too — the curve has to
+   carry the colour of whatever it sweeps into, or it reads as a seam. */
+.marquee-mask-bottom .mask-fill { fill: var(--ink); }
 .marquee-mask-top { top: 0; }
 .marquee-mask-bottom { bottom: 0; }
 @media (min-width: 640px) {
-  .marquee-section { --mask-h: 120px; --curve-overlap: 66px; --art-inset: 8px; }
+  :root { --mask-h: 120px; }
+  .marquee-section { --curve-overlap: 66px; --art-inset: 8px; }
 }
 
 .marquee-track {
@@ -392,14 +400,35 @@ section { position: relative; }
 /* ==========================================================================
    BOTTOM TEASER
    ========================================================================== */
-.bottom-teaser { padding: 12px 0 72px; text-align: center; }
+/* Dark, to match the Collector's Wall panel further down. The marquee's
+   bottom arc is filled ink to match (see .marquee-mask-bottom below), so the
+   black sweeps up in a curve into the cards instead of meeting them at a
+   hard horizontal line. */
+/* The black starts at the arc's apex, not at this section's top edge, so the
+   space above the text is --mask-h taller than the padding suggests. Balance
+   it by matching the bottom padding to mask + top padding — optical centring,
+   measured rather than eyeballed. */
+.bottom-teaser {
+  --teaser-pad: 12px;
+  background: var(--ink);
+  padding: var(--teaser-pad) 0 calc(var(--mask-h) + var(--teaser-pad));
+  text-align: center;
+}
+@media (min-width: 640px) {
+  .bottom-teaser { --teaser-pad: 20px; }
+}
 .bottom-teaser .wrap { max-width: 640px; }
 .bottom-teaser-copy {
   font-size: 18px;
-  color: var(--ink);
+  color: rgba(250,247,242,0.78);
   line-height: 1.6;
   margin: 0;
 }
+.bottom-teaser .link-underline {
+  color: var(--cream);
+  text-decoration-color: rgba(250,247,242,0.32);
+}
+.bottom-teaser .link-underline:hover { text-decoration-color: var(--brass); }
 .bottom-teaser-links {
   margin-top: 30px;
   display: flex;
@@ -471,13 +500,71 @@ section { position: relative; }
 .status-pill.is-available { color: var(--brass-deep); }
 .status-pill.is-soon { color: var(--ink-faint); }
 .status-pill.is-sold { color: var(--ink-faint); }
-.piece.is-sold .piece-frame img { filter: grayscale(0.4) opacity(0.85); }
+/* Sold pieces used to be dulled with grayscale(0.4) opacity(0.85). That
+   fought the whole point of the page -- Brady, Gretzky, Robinson and the
+   '52 Mantle were being shown washed out next to the same files served
+   raw. The "Sold" pill carries the status; the painting stays full
+   strength. */
 
 .piece-title { font-family: var(--serif); font-size: 22px; margin-bottom: 6px; }
 /* Size leads — it is the fact a buyer needs first, and these run four
    to five feet. Materials follow a shade quieter. */
 .piece-meta { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 3px; }
 .piece-materials { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 14px; }
+/* Fills the tail of the grid, where the last row would otherwise sit with
+   two empty columns. Sized by the grid, so it always matches its neighbours. */
+.piece-next { display: flex; text-decoration: none; color: inherit; }
+/* The empty tail of the grid. The frame mirrors .piece-frame exactly --
+   same 14px mat, same 3/4 inner ratio -- so the dashed box lines up with
+   the bottoms of the paintings beside it instead of floating short. */
+.piece-next-frame {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: 1px dashed var(--line-strong);
+  background: var(--paper);
+  transition: border-color 0.4s ease, background 0.4s ease;
+}
+.piece-next-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  padding: 24px 16px;
+}
+.piece-next:hover .piece-next-frame { border-color: var(--brass); background: #fff; }
+.piece-next-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  margin-bottom: 14px;
+}
+.piece-next-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+.piece-next-copy {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 24ch;
+  margin-bottom: 22px;
+}
+.piece-next-link {
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+  border-bottom: 1px solid var(--brass);
+  padding-bottom: 3px;
+}
+
 .piece-prints-note {
   display: block;
   margin: -8px 0 14px;
@@ -536,15 +623,24 @@ section { position: relative; }
   margin: 0;
 }
 
+/* A dark band sitting flush on top of the scale photo — it anchors the
+   waitlist to the picture instead of leaving it floating in cream, and
+   echoes the teaser under the marquee. */
 .work-more {
+  background: var(--ink);
   text-align: center;
-  margin-top: 64px;
+  padding: clamp(36px, 5vw, 56px) 0;
 }
 .work-more p {
-  color: var(--ink-soft);
+  color: rgba(250,247,242,0.72);
   font-size: 14.5px;
   margin: 0 0 20px;
 }
+.work-more .btn-ghost {
+  color: var(--cream);
+  border-color: rgba(250,247,242,0.34);
+}
+.work-more .btn-ghost:hover { border-color: var(--brass); color: var(--brass-soft); }
 
 /* ==========================================================================
    LIMITED EDITION PRINTS
@@ -663,7 +759,7 @@ section { position: relative; }
    One wide band under the collection, because the dimensions on each piece
    ("45in x 64in") mean nothing without something to measure against.
    ========================================================================== */
-.scale { padding: clamp(8px, 2vw, 24px) 0 clamp(56px, 7vw, 96px); }
+.scale { padding: 0 0 clamp(56px, 7vw, 96px); }
 .scale-figure { margin: 0; }
 .scale-figure img {
   width: 100%;
@@ -717,7 +813,7 @@ section { position: relative; }
 /* ==========================================================================
    ABOUT / PROCESS
    ========================================================================== */
-.about { padding: 140px 0; }
+.about { padding: 140px 0 clamp(96px, 11vw, 150px); }
 .about .wrap {
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
@@ -797,15 +893,27 @@ section { position: relative; }
   max-width: 560px;
 }
 
-.about .wrap.process-block {
-  display: block;
-  margin-top: 70px;
+/* ==========================================================================
+   DETAIL STRIP  --  the nine zoomed-in icons, on their own dark bar
+   ========================================================================== */
+.detail-strip {
+  background: var(--ink);
+  color: var(--cream);
+  padding: clamp(60px, 7vw, 92px) 0;
+  text-align: center;
 }
+.detail-strip-eyebrow {
+  justify-content: center;
+  color: var(--brass);
+  margin-bottom: 32px;
+}
+.detail-strip-eyebrow::before { background: var(--brass); }
+
 .process-details {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
 }
 @media (max-width: 520px) {
@@ -815,8 +923,8 @@ section { position: relative; }
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 14px;
-  border: 1px solid var(--line);
-  background: var(--paper);
+  border: 1px solid rgba(250, 247, 242, 0.14);
+  background: rgba(250, 247, 242, 0.06);
 }
 .detail-shot img {
   width: 100%;
@@ -826,12 +934,12 @@ section { position: relative; }
 }
 .detail-shot:hover img { transform: scale(1.06); }
 .process-details-cap {
-  margin: 20px 0 0;
+  margin: 28px 0 0;
   text-align: center;
   font-family: var(--serif);
   font-style: italic;
   font-size: 14px;
-  color: var(--ink-faint);
+  color: rgba(250, 247, 242, 0.62);
 }
 
 /* ==========================================================================
@@ -898,6 +1006,18 @@ form.commission { display: flex; flex-direction: column; gap: 20px; }
   flex-wrap: wrap;
   gap: 24px;
 }
+/* Eric's own signature stands in for the typeset wordmark down here. Same
+   height-capped treatment as the one under the Process quote -- it is a
+   wide, short mark, so capping width would make it tower on a phone. */
+.footer-signature { display: inline-flex; }
+.footer-signature img {
+  width: auto;
+  height: 38px;
+  max-width: min(240px, 100%);
+  object-fit: contain;
+  object-position: left center;
+}
+
 .footer-links {
   display: flex;
   gap: 30px;

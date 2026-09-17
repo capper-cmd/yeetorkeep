@@ -670,3 +670,20 @@ correct while the CSS was the culprit.
 The footer's typeset "Eric Samuel Timm" wordmark is now Eric's actual
 signature PNG, same height-capped treatment as the one under the Process
 quote (38px here, 46px there) since it is a wide, short mark.
+
+## Production pass promoted to the branded domains (17 Sep)
+`npm run promote` ran, so sportslegendsart.com, sportslegends.art and
+sportlegendsart.com now carry everything built on staging tonight: the
+"Who's next?" commission card, the black waitlist bar, the teaser text
+centred to the arc, the nine-icon detail strip on its own dark bar, the
+eight-painting marquee at half speed with the self-sizing loop, the
+full-resolution Brady, and sold pieces no longer dulled.
+
+**One branding decision worth knowing.** Staging now signs its footer
+with Eric's signature. The branded domains carry their own name there
+instead -- substituting the footer wordmark is the whole point of these
+variants, and the brand config already supplies `footerHtml`. Eric's
+signature still appears on every branded page under the Process quote,
+so his authorship is not lost. `scripts/promote.mjs` was updated to
+match the new markup; it had failed loudly rather than mis-brand, which
+is the behaviour to preserve.
