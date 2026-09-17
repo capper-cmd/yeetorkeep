@@ -646,3 +646,27 @@ strip is wide enough, wrapping on the measured set width. Verified with
 no gap at 390 / 1440 / 2560 / 3840px by sampling 60 offsets across a
 full cycle. Add or remove paintings freely; do not re-introduce a
 duplicated half in the HTML.
+
+## Sold pieces were being dulled by CSS (17 Sep)
+Eric put the grid card and the raw image file side by side and the card
+was visibly washed out. The file was innocent -- it was
+`.piece.is-sold .piece-frame img { filter: grayscale(0.4) opacity(0.85) }`.
+
+Four pieces carry `is-sold`: Gretzky, Jackie Robinson, Mantle '52 and
+Brady. All four were being shown at 60% saturation and 85% opacity while
+the same files served raw looked full strength. On a site whose whole
+job is showing the paintings, that was backwards -- and it wasted the
+Brady resolution fix from earlier the same night.
+
+The filter is gone. The "Sold" pill carries the status. **Do not
+reintroduce a filter on artwork**; if sold pieces ever need visual
+separation again, put it on the frame or the pill, never the painting.
+
+A lesson for diagnosing "this image looks wrong": compare the *rendered*
+element, not just the file. Two rounds were spent proving the file was
+correct while the CSS was the culprit.
+
+## Footer signature (17 Sep)
+The footer's typeset "Eric Samuel Timm" wordmark is now Eric's actual
+signature PNG, same height-capped treatment as the one under the Process
+quote (38px here, 46px there) since it is a wide, short mark.

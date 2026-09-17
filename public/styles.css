@@ -500,7 +500,11 @@ section { position: relative; }
 .status-pill.is-available { color: var(--brass-deep); }
 .status-pill.is-soon { color: var(--ink-faint); }
 .status-pill.is-sold { color: var(--ink-faint); }
-.piece.is-sold .piece-frame img { filter: grayscale(0.4) opacity(0.85); }
+/* Sold pieces used to be dulled with grayscale(0.4) opacity(0.85). That
+   fought the whole point of the page -- Brady, Gretzky, Robinson and the
+   '52 Mantle were being shown washed out next to the same files served
+   raw. The "Sold" pill carries the status; the painting stays full
+   strength. */
 
 .piece-title { font-family: var(--serif); font-size: 22px; margin-bottom: 6px; }
 /* Size leads — it is the fact a buyer needs first, and these run four
@@ -1002,6 +1006,18 @@ form.commission { display: flex; flex-direction: column; gap: 20px; }
   flex-wrap: wrap;
   gap: 24px;
 }
+/* Eric's own signature stands in for the typeset wordmark down here. Same
+   height-capped treatment as the one under the Process quote -- it is a
+   wide, short mark, so capping width would make it tower on a phone. */
+.footer-signature { display: inline-flex; }
+.footer-signature img {
+  width: auto;
+  height: 38px;
+  max-width: min(240px, 100%);
+  object-fit: contain;
+  object-position: left center;
+}
+
 .footer-links {
   display: flex;
   gap: 30px;
