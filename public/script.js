@@ -47,7 +47,9 @@
   var track = document.getElementById('marqueeTrack');
   if (track) {
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var SPEED = reduceMotion ? 0 : 0.8;
+    // Pixels per frame (~60fps). 0.8 read as hurried; 0.4 lets each
+    // painting hold long enough to look at.
+    var SPEED = reduceMotion ? 0 : 0.4;
 
     // The track holds one set of slides in the markup. Clone it until the
     // strip is comfortably wider than the viewport, otherwise the wrap
