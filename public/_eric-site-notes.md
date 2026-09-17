@@ -608,3 +608,22 @@ used to provide.
 
 **This is on staging only.** `sportslegendsart.com` is unaffected until
 someone promotes.
+
+## Brady was running at half resolution (17 Sep)
+Eric flagged the Brady original as "the wrong Brady". It is not a
+different painting — IMG_7974 in `Original Photos` is the only Brady in
+the Dropbox, and it is the same frame the site was already showing
+(mean pixel difference 3.5/255 after rescaling, i.e. identical).
+
+What *was* wrong: `assets/originals/brady.jpg` held a 950x1280 copy —
+the version pasted into chat — while Dropbox has the real 2040x2750
+file. Every other original sources at roughly 1900px tall, so Brady was
+the one soft image in the grid. The pipeline source is now IMG_7974 at
+full size.
+
+The remaining complaint is likely the photograph itself, not the file:
+Brady is a dim room shot with the canvas propped against a dark wall and
+the white jersey pushed to grey, where the other nine are flat, evenly
+lit captures. No amount of resampling fixes that — it needs a reshoot to
+match the rest of the set. `/fix` shows how far colour correction gets
+it, which is some of the way but not all.
